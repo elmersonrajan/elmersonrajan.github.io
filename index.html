@@ -21,6 +21,7 @@
   :root {
     --bg: #08090b;
     --bg-2: #0e1013;
+    --bg-3: #0a1410;
     --card: rgba(255,255,255,.035);
     --card-hi: rgba(255,255,255,.06);
     --text: #f3f4f5;
@@ -38,6 +39,7 @@
   :root[data-theme="light"] {
     --bg: #fafaf9;
     --bg-2: #ffffff;
+    --bg-3: #f1f7f3;
     --card: #ffffff;
     --card-hi: #ffffff;
     --text: #14161a;
@@ -62,13 +64,50 @@
     font-size: 16px; line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    animation: bgTint 34s ease-in-out infinite;
+  }
+  /* the base page colour itself drifts between three tints */
+  @keyframes bgTint {
+    0%   { background-color: var(--bg) }
+    33%  { background-color: var(--bg-3) }
+    66%  { background-color: var(--bg-2) }
+    100% { background-color: var(--bg) }
   }
   a { color: var(--accent); }
   img { max-width: 100%; }
   .wrap { width: 100%; max-width: 980px; margin: 0 auto; padding: 0 20px; }
 
   /* ---------- ambient layers ---------- */
-  .aurora { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+  /* the whole colour field slowly cycles hue, so the background is never static */
+  .aurora {
+    position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none;
+    animation: hueCycle 44s ease-in-out infinite;
+  }
+  /* a bounded arc, not a full 360° — a full rotation swings the mint palette
+     through muddy browns that clash with the accent colour */
+  @keyframes hueCycle {
+    0%   { filter: hue-rotate(-20deg) }
+    50%  { filter: hue-rotate(55deg) }
+    100% { filter: hue-rotate(-20deg) }
+  }
+
+  /* a broad gradient sheet sweeping across the viewport */
+  .sheet {
+    position: absolute; inset: -25%;
+    background: linear-gradient(115deg, var(--a1) 0%, var(--a2) 28%, var(--a3) 54%, var(--a1) 78%, var(--a2) 100%);
+    background-size: 320% 320%;
+    opacity: .17; filter: blur(80px);
+    animation: sheetMove 28s ease-in-out infinite;
+    will-change: background-position;
+  }
+  :root[data-theme="light"] .sheet { opacity: .16; filter: blur(90px); }
+  @keyframes sheetMove {
+    0%   { background-position: 0% 42% }
+    25%  { background-position: 62% 100% }
+    50%  { background-position: 100% 58% }
+    75%  { background-position: 38% 0% }
+    100% { background-position: 0% 42% }
+  }
   .blob { position: absolute; border-radius: 50%; filter: blur(120px); opacity: .17; will-change: transform; }
   .blob.b1 { width: 48vw; height: 48vw; background: var(--a1); top: -14vw; left: -12vw; animation: drift1 26s ease-in-out infinite; }
   .blob.b2 { width: 42vw; height: 42vw; background: var(--a2); top: 16vh; right: -16vw; opacity: .13; animation: drift2 32s ease-in-out infinite; }
@@ -363,6 +402,7 @@
 <body>
 
 <div class="aurora" aria-hidden="true">
+  <span class="sheet"></span>
   <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
 </div>
 <div class="grain" aria-hidden="true"></div>
