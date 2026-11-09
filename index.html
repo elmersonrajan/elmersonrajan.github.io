@@ -64,7 +64,7 @@
     font-size: 16px; line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    animation: bgTint 34s ease-in-out infinite;
+    animation: bgTint 20s ease-in-out infinite;
   }
   /* the base page colour itself drifts between three tints */
   @keyframes bgTint {
@@ -81,26 +81,37 @@
   /* the whole colour field slowly cycles hue, so the background is never static */
   .aurora {
     position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none;
-    animation: hueCycle 44s ease-in-out infinite;
+    animation: hueCycle 26s ease-in-out infinite;
   }
-  /* a bounded arc, not a full 360° — a full rotation swings the mint palette
-     through muddy browns that clash with the accent colour */
+  /* A wide arc, but still not a full 360°: rotating all the way takes the mint
+     palette through muddy browns that clash with the accent. -35deg..120deg
+     spans yellow-green → green → cyan → blue → violet and stays coherent. */
   @keyframes hueCycle {
-    0%   { filter: hue-rotate(-20deg) }
-    50%  { filter: hue-rotate(55deg) }
-    100% { filter: hue-rotate(-20deg) }
+    0%   { filter: hue-rotate(-35deg) saturate(1.15) }
+    50%  { filter: hue-rotate(120deg) saturate(1.35) }
+    100% { filter: hue-rotate(-35deg) saturate(1.15) }
   }
 
-  /* a broad gradient sheet sweeping across the viewport */
-  .sheet {
+  /* two gradient sheets sweeping in opposite directions; where they cross they
+     interfere, so the field never looks like a single repeating loop */
+  .sheet, .sheet2 {
     position: absolute; inset: -25%;
-    background: linear-gradient(115deg, var(--a1) 0%, var(--a2) 28%, var(--a3) 54%, var(--a1) 78%, var(--a2) 100%);
     background-size: 320% 320%;
-    opacity: .17; filter: blur(80px);
-    animation: sheetMove 28s ease-in-out infinite;
     will-change: background-position;
   }
-  :root[data-theme="light"] .sheet { opacity: .16; filter: blur(90px); }
+  .sheet {
+    background: linear-gradient(115deg, var(--a1) 0%, var(--a2) 28%, var(--a3) 54%, var(--a1) 78%, var(--a2) 100%);
+    opacity: .30; filter: blur(70px);
+    animation: sheetMove 16s ease-in-out infinite;
+  }
+  .sheet2 {
+    background: linear-gradient(295deg, var(--a3) 0%, var(--a1) 34%, var(--a2) 66%, var(--a3) 100%);
+    background-size: 280% 280%;
+    opacity: .22; filter: blur(90px);
+    animation: sheetMove 21s ease-in-out infinite reverse;
+  }
+  :root[data-theme="light"] .sheet { opacity: .22; filter: blur(90px); }
+  :root[data-theme="light"] .sheet2 { opacity: .16; filter: blur(110px); }
   @keyframes sheetMove {
     0%   { background-position: 0% 42% }
     25%  { background-position: 62% 100% }
@@ -108,15 +119,24 @@
     75%  { background-position: 38% 0% }
     100% { background-position: 0% 42% }
   }
-  .blob { position: absolute; border-radius: 50%; filter: blur(120px); opacity: .17; will-change: transform; }
-  .blob.b1 { width: 48vw; height: 48vw; background: var(--a1); top: -14vw; left: -12vw; animation: drift1 26s ease-in-out infinite; }
-  .blob.b2 { width: 42vw; height: 42vw; background: var(--a2); top: 16vh; right: -16vw; opacity: .13; animation: drift2 32s ease-in-out infinite; }
-  .blob.b3 { width: 38vw; height: 38vw; background: var(--a3); bottom: -16vw; left: 24vw; opacity: .11; animation: drift3 38s ease-in-out infinite; }
-  :root[data-theme="light"] .blob { opacity: .14; filter: blur(130px); }
-  :root[data-theme="light"] .blob.b2, :root[data-theme="light"] .blob.b3 { opacity: .10; }
-  @keyframes drift1 { 0%,100% { transform: translate3d(0,0,0) scale(1);} 50% { transform: translate3d(6vw,8vh,0) scale(1.12);} }
-  @keyframes drift2 { 0%,100% { transform: translate3d(0,0,0) scale(1);} 50% { transform: translate3d(-8vw,-6vh,0) scale(1.08);} }
-  @keyframes drift3 { 0%,100% { transform: translate3d(0,0,0) scale(1);} 50% { transform: translate3d(5vw,-9vh,0) scale(1.15);} }
+
+  /* keeps body text readable when the sheets peak in brightness */
+  .scrim {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background: linear-gradient(180deg,
+      color-mix(in srgb, var(--bg) 62%, transparent) 0%,
+      color-mix(in srgb, var(--bg) 34%, transparent) 38%,
+      color-mix(in srgb, var(--bg) 66%, transparent) 100%);
+  }
+  .blob { position: absolute; border-radius: 50%; filter: blur(110px); opacity: .26; will-change: transform; }
+  .blob.b1 { width: 52vw; height: 52vw; background: var(--a1); top: -16vw; left: -14vw; animation: drift1 15s ease-in-out infinite; }
+  .blob.b2 { width: 46vw; height: 46vw; background: var(--a2); top: 14vh; right: -18vw; opacity: .21; animation: drift2 19s ease-in-out infinite; }
+  .blob.b3 { width: 42vw; height: 42vw; background: var(--a3); bottom: -18vw; left: 22vw; opacity: .18; animation: drift3 23s ease-in-out infinite; }
+  :root[data-theme="light"] .blob { opacity: .18; filter: blur(130px); }
+  :root[data-theme="light"] .blob.b2, :root[data-theme="light"] .blob.b3 { opacity: .13; }
+  @keyframes drift1 { 0%,100% { transform: translate3d(0,0,0) scale(1);} 50% { transform: translate3d(14vw,16vh,0) scale(1.28);} }
+  @keyframes drift2 { 0%,100% { transform: translate3d(0,0,0) scale(1);} 50% { transform: translate3d(-18vw,-12vh,0) scale(1.22);} }
+  @keyframes drift3 { 0%,100% { transform: translate3d(0,0,0) scale(1);} 50% { transform: translate3d(12vw,-18vh,0) scale(1.32);} }
 
   .grain {
     position: fixed; inset: -50%; z-index: -1; pointer-events: none; opacity: .035;
@@ -385,6 +405,13 @@
     .when { margin-left: 0; width: 100%; }
     section { padding: 58px 0; }
   }
+  /* fewer large blurred layers on phones — five animating blur surfaces plus a
+     hue-rotate over all of them is a lot of compositing for a low-end device */
+  @media (max-width: 640px) {
+    .sheet2, .blob.b3 { display: none; }
+    .blob { filter: blur(80px); }
+    .sheet { filter: blur(60px); }
+  }
   @media (max-width: 420px) {
     .cutout { height: 244px; }
     .halo { width: 244px; height: 244px; margin-left: -122px; }
@@ -403,8 +430,10 @@
 
 <div class="aurora" aria-hidden="true">
   <span class="sheet"></span>
+  <span class="sheet2"></span>
   <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
 </div>
+<div class="scrim" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 <div class="progress" id="progress" aria-hidden="true"></div>
 
