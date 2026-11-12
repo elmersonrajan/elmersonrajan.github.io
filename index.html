@@ -10,9 +10,9 @@
 <meta property="og:description" content="Conversational voice and chat agents, real-time WebRTC platforms, and cross-platform web and mobile apps.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://elmerson.me/">
-<meta property="og:image" content="https://elmerson.me/portrait2.jpg">
-<link rel="icon" type="image/jpeg" href="portrait2.jpg">
-<link rel="preload" as="image" href="me2.webp" type="image/webp">
+<meta property="og:image" content="https://elmerson.me/portrait3.jpg">
+<link rel="icon" type="image/jpeg" href="portrait3.jpg">
+<link rel="preload" as="image" href="me3.webp" type="image/webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -411,11 +411,11 @@
     .cutout {
       position: relative; right: auto; bottom: auto; z-index: 2;
       display: block; height: clamp(300px, 52vw + 160px, 460px);
-      width: auto; margin: 0 -20px 0 auto;   /* right-aligned, bleeding past the gutter */
+      width: auto; margin: 0 auto;           /* centred on phones */
     }
     .halo {
       width: clamp(270px, 62vw, 420px); height: clamp(270px, 62vw, 420px);
-      top: 14%; bottom: auto; left: auto; right: -8%; margin: 0;
+      top: 14%; bottom: auto; left: 0; right: 0; margin: 0 auto;   /* centred behind the figure */
     }
     .ring { display: none; }           /* clutter at small sizes, one less layer to composite */
     .hero-meta { position: static; max-width: none; margin-top: 22px; }
@@ -439,7 +439,6 @@
   }
   @media (max-width: 460px) {
     .wrap { padding: 0 16px; }
-    .cutout { margin-right: -16px; }
     .bar { height: 56px; }
     .brand { font-size: .96rem; }
     nav a { padding: 6px 9px; font-size: 13.5px; }
@@ -493,8 +492,8 @@
         <span class="halo" id="halo" aria-hidden="true"></span>
         <span class="ring" aria-hidden="true"></span>
         <picture>
-          <source srcset="me2.webp" type="image/webp">
-          <img class="cutout" id="cutout" src="me2.png" width="780" height="1157" alt="Elmerson R" fetchpriority="high">
+          <source srcset="me3.webp" type="image/webp">
+          <img class="cutout" id="cutout" src="me3.png" width="780" height="1166" alt="Elmerson R" fetchpriority="high">
         </picture>
         <div class="hero-meta">
           <p class="role" style="--i:0">AI &amp; Full-Stack Developer</p>
