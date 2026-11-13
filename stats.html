@@ -38,6 +38,21 @@
   .progress { height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; margin: 14px 0 22px; }
   .progress b { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--a1), var(--a2)); transition: width .4s ease; }
 
+  .notices { display: grid; gap: 10px; margin-bottom: 14px; }
+  .notice { border-radius: 14px; padding: 13px 16px; font-size: 14px; line-height: 1.5; border: 1px solid; color: var(--dim); }
+  .notice b { color: var(--text); }
+  .notice code { background: rgba(255,255,255,.08); padding: 1px 6px; border-radius: 5px; color: var(--text); font-size: 12.5px; }
+  .notice.info { background: rgba(56,189,248,.07); border-color: rgba(56,189,248,.35); }
+  .notice.warn { background: rgba(250,204,21,.06); border-color: rgba(250,204,21,.35); }
+  .notice.bad  { background: rgba(248,113,113,.07); border-color: rgba(248,113,113,.42); }
+  .notice.good { background: rgba(126,240,176,.07); border-color: rgba(126,240,176,.4); }
+  .notice .acts { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 9px; }
+  .notice button {
+    font: 600 13px Inter, system-ui, sans-serif; color: #052b1a; background: var(--a1);
+    border: 0; border-radius: 8px; padding: 7px 12px; cursor: pointer;
+  }
+  .notice button:disabled { opacity: .6; cursor: default; }
+
   .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 14px; }
   .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 16px 14px; }
   .kpi .n { font-family: "Space Grotesk", Inter, sans-serif; font-size: 2rem; font-weight: 700; letter-spacing: -.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
@@ -54,7 +69,7 @@
   .chart { display: flex; align-items: flex-end; gap: 6px; height: 190px; padding-top: 18px; }
   .day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; min-width: 0; }
   .bars { display: flex; align-items: flex-end; gap: 2px; width: 100%; height: 100%; justify-content: center; position: relative; }
-  .bars i { display: block; width: 44%; border-radius: 4px 4px 1px 1px; min-height: 2px; transition: height .5s cubic-bezier(.22,1,.36,1); }
+  .bars i { display: block; width: 62%; border-radius: 4px 4px 1px 1px; min-height: 2px; transition: height .5s cubic-bezier(.22,1,.36,1); }
   .bars i.v { background: linear-gradient(180deg, var(--a1), rgba(126,240,176,.35)); }
   .bars i.u { background: linear-gradient(180deg, var(--a2), rgba(56,189,248,.3)); }
   .bars em { position: absolute; top: -17px; font-style: normal; font-size: 10.5px; color: var(--dim); font-variant-numeric: tabular-nums; }
@@ -95,6 +110,7 @@
     </div>
   </header>
   <div class="progress"><b id="bar"></b></div>
+  <div class="notices" id="notices"></div>
 
   <section class="kpis">
     <div class="kpi hero"><div class="n" id="k-views">–</div><div class="l">Total page views · live</div></div>
@@ -107,7 +123,7 @@
   <section class="panel">
     <h2>Last 14 days <span>India time</span></h2>
     <div class="chart" id="chart"></div>
-    <div class="legend"><span><b style="background:var(--a1)"></b>Page views</span><span><b style="background:var(--a2)"></b>Unique visitors</span></div>
+    <div class="legend"><span><b style="background:var(--a1)"></b>Page views per day</span></div>
   </section>
 
   <div class="grid">
@@ -171,40 +187,118 @@
   CLK.forEach(function (c) { keys.push('c-' + c[0]); });
   SRC.forEach(function (s) { keys.push('src-' + s[0]); });
   GEO.forEach(function (g) { keys.push('geo-' + g[0]); });
-  days.forEach(function (d) { if (d !== today) keys.push('u-' + d); });
 
   var V = {};
   function v(k) { return V[k] || 0; }
   function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
+  // Reads go through /info rather than /get: /info answers 200 with exists:false for a
+  // counter nobody has hit yet, where /get answers 404 (65 red console errors on a
+  // fresh site). A network failure is recorded as such, never silently read as zero,
+  // so a blocked browser can be told apart from "no visits yet".
+  var existing = 0, failed = 0;
   function get(k, tries) {
     tries = tries || 0;
-    return fetch(API + '/get/' + encodeURIComponent(NS) + '/' + encodeURIComponent(k), { cache: 'no-store' })
+    return fetch(API + '/info/' + encodeURIComponent(NS) + '/' + encodeURIComponent(k), { cache: 'no-store' })
       .then(function (r) {
-        if (r.status === 404) return 0;                        // counter not created yet
         if (r.status === 429 && tries < 2) return sleep(10500).then(function () { return get(k, tries + 1); });
-        if (!r.ok) return 0;
-        return r.json().then(function (j) { return +j.value || 0; });
+        if (!r.ok) { failed++; return 0; }
+        return r.json().then(function (j) {
+          if (!j.exists) return 0;
+          existing++;
+          return Math.max(0, +j.value || 0);
+        });
       })
-      .catch(function () { return 0; });
+      .catch(function () { failed++; return 0; });
   }
 
-  // Abacus allows 30 requests per 10 s per visitor: read in batches of 24
+  // Abacus allows 30 requests per 10 s per visitor. 52 reads in batches of 26 = two
+  // windows; the one live check made after the first batch keeps that window at 27.
   var done = 0;
   function run() {
     var p = Promise.resolve();
-    for (var i = 0; i < keys.length; i += 24) {
-      (function (batch, last) {
+    for (var i = 0; i < keys.length; i += 26) {
+      (function (batch, first, last) {
         p = p.then(function () {
           return Promise.all(batch.map(function (k) {
             return get(k).then(function (val) { V[k] = val; done++; progress(); render(); });
           }));
-        }).then(function () { return last ? null : sleep(10500); });
-      })(keys.slice(i, i + 24), i + 24 >= keys.length);
+        }).then(function () {
+          if (first) startLive();             // 'views' is in the first batch
+          return last ? null : sleep(10500);
+        });
+      })(keys.slice(i, i + 26), i === 0, i + 26 >= keys.length);
     }
     return p.then(function () {
       document.getElementById('status').textContent = 'updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      diagnose();
     });
+  }
+
+  // ---- tell the owner why this page shows what it shows
+  var optedOut = false;
+  try { optedOut = localStorage.getItem('el_notrack') === '1'; } catch (e) {}
+  var dnt = navigator.doNotTrack === '1' || window.doNotTrack === '1' || navigator.globalPrivacyControl === true;
+
+  function notice(kind, html, actions) {
+    var el = document.createElement('div');
+    el.className = 'notice ' + kind;
+    el.innerHTML = html;
+    if (actions && actions.length) {
+      var row = document.createElement('div'); row.className = 'acts';
+      actions.forEach(function (a) {
+        var b = document.createElement('button'); b.type = 'button'; b.textContent = a[0];
+        b.addEventListener('click', function () { a[1](b, el); });
+        row.appendChild(b);
+      });
+      el.appendChild(row);
+    }
+    document.getElementById('notices').appendChild(el);
+    return el;
+  }
+
+  function selfTest(btn, box) {
+    btn.disabled = true; btn.textContent = 'Testing…';
+    // a separate 'selftest' counter: proves the round trip without adding a page view
+    fetch(API + '/hit/' + encodeURIComponent(NS) + '/selftest', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function () {
+        box.className = 'notice good';
+        box.innerHTML = '<b>✓ This browser can reach the counting service.</b> Tracking works from here; ' +
+          (optedOut ? 'this browser is just excluded from the counts (see above).' :
+           dnt ? 'visits are only skipped because of Do Not Track.' :
+           'open <a href="./">elmerson.me</a> in another tab, then refresh this page to see the visit.');
+      })
+      .catch(function () {
+        box.className = 'notice bad';
+        box.innerHTML = '<b>✗ Blocked.</b> This browser cannot reach <code>abacus.jasoncameron.dev</code>. ' +
+          'An ad blocker or privacy extension is stopping it: allow that site on elmerson.me, or use another browser.';
+      });
+  }
+
+  function diagnose() {
+    if (optedOut) {
+      notice('warn', '<b>This browser is excluded from the counts.</b> It opened <code>?notrack</code> at some point, ' +
+        'so your own visits from here never show up below.',
+        [['Count my visits from this browser', function (b, box) {
+          try { localStorage.removeItem('el_notrack'); } catch (e) {}
+          optedOut = false;
+          box.className = 'notice good';
+          box.innerHTML = '<b>✓ Done.</b> Your next visit to <a href="./">elmerson.me</a> from this browser will be counted.';
+        }]]);
+    }
+    if (dnt) {
+      notice('warn', '<b>This browser sends Do Not Track.</b> Visits from it are deliberately not counted.');
+    }
+    if (failed >= keys.length / 2) {
+      notice('bad', '<b>This browser can\'t reach the counting service.</b> Something — usually an ad blocker or privacy ' +
+        'extension — is blocking <code>abacus.jasoncameron.dev</code>, so the numbers below are not real zeros. ' +
+        'Allow that site on elmerson.me, or open this page in another browser.', [['Test again', selfTest]]);
+    } else if (existing === 0) {
+      notice('info', '<b>No visits recorded yet.</b> Counters are created by the first visit. Open ' +
+        '<a href="./">elmerson.me</a> on your phone or any browser that isn\'t excluded, then refresh this page.',
+        [['Test this browser', selfTest]]);
+    }
   }
   function progress() {
     document.getElementById('bar').style.width = (done / keys.length * 100) + '%';
@@ -229,13 +323,13 @@
     setN('k-views', v('views')); setN('k-new', v('v-new')); setN('k-ret', v('v-return'));
     setN('k-today', v('d-' + today)); setN('k-utoday', v('u-' + today));
 
-    var max = Math.max.apply(null, days.map(function (d) { return Math.max(v('d-' + d), v('u-' + d)); }).concat([1]));
+    var max = Math.max.apply(null, days.map(function (d) { return v('d-' + d); }).concat([1]));
     document.getElementById('chart').innerHTML = days.map(function (d) {
-      var dv = v('d-' + d), du = v('u-' + d);
+      var dv = v('d-' + d);
       var label = +d.slice(6, 8) + '/' + +d.slice(4, 6);
-      return '<div class="day' + (d === today ? ' today' : '') + '" title="' + label + ': ' + dv + ' views, ' + du + ' visitors">' +
+      return '<div class="day' + (d === today ? ' today' : '') + '" title="' + label + ': ' + dv + ' views">' +
              '<div class="bars">' + (dv ? '<em>' + dv + '</em>' : '') +
-             '<i class="v" style="height:' + (dv / max * 100) + '%"></i><i class="u" style="height:' + (du / max * 100) + '%"></i></div>' +
+             '<i class="v" style="height:' + (dv / max * 100) + '%"></i></div>' +
              '<small>' + label + '</small></div>';
     }).join('');
 
@@ -259,27 +353,57 @@
     }).join('');
   }
 
+  // ---- live total. Abacus streams a counter's value over server-sent events, but the
+  // stream hangs silently for a counter that does not exist yet, so on a fresh site it
+  // would sit on "connecting…" forever. Open it only once 'views' exists; until then,
+  // check every 20 s for the first visit.
+  var live = document.getElementById('live'), liveText = document.getElementById('liveText');
+  function setLive(on, text) { live.classList.toggle('off', !on); liveText.textContent = text; }
+  function bump(n) {
+    if (isNaN(n) || n === V.views) return;
+    var grew = V.views !== undefined && n > V.views;
+    V.views = n; render();
+    if (grew) { var el = document.getElementById('k-views'); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+  }
+  function viewsExists() {
+    return fetch(API + '/info/' + encodeURIComponent(NS) + '/views', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (j) { if (j.exists) bump(+j.value); return !!j.exists; })
+      .catch(function () { return null; });            // null = could not ask
+  }
+  function waitForFirstVisit() {
+    setLive(false, 'waiting for the first visit');
+    setTimeout(function () {
+      viewsExists().then(function (ok) { if (ok) openStream(); else waitForFirstVisit(); });
+    }, 20000);
+  }
+  function openStream() {
+    try {
+      var es = new EventSource(API + '/stream/' + encodeURIComponent(NS) + '/views');
+      var heard = false;
+      es.onopen = function () { setLive(true, 'live'); };
+      es.onmessage = function (e) {
+        heard = true; setLive(true, 'live');
+        var n = NaN;
+        try { var j = JSON.parse(e.data); n = typeof j === 'number' ? j : +j.value; } catch (x) { n = parseInt(e.data, 10); }
+        bump(n);
+      };
+      es.onerror = function () { setLive(false, 'reconnecting…'); };
+      // the stream sends the current value as soon as it connects; if nothing arrives,
+      // fall back to refreshing the total every 30 s rather than claiming to be live
+      setTimeout(function () {
+        if (heard) return;
+        es.close(); setLive(true, 'auto-refresh');
+        setInterval(viewsExists, 30000);
+      }, 8000);
+    } catch (e) { setLive(false, 'live updates unavailable'); }
+  }
+  function startLive() {
+    if (V.views > 0) openStream(); else waitForFirstVisit();
+  }
+
   render();
   run();
-
-  // ---- live total: Abacus pushes the new value whenever a page view lands
-  var live = document.getElementById('live'), liveText = document.getElementById('liveText');
-  try {
-    var es = new EventSource(API + '/stream/' + encodeURIComponent(NS) + '/views');
-    es.onopen = function () { live.classList.remove('off'); liveText.textContent = 'live'; };
-    es.onmessage = function (e) {
-      var n = NaN;
-      try { var j = JSON.parse(e.data); n = typeof j === 'number' ? j : +j.value; } catch (x) { n = parseInt(e.data, 10); }
-      if (!isNaN(n) && n !== V.views) {
-        var grew = V.views !== undefined && n > V.views;
-        V.views = n; render();
-        if (grew) {
-          var el = document.getElementById('k-views'); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
-        }
-      }
-    };
-    es.onerror = function () { live.classList.add('off'); liveText.textContent = 'reconnecting…'; };
-  } catch (e) { liveText.textContent = 'live updates unavailable'; }
 })();
 </script>
 </body>
