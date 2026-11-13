@@ -311,6 +311,20 @@
   p { margin: 0 0 16px; }
   .about p { max-width: 62ch; font-size: 1.04rem; }
   .about strong { color: var(--text); font-weight: 600; }
+  .about .lead { font-size: 1.12rem; color: var(--text); margin-bottom: 26px; }
+  /* bio as punch lines: a bold claim, then the proof underneath */
+  .punch { list-style: none; margin: 0; padding: 0; display: grid; gap: 22px; }
+  .punch li { position: relative; padding-left: 28px; }
+  .punch li::before {
+    content: ""; position: absolute; left: 2px; top: .55em; width: 11px; height: 11px; border-radius: 3px;
+    background: linear-gradient(135deg, var(--a1), var(--a2)); transform: rotate(45deg);
+    box-shadow: 0 0 14px var(--glow);
+  }
+  .punch b {
+    display: block; font-family: "Space Grotesk", Inter, sans-serif; font-weight: 700;
+    font-size: clamp(1.2rem, 2.8vw, 1.55rem); line-height: 1.22; letter-spacing: -.025em; color: var(--text);
+  }
+  .punch span { display: block; margin-top: 4px; color: var(--dim); font-size: .98rem; max-width: 60ch; }
 
   /* reveal */
   .rv { opacity: 0; transform: translateY(26px); filter: blur(6px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1), filter .8s ease; transition-delay: calc(var(--i, 0) * 85ms); }
@@ -555,18 +569,15 @@
 
     <section id="about" class="about">
       <h2 class="rv">About</h2>
-      <p class="rv" style="--i:1">
-        B.Tech graduate in Artificial Intelligence and Data Science, now reading for an
-        <strong>M.E. in Computer Science</strong>. What I enjoy is the part where a system has to
-        work for real people under real conditions — a class that survives a teacher's network
-        dropping mid-lesson, a payroll ledger that can't be tricked into going negative, a voice
-        agent that answers the phone when nobody is at the front desk.
+      <p class="lead rv" style="--i:1">
+        AI &amp; Data Science grad. <strong>M.E. in Computer Science</strong> underway. Already shipping to production.
       </p>
-      <p class="rv" style="--i:2">
-        Most of my work has shipped to production for clients and communities rather than sitting
-        in a repository. I tend to put the rules on the server rather than in the page, and I care
-        about interfaces that stay out of the way.
-      </p>
+      <ul class="punch">
+        <li class="rv" style="--i:2"><b>I build AI that answers the phone.</b><span>A voice agent handles a Hyundai dealership's front-desk calls end to end, in more than one language.</span></li>
+        <li class="rv" style="--i:3"><b>Classes don't stop when the Wi-Fi does.</b><span>LYN MEET keeps a live lesson running through a teacher's network drop, and records every session.</span></li>
+        <li class="rv" style="--i:4"><b>The rules live on the server.</b><span>Roles, payroll and permissions that nobody can fake from a browser.</span></li>
+        <li class="rv" style="--i:5"><b>Paper ledgers in, real products out.</b><span>A jeweller, a bike workshop, a construction firm and a youth community all run on apps I've shipped.</span></li>
+      </ul>
     </section>
 
     <section id="experience">
