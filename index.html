@@ -357,6 +357,29 @@
     padding: 2px 9px; border-radius: 7px;
   }
 
+  /* ---------- featured projects ---------- */
+  .card.featured { padding: 24px 26px; border-color: transparent; box-shadow: 0 14px 44px -18px var(--glow); }
+  .card.featured::after {                /* animated gradient ring, drawn only on the border */
+    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
+    background: linear-gradient(120deg, var(--a1), var(--a2), var(--a3), var(--a1));
+    background-size: 300% 300%;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    animation: ringFlow 6s linear infinite;
+  }
+  @keyframes ringFlow { to { background-position: 300% 0 } }
+  a.card.featured:hover { box-shadow: 0 22px 56px -16px var(--glow); }
+  .feat-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent-ink); background: linear-gradient(135deg, var(--a1), var(--a2));
+    padding: 4px 10px 4px 9px; border-radius: 999px;
+  }
+  .badge .bdot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .85; animation: blink 1.8s ease-in-out infinite; }
+  @keyframes blink { 50% { opacity: .25 } }
+  .live { font-size: 12.5px; font-weight: 600; color: var(--accent); letter-spacing: .01em; }
+
   /* ---------- education ---------- */
   .edu { display: grid; gap: 0; }
   .edu-item { position: relative; padding: 18px 0 18px 26px; border-bottom: 1px solid var(--line); }
@@ -579,7 +602,8 @@
       <h2 class="rv">Selected work</h2>
       <div class="cards">
 
-        <a class="card rv" style="--i:1" href="https://class.lynindia.in" target="_blank" rel="noopener">
+        <a class="card featured rv" style="--i:1" href="https://class.lynindia.in" target="_blank" rel="noopener">
+          <div class="feat-top"><span class="badge"><span class="bdot"></span>Featured</span><span class="live">class.lynindia.in &#8599;</span></div>
           <h3>LYN MEET <span class="arrow" aria-hidden="true">&rarr;</span></h3>
           <p class="meta">Live virtual classroom · web + mobile · in production</p>
           <p>
@@ -594,7 +618,8 @@
           <div class="stack"><span>Node.js</span><span>mediasoup</span><span>Socket.IO</span><span>React</span><span>MySQL</span><span>FFmpeg</span><span>Flutter</span><span>coturn</span></div>
         </a>
 
-        <a class="card rv" style="--i:2" href="https://play.google.com/store/apps/details?id=com.mlccapp.mlccapp" target="_blank" rel="noopener">
+        <a class="card featured rv" style="--i:2" href="https://play.google.com/store/apps/details?id=com.mlccapp.mlccapp" target="_blank" rel="noopener">
+          <div class="feat-top"><span class="badge"><span class="bdot"></span>Featured</span><span class="live">Google Play &#8599;</span></div>
           <h3>MLCC Youth <span class="arrow" aria-hidden="true">&rarr;</span></h3>
           <p class="meta">Community app · live on Google Play</p>
           <p>
