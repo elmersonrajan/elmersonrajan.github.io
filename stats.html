@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Site stats</title>
+<link rel="icon" type="image/jpeg" href="portrait4.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08090b; --panel: rgba(255,255,255,.04); --line: rgba(255,255,255,.10);
+    --text: #f3f4f5; --dim: #9ba3aa; --faint: #6f777e;
+    --a1: #7ef0b0; --a2: #38bdf8; --a3: #a78bfa; --glow: rgba(126,240,176,.28);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased;
+    background-image: radial-gradient(60vw 40vw at 0% 0%, rgba(126,240,176,.10), transparent 60%),
+                      radial-gradient(50vw 40vw at 100% 10%, rgba(56,189,248,.08), transparent 60%);
+    background-attachment: fixed;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 0 18px 60px; }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 22px 0 6px; flex-wrap: wrap; }
+  h1 { margin: 0; font-family: "Space Grotesk", Inter, sans-serif; font-size: 1.5rem; letter-spacing: -.02em; }
+  h1 small { color: var(--dim); font-weight: 500; font-size: .95rem; margin-left: 6px; }
+  .meta { display: flex; align-items: center; gap: 14px; color: var(--dim); font-size: 13px; flex-wrap: wrap; }
+  .live { display: inline-flex; align-items: center; gap: 7px; color: var(--a1); font-weight: 600; }
+  .live i { width: 8px; height: 8px; border-radius: 50%; background: var(--a1); box-shadow: 0 0 0 0 var(--glow); animation: ping 2s ease-out infinite; }
+  .live.off { color: var(--faint); } .live.off i { background: var(--faint); animation: none; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 var(--glow) } 80% { box-shadow: 0 0 0 9px rgba(0,0,0,0) } 100% { box-shadow: 0 0 0 0 rgba(0,0,0,0) } }
+  a { color: var(--a1); }
+  .tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #052b1a; background: var(--a1); padding: 2px 8px; border-radius: 99px; }
+  .progress { height: 2px; background: var(--line); border-radius: 2px; overflow: hidden; margin: 14px 0 22px; }
+  .progress b { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--a1), var(--a2)); transition: width .4s ease; }
+
+  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 14px; }
+  .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 16px 14px; }
+  .kpi .n { font-family: "Space Grotesk", Inter, sans-serif; font-size: 2rem; font-weight: 700; letter-spacing: -.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .kpi .l { color: var(--dim); font-size: 12.5px; font-weight: 500; margin-top: 4px; }
+  .kpi.hero { background: linear-gradient(135deg, rgba(126,240,176,.14), rgba(56,189,248,.08)); border-color: rgba(126,240,176,.28); }
+  .kpi .n.bump { animation: bump .6s cubic-bezier(.2,1.6,.4,1); }
+  @keyframes bump { 40% { transform: scale(1.12); color: var(--a1) } }
+
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 18px 16px; }
+  .panel h2 { margin: 0 0 14px; font-size: .74rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); display: flex; justify-content: space-between; gap: 10px; }
+  .panel h2 span { letter-spacing: normal; text-transform: none; font-weight: 500; color: var(--faint); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+
+  .chart { display: flex; align-items: flex-end; gap: 6px; height: 190px; padding-top: 18px; }
+  .day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; height: 100%; justify-content: flex-end; min-width: 0; }
+  .bars { display: flex; align-items: flex-end; gap: 2px; width: 100%; height: 100%; justify-content: center; position: relative; }
+  .bars i { display: block; width: 44%; border-radius: 4px 4px 1px 1px; min-height: 2px; transition: height .5s cubic-bezier(.22,1,.36,1); }
+  .bars i.v { background: linear-gradient(180deg, var(--a1), rgba(126,240,176,.35)); }
+  .bars i.u { background: linear-gradient(180deg, var(--a2), rgba(56,189,248,.3)); }
+  .bars em { position: absolute; top: -17px; font-style: normal; font-size: 10.5px; color: var(--dim); font-variant-numeric: tabular-nums; }
+  .day small { font-size: 10.5px; color: var(--faint); white-space: nowrap; }
+  .day.today small { color: var(--a1); font-weight: 600; }
+  .legend { display: flex; gap: 14px; font-size: 12px; color: var(--dim); margin-top: 10px; }
+  .legend b { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+
+  .rows { display: grid; gap: 9px; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; align-items: center; }
+  .row .name { font-size: 13.5px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .row .val { font-size: 13px; color: var(--dim); font-variant-numeric: tabular-nums; }
+  .row .track { grid-column: 1 / -1; height: 6px; background: rgba(255,255,255,.05); border-radius: 6px; overflow: hidden; }
+  .row .track b { display: block; height: 100%; width: 0; border-radius: 6px; background: linear-gradient(90deg, var(--a1), var(--a2)); transition: width .6s cubic-bezier(.22,1,.36,1); }
+  .row.zero .name, .row.zero .val { color: var(--faint); }
+  .split { display: flex; height: 34px; border-radius: 10px; overflow: hidden; margin-bottom: 10px; background: rgba(255,255,255,.05); }
+  .split b { display: flex; align-items: center; justify-content: center; font-size: 12.5px; font-weight: 600; color: #052b1a; transition: width .6s; min-width: 0; overflow: hidden; white-space: nowrap; }
+  .split .m { background: var(--a1); } .split .d { background: var(--a2); }
+  .note { color: var(--dim); font-size: 13px; }
+  .tips { margin-top: 14px; }
+  .tips ul { margin: 0; padding-left: 18px; color: var(--dim); font-size: 13.5px; display: grid; gap: 6px; }
+  .tips code { background: rgba(255,255,255,.07); padding: 1px 6px; border-radius: 5px; color: var(--text); font-size: 12.5px; }
+
+  @media (max-width: 860px) { .kpis { grid-template-columns: repeat(2, 1fr); } .kpi.hero { grid-column: 1 / -1; } .grid { grid-template-columns: 1fr; } }
+  @media (max-width: 460px) { .chart { gap: 3px; height: 160px; } .bars em { display: none; } .day small { font-size: 9px; } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Site stats <small>elmerson.me</small></h1>
+    <div class="meta">
+      <span id="nsTag"></span>
+      <span class="live off" id="live"><i></i><span id="liveText">connecting…</span></span>
+      <span id="status">loading…</span>
+      <a href="./">← back to site</a>
+    </div>
+  </header>
+  <div class="progress"><b id="bar"></b></div>
+
+  <section class="kpis">
+    <div class="kpi hero"><div class="n" id="k-views">–</div><div class="l">Total page views · live</div></div>
+    <div class="kpi"><div class="n" id="k-new">–</div><div class="l">Unique visitors</div></div>
+    <div class="kpi"><div class="n" id="k-ret">–</div><div class="l">Returning visits</div></div>
+    <div class="kpi"><div class="n" id="k-today">–</div><div class="l">Views today</div></div>
+    <div class="kpi"><div class="n" id="k-utoday">–</div><div class="l">Visitors today</div></div>
+  </section>
+
+  <section class="panel">
+    <h2>Last 14 days <span>India time</span></h2>
+    <div class="chart" id="chart"></div>
+    <div class="legend"><span><b style="background:var(--a1)"></b>Page views</span><span><b style="background:var(--a2)"></b>Unique visitors</span></div>
+  </section>
+
+  <div class="grid">
+    <section class="panel"><h2>Where visitors are <span>from their device time zone</span></h2><div class="rows" id="geo"></div></section>
+    <section class="panel"><h2>How they found you</h2><div class="rows" id="src"></div></section>
+    <section class="panel">
+      <h2>Device</h2>
+      <div class="split" id="split"><b class="m" style="width:50%"></b><b class="d" style="width:50%"></b></div>
+      <h2 style="margin-top:20px">How far they read <span>share of page views</span></h2>
+      <div class="rows" id="sec"></div>
+    </section>
+    <section class="panel"><h2>What they clicked</h2><div class="rows" id="clicks"></div></section>
+  </div>
+
+  <section class="panel tips">
+    <h2>Notes</h2>
+    <ul>
+      <li>Don't count your own visits: open <code>elmerson.me/?notrack</code> once on each of your phones and laptops. Undo with <code>?track</code>.</li>
+      <li>See exactly where a link brought people from by tagging it: <code>elmerson.me/?ref=whatsapp</code>, <code>?ref=linkedin</code>, <code>?ref=resume</code>, <code>?ref=qr</code>. WhatsApp and most apps hide the referrer, so untagged shares show up as “Direct”.</li>
+      <li>Counts are approximate: visitors with Do Not Track or a tracker blocker aren't counted. No cookies or IP addresses are stored.</li>
+      <li>This page isn't linked from the site and asks search engines not to index it, but the counters themselves are public — anyone who knows this address can see these numbers.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var API = 'https://abacus.jasoncameron.dev';
+  var params = new URLSearchParams(location.search);
+  var NS = params.get('ns') === 'dev' ? 'elmerson.me-dev' : 'elmerson.me';
+  if (NS !== 'elmerson.me') document.getElementById('nsTag').innerHTML = '<span class="tag">test data</span>';
+
+  // ---- the last 14 days in India time, oldest first, as YYYYMMDD
+  function istToday() {
+    try {
+      return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' })
+        .format(new Date()).replace(/-/g, '');
+    } catch (e) { return new Date(Date.now() + 5.5 * 3600e3).toISOString().slice(0, 10).replace(/-/g, ''); }
+  }
+  var t = istToday();
+  var base = Date.UTC(+t.slice(0, 4), +t.slice(4, 6) - 1, +t.slice(6, 8));
+  var days = [];
+  for (var i = 13; i >= 0; i--) days.push(new Date(base - i * 864e5).toISOString().slice(0, 10).replace(/-/g, ''));
+  var today = days[days.length - 1];
+
+  var GEO = [['india', 'India'], ['southasia', 'Rest of South Asia'], ['gulf', 'Gulf / Middle East'], ['seasia', 'Southeast Asia'],
+             ['eastasia', 'East Asia'], ['europe', 'Europe & UK'], ['americas', 'Americas'], ['oceania', 'Australia & NZ'],
+             ['africa', 'Africa'], ['other', 'Other']];
+  var SRC = [['direct', 'Direct, typed or from an app'], ['linkedin', 'LinkedIn'], ['google', 'Google'], ['github', 'GitHub'],
+             ['whatsapp', 'WhatsApp'], ['resume', 'Résumé link'], ['qr', 'QR code'], ['instagram', 'Instagram'],
+             ['social', 'Facebook / X / Instagram'], ['search', 'Other search engines'], ['other', 'Other websites']];
+  var CLK = [['resume', 'Résumé download'], ['linkedin', 'LinkedIn'], ['github', 'GitHub'], ['email', 'Email'],
+             ['lynmeet', 'LYN MEET'], ['mlcc', 'MLCC Youth · Play Store'], ['danbonim', 'Dan Bonim'],
+             ['mathan', 'Mathan Jewellers'], ['learning', 'AI Learning · GitHub']];
+
+  // priority order: headline numbers first, the long tail last
+  var keys = ['views', 'v-new', 'v-return', 'd-' + today, 'u-' + today];
+  days.forEach(function (d) { if (d !== today) keys.push('d-' + d); });
+  keys.push('dev-mobile', 'dev-desktop', 'sec-work', 'sec-contact');
+  CLK.forEach(function (c) { keys.push('c-' + c[0]); });
+  SRC.forEach(function (s) { keys.push('src-' + s[0]); });
+  GEO.forEach(function (g) { keys.push('geo-' + g[0]); });
+  days.forEach(function (d) { if (d !== today) keys.push('u-' + d); });
+
+  var V = {};
+  function v(k) { return V[k] || 0; }
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  function get(k, tries) {
+    tries = tries || 0;
+    return fetch(API + '/get/' + encodeURIComponent(NS) + '/' + encodeURIComponent(k), { cache: 'no-store' })
+      .then(function (r) {
+        if (r.status === 404) return 0;                        // counter not created yet
+        if (r.status === 429 && tries < 2) return sleep(10500).then(function () { return get(k, tries + 1); });
+        if (!r.ok) return 0;
+        return r.json().then(function (j) { return +j.value || 0; });
+      })
+      .catch(function () { return 0; });
+  }
+
+  // Abacus allows 30 requests per 10 s per visitor: read in batches of 24
+  var done = 0;
+  function run() {
+    var p = Promise.resolve();
+    for (var i = 0; i < keys.length; i += 24) {
+      (function (batch, last) {
+        p = p.then(function () {
+          return Promise.all(batch.map(function (k) {
+            return get(k).then(function (val) { V[k] = val; done++; progress(); render(); });
+          }));
+        }).then(function () { return last ? null : sleep(10500); });
+      })(keys.slice(i, i + 24), i + 24 >= keys.length);
+    }
+    return p.then(function () {
+      document.getElementById('status').textContent = 'updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    });
+  }
+  function progress() {
+    document.getElementById('bar').style.width = (done / keys.length * 100) + '%';
+    document.getElementById('status').textContent = 'loading ' + done + ' / ' + keys.length;
+  }
+
+  function fmt(n) { return n.toLocaleString('en-IN'); }
+  function setN(id, n) { var el = document.getElementById(id); el.textContent = fmt(n); }
+
+  function rows(el, list, prefix, total) {
+    var max = Math.max.apply(null, list.map(function (x) { return v(prefix + x[0]); }).concat([1]));
+    var sorted = list.slice().sort(function (a, b) { return v(prefix + b[0]) - v(prefix + a[0]); });
+    el.innerHTML = sorted.map(function (x) {
+      var n = v(prefix + x[0]);
+      var pct = total ? ' · ' + Math.round(n / total * 100) + '%' : '';
+      return '<div class="row' + (n ? '' : ' zero') + '"><span class="name">' + x[1] + '</span><span class="val">' + fmt(n) + (n ? pct : '') + '</span>' +
+             '<span class="track"><b style="width:' + (n / max * 100) + '%"></b></span></div>';
+    }).join('');
+  }
+
+  function render() {
+    setN('k-views', v('views')); setN('k-new', v('v-new')); setN('k-ret', v('v-return'));
+    setN('k-today', v('d-' + today)); setN('k-utoday', v('u-' + today));
+
+    var max = Math.max.apply(null, days.map(function (d) { return Math.max(v('d-' + d), v('u-' + d)); }).concat([1]));
+    document.getElementById('chart').innerHTML = days.map(function (d) {
+      var dv = v('d-' + d), du = v('u-' + d);
+      var label = +d.slice(6, 8) + '/' + +d.slice(4, 6);
+      return '<div class="day' + (d === today ? ' today' : '') + '" title="' + label + ': ' + dv + ' views, ' + du + ' visitors">' +
+             '<div class="bars">' + (dv ? '<em>' + dv + '</em>' : '') +
+             '<i class="v" style="height:' + (dv / max * 100) + '%"></i><i class="u" style="height:' + (du / max * 100) + '%"></i></div>' +
+             '<small>' + label + '</small></div>';
+    }).join('');
+
+    var views = v('views');
+    var geoTotal = GEO.reduce(function (s, g) { return s + v('geo-' + g[0]); }, 0);
+    var srcTotal = SRC.reduce(function (s, x) { return s + v('src-' + x[0]); }, 0);
+    rows(document.getElementById('geo'), GEO, 'geo-', geoTotal);
+    rows(document.getElementById('src'), SRC, 'src-', srcTotal);
+    rows(document.getElementById('clicks'), CLK, 'c-', 0);
+
+    var m = v('dev-mobile'), dk = v('dev-desktop'), dt = m + dk;
+    var mp = dt ? Math.round(m / dt * 100) : 50;
+    document.getElementById('split').innerHTML =
+      '<b class="m" style="width:' + mp + '%">' + (dt ? '📱 Phone ' + mp + '%' : '') + '</b>' +
+      '<b class="d" style="width:' + (100 - mp) + '%">' + (dt ? '💻 Laptop ' + (100 - mp) + '%' : '') + '</b>';
+
+    document.getElementById('sec').innerHTML = [['sec-work', 'Reached Selected work'], ['sec-contact', 'Reached Contact']].map(function (s) {
+      var n = v(s[0]), p = views ? Math.min(100, Math.round(n / views * 100)) : 0;
+      return '<div class="row' + (n ? '' : ' zero') + '"><span class="name">' + s[1] + '</span><span class="val">' + fmt(n) + (views ? ' · ' + p + '%' : '') + '</span>' +
+             '<span class="track"><b style="width:' + p + '%"></b></span></div>';
+    }).join('');
+  }
+
+  render();
+  run();
+
+  // ---- live total: Abacus pushes the new value whenever a page view lands
+  var live = document.getElementById('live'), liveText = document.getElementById('liveText');
+  try {
+    var es = new EventSource(API + '/stream/' + encodeURIComponent(NS) + '/views');
+    es.onopen = function () { live.classList.remove('off'); liveText.textContent = 'live'; };
+    es.onmessage = function (e) {
+      var n = NaN;
+      try { var j = JSON.parse(e.data); n = typeof j === 'number' ? j : +j.value; } catch (x) { n = parseInt(e.data, 10); }
+      if (!isNaN(n) && n !== V.views) {
+        var grew = V.views !== undefined && n > V.views;
+        V.views = n; render();
+        if (grew) {
+          var el = document.getElementById('k-views'); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+        }
+      }
+    };
+    es.onerror = function () { live.classList.add('off'); liveText.textContent = 'reconnecting…'; };
+  } catch (e) { liveText.textContent = 'live updates unavailable'; }
+})();
+</script>
+</body>
+</html>
