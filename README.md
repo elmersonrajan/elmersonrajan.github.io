@@ -15,8 +15,8 @@ add `?x=1` to the URL to see a change straight away.
 | `analytics.js` | Anonymous, cookie-free visit counting |
 | `stats.html` | Private dashboard for those counts |
 | `elmerson-r-resume.pdf` | Résumé, linked from the hero and contact buttons |
-| `me4.webp` / `me4.png` | Current hero cutout (WebP, with PNG fallback) |
-| `portrait4.jpg` | Square crop used for the favicon and link previews |
+| `me5.webp` / `me5.png` | Current hero cutout, left lens see-through (WebP, with PNG fallback) |
+| `portrait5.jpg` | Square crop used for the favicon and link previews |
 | `me*.*`, `portrait*.jpg` | Earlier cutouts, kept on purpose |
 | `CNAME` | Custom domain — do not delete |
 
