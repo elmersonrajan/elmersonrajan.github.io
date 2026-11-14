@@ -321,11 +321,12 @@
   .punch span { display: block; margin-top: 4px; color: var(--dim); font-size: .98rem; max-width: 60ch; }
 
   /* reveal */
-  .rv { opacity: 0; transform: translateY(26px); filter: blur(6px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1), filter .8s ease; transition-delay: calc(var(--i, 0) * 85ms); }
-  /* ends on filter:none, not blur(0): a zero blur still keeps every revealed element on
-     its own filtered surface for the rest of the visit */
-  .rv.in { opacity: 1; transform: none; filter: none; }
-  .cell.rv, .job.rv { filter: none; }   /* big blocks just rise and fade; blurring them is costly */
+  /* Reveals use only opacity and transform, which the compositor animates on its own.
+     They used to blur in as well, but Chrome never runs a blur animation on the
+     compositor ("filter may move pixels"), so every reveal was painted on the main
+     thread frame by frame, right while the visitor was scrolling. */
+  .rv { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1); transition-delay: calc(var(--i, 0) * 85ms); }
+  .rv.in { opacity: 1; transform: none; }
 
   /* ---------- experience ---------- */
   .job + .job { margin-top: 38px; padding-top: 30px; border-top: 1px dashed var(--line); }
@@ -644,7 +645,7 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     *, *::before, *::after { animation: none !important; transition: none !important; }
-    .bigword, .cutout, .hero-meta > *, .rv { opacity: 1 !important; transform: none !important; filter: none !important; clip-path: none !important; }
+    .bigword, .cutout-wrap, .hero-meta > *, .rv { opacity: 1 !important; transform: none !important; clip-path: none !important; }
     h2::after { transform: scaleX(1) !important; }
   }
 </style>
