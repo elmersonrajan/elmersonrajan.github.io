@@ -490,6 +490,7 @@
     .proj-visual, .proj.wide .proj-visual, .proj.wide.flip .proj-visual {
       order: 0; flex: none; height: auto; min-height: 0; aspect-ratio: 3 / 2; border: 0; border-bottom: 1px solid var(--line);
     }
+    .proj.lyn .proj-visual { aspect-ratio: 21 / 20; }
     .proj.wide .proj-body { padding: 22px 22px 24px; gap: 12px; }
     .proj.wide h3 { font-size: 1.75rem; }
   }
@@ -500,6 +501,60 @@
     .proj-stats { gap: 12px 22px; }
     .proj-stats b { font-size: 1.9rem; }
   }
+
+  /* scenes:start — the illustration inside each project card */
+  .scene {
+    position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+    transform: translate(calc(var(--mx, 0) * -14px), calc(var(--my, 0) * -10px));
+    transition: transform .5s cubic-bezier(.22,1,.36,1);
+  }
+  .scene .win { fill: #0b0f15; stroke: rgba(255,255,255,.13); }
+  .scene .tile { fill: #161c26; stroke: rgba(255,255,255,.16); }
+  .scene .pane { fill: rgba(255,255,255,.06); }
+  .scene .pane2 { fill: rgba(255,255,255,.1); }
+  .scene .hi { fill: rgba(255,255,255,.84); }
+  .scene .mid { fill: rgba(255,255,255,.38); }
+  .scene .low { fill: rgba(255,255,255,.17); }
+  .scene .c1 { fill: var(--c1); }
+  .scene .c2 { fill: var(--c2); }
+  .scene .ink { fill: #0b0f15; }
+  .scene .s1 { fill: none; stroke: var(--c1); stroke-linecap: round; stroke-linejoin: round; }
+  .scene .sl { fill: none; stroke: rgba(255,255,255,.14); }
+  .scene .sw { fill: none; stroke: rgba(255,255,255,.82); stroke-linecap: round; stroke-linejoin: round; }
+  .scene .si { fill: none; stroke: #0b0f15; stroke-linecap: round; stroke-linejoin: round; }
+  .scene text { font-family: Inter, system-ui, sans-serif; font-weight: 700; letter-spacing: .09em; fill: rgba(255,255,255,.6); }
+  .scene .t-hi { font-family: "Space Grotesk", Inter, sans-serif; letter-spacing: 0; fill: #fff; }
+  .scene .t-ink { fill: #0b0f15; }
+  .scene .a-blink { animation: scBlink 1.6s ease-in-out infinite; }
+  .scene .a-pulse { animation: scPulse 2.4s ease-in-out infinite; }
+  .scene .a-draw { stroke-dasharray: 100; animation: scDraw 7s cubic-bezier(.4,0,.2,1) infinite; }
+  .scene .a-float { animation: scFloat 6s ease-in-out infinite; }
+  .scene .a-toast { animation: scToast 6.5s cubic-bezier(.22,1,.36,1) infinite; }
+  .scene .a-spin { transform-box: fill-box; transform-origin: center; animation: scSpin 5s linear infinite; }
+  .scene .a-scan { animation: scScan 3.4s cubic-bezier(.45,0,.55,1) infinite; }
+  .scene .a-play { animation: scPlay 6s linear infinite; }
+  .scene .a-row { animation: scRow 7s ease-out infinite backwards; animation-delay: calc(var(--d, 0) * .32s); }
+  /* illustrations only run while their card is on screen */
+  .cell:not(.live) .scene * { animation-play-state: paused; }
+  @keyframes scBlink { 50% { opacity: .2 } }
+  @keyframes scPulse { 0%, 100% { opacity: .15 } 50% { opacity: 1 } }
+  @keyframes scDraw {
+    0% { stroke-dashoffset: 100; opacity: 1 } 40% { stroke-dashoffset: 0 }
+    88% { stroke-dashoffset: 0; opacity: 1 } 100% { stroke-dashoffset: 0; opacity: 0 }
+  }
+  @keyframes scFloat { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-6px) } }
+  @keyframes scToast {
+    0%, 10% { opacity: 0; transform: translate(22px, -6px) } 20%, 80% { opacity: 1; transform: translate(0, 0) }
+    92%, 100% { opacity: 0; transform: translate(0, -8px) }
+  }
+  @keyframes scSpin { to { transform: rotate(360deg) } }
+  @keyframes scPlay { from { transform: translateX(80px) } to { transform: translateX(334px) } }
+  @keyframes scScan { 0% { transform: translateY(-28px) } 100% { transform: translateY(176px) } }
+  @keyframes scRow {
+    0%, 8% { opacity: 0; transform: translateX(10px) } 20%, 88% { opacity: 1; transform: translateX(0) }
+    100% { opacity: 0; transform: translateX(0) }
+  }
+  /* scenes:end */
 
   /* ---------- education ---------- */
   .edu { display: grid; gap: 0; }
@@ -745,6 +800,37 @@
         <div class="cell rv" style="--i:1">
           <a class="proj wide lyn" href="https://class.lynindia.in" target="_blank" rel="noopener" data-track="lynmeet">
             <div class="proj-visual">
+              <svg class="scene" viewBox="0 0 420 400" aria-hidden="true" focusable="false">
+                <defs><linearGradient id="g-lyn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient></defs>
+                <rect class="win" x="12" y="16" width="396" height="248" rx="16"/>
+                <circle class="low" cx="32" cy="35" r="4"/><circle class="low" cx="45" cy="35" r="4"/><circle class="low" cx="58" cy="35" r="4"/>
+                <rect class="pane" x="150" y="26" width="120" height="18" rx="9"/><rect class="mid" x="170" y="33" width="80" height="4" rx="2"/>
+                <rect x="340" y="26" width="54" height="18" rx="9" fill="#f43f5e" opacity=".18"/>
+                <circle class="a-blink" cx="352" cy="35" r="3.6" fill="#f43f5e"/>
+                <text x="360" y="38" font-size="8" style="fill:#fda4af">REC</text>
+                <rect x="26" y="54" width="262" height="162" rx="10" fill="#f3f5f7"/>
+                <rect class="ink" x="35" y="61" width="36" height="10" rx="5" opacity=".82"/><rect class="ink" x="75" y="61" width="28" height="10" rx="5" opacity=".16"/><rect class="ink" x="107" y="61" width="28" height="10" rx="5" opacity=".16"/>
+                <path class="a-draw" pathLength="100" d="M46 152C66 102 92 98 112 136S150 180 176 126s38-36 60-6" fill="none" stroke="url(#g-lyn)" stroke-width="4.5" stroke-linecap="round"/>
+                <rect class="ink" x="46" y="182" width="78" height="5" rx="2.5" opacity=".3"/><rect class="ink" x="46" y="194" width="52" height="5" rx="2.5" opacity=".18"/>
+                <rect x="204" y="150" width="76" height="58" rx="9" fill="#0b0f15" stroke="#fff" stroke-opacity=".55" stroke-width="1.5"/>
+                <circle cx="242" cy="172" r="10" fill="url(#g-lyn)"/><path d="M222 207a20 15 0 0 1 40 0z" fill="url(#g-lyn)" opacity=".9"/>
+                <rect class="pane2" x="300" y="54" width="94" height="50" rx="9"/><circle class="mid" cx="347" cy="73" r="9"/><rect class="low" x="325" y="90" width="44" height="4" rx="2"/>
+                <rect class="pane2" x="300" y="110" width="94" height="50" rx="9"/><circle cx="347" cy="129" r="9" fill="url(#g-lyn)"/><rect class="low" x="325" y="146" width="44" height="4" rx="2"/>
+                <rect class="s1 a-pulse" x="300" y="110" width="94" height="50" rx="9" stroke-width="2"/>
+                <rect class="pane2" x="300" y="166" width="94" height="50" rx="9"/><circle class="mid" cx="347" cy="185" r="9"/><rect class="low" x="325" y="202" width="44" height="4" rx="2"/>
+                <rect class="pane" x="135" y="226" width="150" height="28" rx="14"/>
+                <circle class="pane2" cx="157" cy="240" r="8.5"/><circle class="pane2" cx="183.5" cy="240" r="8.5"/><circle class="pane2" cx="210" cy="240" r="8.5"/><circle class="pane2" cx="236.5" cy="240" r="8.5"/><circle cx="263" cy="240" r="8.5" fill="#f43f5e"/>
+                <rect class="win" x="12" y="278" width="396" height="108" rx="14"/>
+                <text x="28" y="297" font-size="7">RECORDING · ONE CLOCK</text>
+                <text x="28" y="320" font-size="6.5">AUDIO</text><text x="28" y="342" font-size="6.5">CAMERA</text><text x="28" y="364" font-size="6.5">SCREEN</text>
+                <path class="s1" stroke-width="3" d="M84 315v4M93 313v8M102 311v12M111 314v6M120 312v10M129 310v14M138 313v8M147 315v4M156 312v10M165 311v12M174 314v6M183 313v8M192 310v14M201 312v10M210 315v4M219 313v8M228 311v12M237 314v6M246 312v10M255 313v8M264 315v4M273 311v12M282 313v8M291 314v6M300 312v10M309 310v14M318 314v6M327 313v8"/>
+                <rect class="pane" x="78" y="332" width="258" height="14" rx="7"/><rect fill="url(#g-lyn)" opacity=".6" x="82" y="334.5" width="23" height="9" rx="3"/><rect fill="url(#g-lyn)" opacity=".6" x="110" y="334.5" width="23" height="9" rx="3"/><rect fill="url(#g-lyn)" opacity=".6" x="138" y="334.5" width="23" height="9" rx="3"/><rect fill="url(#g-lyn)" opacity=".6" x="166" y="334.5" width="23" height="9" rx="3"/><rect fill="url(#g-lyn)" opacity=".6" x="194" y="334.5" width="23" height="9" rx="3"/><rect fill="url(#g-lyn)" opacity=".6" x="222" y="334.5" width="23" height="9" rx="3"/><rect fill="url(#g-lyn)" opacity=".6" x="250" y="334.5" width="23" height="9" rx="3"/><rect fill="url(#g-lyn)" opacity=".6" x="278" y="334.5" width="23" height="9" rx="3"/><rect fill="url(#g-lyn)" opacity=".6" x="306" y="334.5" width="23" height="9" rx="3"/>
+                <rect class="pane" x="78" y="354" width="258" height="14" rx="7"/><rect class="mid" x="82" y="356.5" width="23" height="9" rx="3"/><rect class="mid" x="110" y="356.5" width="23" height="9" rx="3"/><rect class="mid" x="138" y="356.5" width="23" height="9" rx="3"/><rect class="mid" x="166" y="356.5" width="23" height="9" rx="3"/><rect class="mid" x="194" y="356.5" width="23" height="9" rx="3"/><rect class="mid" x="222" y="356.5" width="23" height="9" rx="3"/><rect class="mid" x="250" y="356.5" width="23" height="9" rx="3"/><rect class="mid" x="278" y="356.5" width="23" height="9" rx="3"/><rect class="mid" x="306" y="356.5" width="23" height="9" rx="3"/>
+                <g class="a-play"><path class="sw" stroke-width="1.5" d="M0 304v68"/><circle cx="0" cy="304" r="3.5" fill="#fff"/></g>
+                <path class="s1" stroke-width="2" d="M342 339h8m-3.5-3.5l3.5 3.5-3.5 3.5"/>
+                <rect x="356" y="308" width="40" height="62" rx="10" fill="url(#g-lyn)"/>
+                <text class="t-ink" x="376" y="337" font-size="9" text-anchor="middle" style="letter-spacing:.04em">MP4</text><text class="t-ink" x="376" y="349" font-size="6" text-anchor="middle" style="letter-spacing:.02em;opacity:.7">1 / session</text>
+              </svg>
             </div>
             <div class="proj-body">
               <span class="proj-num" aria-hidden="true">01</span>
@@ -768,6 +854,36 @@
         <div class="cell w7 rv" style="--i:2">
           <a class="proj mlcc" href="https://play.google.com/store/apps/details?id=com.mlccapp.mlccapp" target="_blank" rel="noopener" data-track="mlcc">
             <div class="proj-visual">
+              <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+                <defs><linearGradient id="g-mlcc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient></defs>
+                <circle class="sl" cx="210" cy="152" r="122"/><circle class="sl" cx="210" cy="152" r="88"/>
+                <g class="a-float"><g transform="rotate(-6 210 150)">
+                  <rect x="142" y="18" width="136" height="270" rx="24" fill="#0b0f15" stroke="#fff" stroke-opacity=".3" stroke-width="1.5"/>
+                  <rect x="149" y="25" width="122" height="256" rx="18" fill="#10151d"/>
+                  <rect class="low" x="192" y="31" width="36" height="7" rx="3.5"/>
+                  <text class="t-hi" x="160" y="61" font-size="11">MLCC Youth</text>
+                  <circle class="pane2" cx="255" cy="57" r="7"/>
+                  <rect x="159" y="72" width="102" height="62" rx="11" fill="url(#g-mlcc)"/>
+                  <rect x="167" y="82" width="26" height="30" rx="6" fill="#fff" opacity=".94"/>
+                  <rect class="ink" x="172" y="87" width="16" height="4" rx="2" opacity=".45"/><rect class="ink" x="173" y="95" width="14" height="11" rx="2.5" opacity=".8"/>
+                  <rect x="200" y="86" width="50" height="6" rx="3" fill="#fff" opacity=".95"/><rect x="200" y="98" width="36" height="5" rx="2.5" fill="#fff" opacity=".6"/>
+                  <rect class="ink" x="167" y="118" width="40" height="9" rx="4.5" opacity=".32"/>
+                  <circle class="pane2" cx="170" cy="156" r="9"/><rect class="hi" x="186" y="150" width="52" height="5" rx="2.5"/><rect class="low" x="186" y="160" width="68" height="4" rx="2"/>
+                  <circle class="pane2" cx="170" cy="186" r="9"/><rect class="hi" x="186" y="180" width="44" height="5" rx="2.5"/><rect class="low" x="186" y="190" width="60" height="4" rx="2"/>
+                  <circle class="pane2" cx="170" cy="216" r="9"/><rect class="hi" x="186" y="210" width="58" height="5" rx="2.5"/><rect class="low" x="186" y="220" width="50" height="4" rx="2"/>
+                  <rect class="pane" x="159" y="242" width="102" height="26" rx="13"/>
+                  <circle class="c1" cx="178" cy="255" r="4"/><circle class="low" cx="200" cy="255" r="4"/><circle class="low" cx="222" cy="255" r="4"/><circle class="low" cx="244" cy="255" r="4"/>
+                </g></g>
+                <g class="a-toast">
+                  <rect class="tile" x="232" y="44" width="166" height="46" rx="13"/>
+                  <rect x="242" y="54" width="26" height="26" rx="8" fill="url(#g-mlcc)"/>
+                  <path class="si" stroke-width="1.5" d="M250 70.5v-4.2a5 5 0 0 1 10 0v4.2l1.6 2.2h-13.2zM253.4 75.4a1.7 1.7 0 0 0 3.2 0"/>
+                  <rect class="hi" x="276" y="58" width="70" height="6" rx="3"/><rect class="mid" x="276" y="71" width="106" height="5" rx="2.5"/>
+                </g>
+                <rect class="tile" x="24" y="198" width="120" height="40" rx="12"/>
+                <path d="M40 209.5v17l15-8.5z" fill="url(#g-mlcc)"/>
+                <text x="62" y="214" font-size="7">LIVE ON</text><text class="t-hi" x="62" y="228" font-size="11">Google Play</text>
+              </svg>
             </div>
             <div class="proj-body">
               <span class="proj-num" aria-hidden="true">02</span>
@@ -790,6 +906,36 @@
         <div class="cell w5 rv" style="--i:3">
           <div class="proj bikes">
             <div class="proj-visual">
+              <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+                <defs><linearGradient id="g-bike" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient></defs>
+                <g transform="translate(30 126)">
+                  <circle cx="38" cy="80" r="30" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="3"/>
+                  <circle class="a-spin" cx="38" cy="80" r="14" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="26" stroke-dasharray="1.6 7.196"/>
+                  <circle cx="148" cy="80" r="30" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="3"/>
+                  <circle class="a-spin" cx="148" cy="80" r="14" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="26" stroke-dasharray="1.6 7.196"/>
+                  <path d="M38 80h50L72 36zM72 36l56-4L88 80M128 32l20 48M128 32l-4-13m-10-1h22M64 31h18" fill="none" stroke="url(#g-bike)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle class="c1" cx="38" cy="80" r="4"/><circle class="c1" cx="148" cy="80" r="4"/><circle class="c2" cx="88" cy="80" r="5"/>
+                </g>
+                <g transform="rotate(6 302 140)">
+                  <rect x="222" y="24" width="160" height="232" rx="12" fill="#f3f5f7"/>
+                  <text class="t-ink" x="238" y="52" font-size="11" style="letter-spacing:.06em">INVOICE</text>
+                  <rect x="334" y="39" width="34" height="17" rx="8.5" fill="url(#g-bike)"/><text x="341" y="51" font-size="8" style="fill:#fff">PDF</text>
+                  <rect class="ink" x="238" y="62" width="64" height="4" rx="2" opacity=".25"/>
+                  <rect class="ink" x="238" y="86" width="78" height="6" rx="3" opacity=".55"/><rect class="ink" x="340" y="86" width="26" height="6" rx="3" opacity=".3"/>
+                  <rect class="ink" x="238" y="108" width="62" height="6" rx="3" opacity=".55"/><rect class="ink" x="340" y="108" width="26" height="6" rx="3" opacity=".3"/>
+                  <rect class="ink" x="238" y="130" width="86" height="6" rx="3" opacity=".55"/><rect class="ink" x="340" y="130" width="26" height="6" rx="3" opacity=".3"/>
+                  <rect class="ink" x="238" y="152" width="54" height="6" rx="3" opacity=".55"/><rect class="ink" x="340" y="152" width="26" height="6" rx="3" opacity=".3"/>
+                  <path d="M238 172h128" fill="none" stroke="#0b0f15" stroke-opacity=".25" stroke-dasharray="3 3"/>
+                  <rect class="ink" x="238" y="184" width="128" height="30" rx="8"/>
+                  <text x="248" y="202.5" font-size="8">TOTAL</text><rect x="322" y="195" width="34" height="8" rx="4" fill="url(#g-bike)"/>
+                  <path d="M240 238q6-10 12 0t12 0 12 0" fill="none" stroke="#0b0f15" stroke-opacity=".45" stroke-width="1.6" stroke-linecap="round"/>
+                </g>
+                <g class="a-toast">
+                  <rect class="tile" x="134" y="44" width="96" height="30" rx="15"/>
+                  <circle cx="150" cy="59" r="8" fill="url(#g-bike)"/><path class="si" stroke-width="1.7" d="M146.4 59.2l2.5 2.5 4.6-4.9"/>
+                  <text x="164" y="62" font-size="7.5">BILL SENT</text>
+                </g>
+              </svg>
             </div>
             <div class="proj-body">
               <span class="proj-num" aria-hidden="true">03</span>
@@ -810,6 +956,27 @@
         <div class="cell w5 rv" style="--i:4">
           <a class="proj mathan" href="https://mathan-jewellers.web.app" target="_blank" rel="noopener" data-track="mathan">
             <div class="proj-visual">
+              <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+                <defs><linearGradient id="g-mj" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient></defs>
+                <rect class="win" x="28" y="20" width="364" height="240" rx="16"/>
+                <rect class="pane" x="44" y="36" width="232" height="32" rx="16"/>
+                <circle class="sw" cx="62" cy="51" r="5.5" stroke-width="1.8"/><path class="sw" stroke-width="1.8" d="M66.2 55.2l4.3 4.3"/>
+                <rect class="hi" x="80" y="49" width="54" height="6" rx="3"/><rect class="c1 a-blink" x="139" y="44.5" width="2" height="15" rx="1"/>
+                <rect class="pane" x="288" y="36" width="88" height="32" rx="16"/>
+                <rect x="291" y="39" width="42" height="26" rx="13" fill="url(#g-mj)"/>
+                <text class="t-ink" x="304" y="55.5" font-size="9" style="letter-spacing:.04em">EN</text>
+                <text x="348" y="57" font-size="11.5" style="letter-spacing:0;fill:rgba(255,255,255,.72)">த</text>
+                <rect class="low" x="46" y="82" width="40" height="4" rx="2"/><rect class="low" x="198" y="82" width="30" height="4" rx="2"/><rect class="low" x="338" y="82" width="38" height="4" rx="2"/>
+                <rect x="38" y="94" width="344" height="34" rx="10" fill="url(#g-mj)" opacity=".14"/>
+                <rect class="s1 a-pulse" x="38" y="94" width="344" height="34" rx="10" stroke-width="1.5"/>
+                <circle cx="58" cy="111" r="9" fill="url(#g-mj)"/><rect class="hi" x="76" y="103" width="70" height="6" rx="3"/><rect class="low" x="76" y="114" width="46" height="4" rx="2"/><rect class="pane2" x="198" y="104" width="46" height="14" rx="7"/><rect class="c1" x="338" y="107.5" width="38" height="7" rx="3.5"/>
+                <circle class="pane2" cx="58" cy="149" r="9"/><rect class="hi" x="76" y="141" width="58" height="6" rx="3"/><rect class="low" x="76" y="152" width="52" height="4" rx="2"/><rect class="pane2" x="198" y="142" width="46" height="14" rx="7"/><rect class="mid" x="338" y="145.5" width="38" height="7" rx="3.5"/>
+                <circle class="pane2" cx="58" cy="187" r="9"/><rect class="hi" x="76" y="179" width="64" height="6" rx="3"/><rect class="low" x="76" y="190" width="40" height="4" rx="2"/><rect class="pane2" x="198" y="180" width="46" height="14" rx="7"/><rect class="mid" x="338" y="183.5" width="38" height="7" rx="3.5"/>
+                <path class="sl" d="M44 214h332"/>
+                <text x="46" y="239" font-size="7.5">RUNNING TOTAL</text>
+                <rect x="298" y="225" width="78" height="22" rx="11" fill="url(#g-mj)"/>
+                <text class="t-ink" x="308" y="240" font-size="10" style="letter-spacing:0">₹</text><rect class="ink" x="320" y="232.5" width="46" height="7" rx="3.5" opacity=".7"/>
+              </svg>
             </div>
             <div class="proj-body">
               <span class="proj-num" aria-hidden="true">04</span>
@@ -832,6 +999,31 @@
         <div class="cell w7 rv" style="--i:5">
           <a class="proj learn" href="https://github.com/elmersonrajan/ai-personalized-learning" target="_blank" rel="noopener" data-track="learning">
             <div class="proj-visual">
+              <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+                <defs>
+                  <linearGradient id="g-ai" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient>
+                  <linearGradient id="g-ai-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--c1);stop-opacity:.42"/><stop offset="1" style="stop-color:var(--c1);stop-opacity:0"/></linearGradient>
+                </defs>
+                <rect class="win" x="22" y="18" width="376" height="244" rx="16"/>
+                <rect class="pane" x="36" y="32" width="218" height="134" rx="12"/>
+                <rect class="hi" x="48" y="44" width="60" height="5" rx="2.5"/><rect class="low" x="48" y="54" width="38" height="4" rx="2"/>
+                <path class="sl" stroke-dasharray="2 4" d="M48 84h194M48 108h194M48 132h194"/>
+                <path d="M48 142l30-12 30 4 30-22 30 4 30-24 44-16v78H48z" fill="url(#g-ai-a)"/>
+                <path class="a-draw" pathLength="100" d="M48 142l30-12 30 4 30-22 30 4 30-24 44-16" fill="none" stroke="url(#g-ai)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="242" cy="76" r="4.5" fill="#fff"/><circle class="s1 a-pulse" cx="242" cy="76" r="8" stroke-width="1.5"/>
+                <rect class="pane" x="266" y="32" width="118" height="134" rx="12"/>
+                <circle cx="325" cy="88" r="32" fill="none" stroke="#fff" stroke-opacity=".1" stroke-width="8"/>
+                <circle cx="325" cy="88" r="32" fill="none" stroke="url(#g-ai)" stroke-width="8" stroke-linecap="round" pathLength="100" stroke-dasharray="72 100" transform="rotate(-90 325 88)"/>
+                <text class="t-hi" x="325" y="92.5" font-size="13" text-anchor="middle">AI</text>
+                <rect class="low" x="292" y="136" width="66" height="5" rx="2.5"/><rect class="low" x="304" y="147" width="42" height="4" rx="2"/>
+                <rect class="pane" x="36" y="178" width="158" height="70" rx="12"/>
+                <rect x="48" y="189" width="12" height="12" rx="4" fill="url(#g-ai)"/><path class="si" stroke-width="1.6" d="M51 195.2l2 2 3.6-3.9"/><rect class="hi" x="68" y="192.5" width="82" height="5" rx="2.5"/>
+                <rect x="48" y="207" width="12" height="12" rx="4" fill="url(#g-ai)"/><path class="si" stroke-width="1.6" d="M51 213.2l2 2 3.6-3.9"/><rect class="hi" x="68" y="210.5" width="64" height="5" rx="2.5"/>
+                <rect class="pane2" x="48" y="225" width="12" height="12" rx="4"/><rect class="mid" x="68" y="228.5" width="96" height="5" rx="2.5"/>
+                <rect class="pane" x="206" y="178" width="178" height="70" rx="12"/>
+                <rect class="pane2" x="216" y="187" width="96" height="20" rx="10"/><rect class="mid" x="227" y="195" width="62" height="4" rx="2"/>
+                <g class="a-row" style="--d:3"><rect x="266" y="216" width="108" height="22" rx="11" fill="url(#g-ai)"/><rect class="ink" x="278" y="225" width="72" height="4" rx="2" opacity=".55"/></g>
+              </svg>
             </div>
             <div class="proj-body">
               <span class="proj-num" aria-hidden="true">05</span>
@@ -841,7 +1033,8 @@
               <ul class="proj-facts">
                 <li><b>Random Forest</b> learner profiling</li>
                 <li><b>Dashboards</b> for students and teachers, with progress analytics</li>
-                <li><b>A Gemini tutor</b> built in, trained only on privacy-safe synthetic data</li>
+                <li><b>A Gemini tutor</b> built in, for questions in plain language</li>
+                <li><b>Privacy-safe by design</b> — trained only on synthetic data</li>
               </ul>
               <div class="proj-foot">
                 <div class="chips"><span>Python</span><span>Scikit-learn</span><span>Streamlit</span><span>Gemini</span></div>
@@ -854,6 +1047,32 @@
         <div class="cell rv" style="--i:6">
           <div class="proj wide flip recipe">
             <div class="proj-visual">
+              <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+                <defs>
+                  <linearGradient id="g-rc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient>
+                  <linearGradient id="g-rc-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--c1);stop-opacity:0"/><stop offset="1" style="stop-color:var(--c1);stop-opacity:.5"/></linearGradient>
+                  <clipPath id="cp-rc"><rect x="30" y="34" width="176" height="176" rx="18"/></clipPath>
+                </defs>
+                <rect x="30" y="34" width="176" height="176" rx="18" fill="#141a22" stroke="#fff" stroke-opacity=".14"/>
+                <g clip-path="url(#cp-rc)">
+                  <rect x="30" y="34" width="176" height="176" fill="url(#g-rc)" opacity=".1"/>
+                  <circle cx="118" cy="122" r="62" fill="#f3f5f7"/><circle cx="118" cy="122" r="46" fill="#e3e8ec"/>
+                  <circle cx="103" cy="113" r="21" fill="url(#g-rc)"/><circle cx="134" cy="131" r="16" fill="#f59e0b"/><circle cx="109" cy="143" r="9" fill="#ef4444"/><circle cx="133" cy="103" r="7" fill="#ef4444"/><circle cx="96" cy="107" r="5" fill="#fff" opacity=".5"/>
+                  <g class="a-scan"><rect x="30" y="34" width="176" height="28" fill="url(#g-rc-s)"/><rect class="c1" x="30" y="61" width="176" height="2"/></g>
+                </g>
+                <path class="s1" stroke-width="2.5" d="M42 62V50a4 4 0 0 1 4-4h12M178 46h12a4 4 0 0 1 4 4v12M194 182v12a4 4 0 0 1-4 4h-12M58 198H46a4 4 0 0 1-4-4v-12"/>
+                <rect class="tile" x="30" y="222" width="176" height="32" rx="16"/>
+                <circle class="c1" cx="48" cy="238" r="5"/><rect class="hi" x="60" y="235" width="58" height="6" rx="3"/><rect class="low" x="130" y="235" width="62" height="6" rx="3"/><rect x="130" y="235" width="50" height="6" rx="3" fill="url(#g-rc)"/>
+                <path class="s1" stroke-width="2.5" d="M218 122h30m-9-8l9 8-9 8"/>
+                <rect class="win" x="262" y="34" width="130" height="220" rx="16"/>
+                <text x="276" y="58" font-size="7.5">INGREDIENTS</text>
+                <g class="a-row" style="--d:0"><rect class="pane" x="274" y="70" width="106" height="22" rx="11"/><circle class="c1" cx="287" cy="81" r="4"/><rect class="hi" x="297" y="78.5" width="54" height="5" rx="2.5"/></g>
+                <g class="a-row" style="--d:1"><rect class="pane" x="274" y="98" width="106" height="22" rx="11"/><circle class="c1" cx="287" cy="109" r="4"/><rect class="hi" x="297" y="106.5" width="68" height="5" rx="2.5"/></g>
+                <g class="a-row" style="--d:2"><rect class="pane" x="274" y="126" width="106" height="22" rx="11"/><circle class="c1" cx="287" cy="137" r="4"/><rect class="hi" x="297" y="134.5" width="40" height="5" rx="2.5"/></g>
+                <g class="a-row" style="--d:3"><rect class="pane" x="274" y="154" width="106" height="22" rx="11"/><circle class="c1" cx="287" cy="165" r="4"/><rect class="hi" x="297" y="162.5" width="60" height="5" rx="2.5"/></g>
+                <g class="a-row" style="--d:4"><rect class="pane" x="274" y="182" width="106" height="22" rx="11"/><circle class="c1" cx="287" cy="193" r="4"/><rect class="hi" x="297" y="190.5" width="48" height="5" rx="2.5"/></g>
+                <g class="a-row" style="--d:5"><rect class="pane" x="274" y="210" width="106" height="22" rx="11"/><circle class="c1" cx="287" cy="221" r="4"/><rect class="hi" x="297" y="218.5" width="66" height="5" rx="2.5"/></g>
+              </svg>
             </div>
             <div class="proj-body">
               <span class="proj-num" aria-hidden="true">06</span>
@@ -1020,6 +1239,12 @@
       el.style.setProperty('--y', ((ev.clientY - r.top) / r.height * 100).toFixed(1) + '%');
     });
   });
+
+  /* run each card's illustration only while it is on screen */
+  var liveIO = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { e.target.classList.toggle('live', e.isIntersecting); });
+  }, { rootMargin: '80px 0px' });
+  document.querySelectorAll('.cell').forEach(function (c) { liveIO.observe(c); });
 
   /* hero parallax */
   if (!reduce && window.matchMedia('(pointer: fine)').matches) {
