@@ -22,7 +22,6 @@
   :root {
     --bg: #08090b;
     --bg-2: #0e1013;
-    --bg-3: #0a1410;
     --card: rgba(255,255,255,.035);
     --card-hi: rgba(255,255,255,.06);
     --text: #f3f4f5;
@@ -40,7 +39,6 @@
   :root[data-theme="light"] {
     --bg: #fafaf9;
     --bg-2: #ffffff;
-    --bg-3: #f1f7f3;
     --card: #ffffff;
     --card-hi: #ffffff;
     --text: #14161a;
@@ -65,25 +63,24 @@
     font-size: 16px; line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    animation: bgTint 20s ease-in-out infinite;
-  }
-  /* the base page colour itself drifts between three tints */
-  @keyframes bgTint {
-    0%   { background-color: var(--bg) }
-    33%  { background-color: var(--bg-3) }
-    66%  { background-color: var(--bg-2) }
-    100% { background-color: var(--bg) }
   }
   a { color: var(--accent); }
   img { max-width: 100%; }
   .wrap { width: 100%; max-width: 980px; margin: 0 auto; padding: 0 20px; }
 
   /* ---------- ambient layers ---------- */
-  /* the whole colour field slowly cycles hue, so the background is never static */
+  /* Performance rule for this whole block: animate only `transform` (plus one `filter`
+     on the container), never a property that needs repainting, and use no blur filters.
+     The first version moved the sheets with background-position and softened everything
+     with filter:blur(), so areas larger than the screen were repainted and re-blurred on
+     every frame; in software rendering that kept two CPU cores busy on an idle page.
+     Softness now comes from the artwork itself: each sheet and blob is a 128px image,
+     painted once by the script at the end of the page, that the GPU stretches. */
   .aurora {
     position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none;
     animation: hueCycle 26s ease-in-out infinite;
   }
+  .aurora img { position: absolute; display: block; max-width: none; will-change: transform; }
   /* A wide arc, but still not a full 360°: rotating all the way takes the mint
      palette through muddy browns that clash with the accent. -35deg..120deg
      spans yellow-green → green → cyan → blue → violet and stays coherent. */
@@ -93,32 +90,19 @@
     100% { filter: hue-rotate(-35deg) saturate(1.15) }
   }
 
-  /* two gradient sheets sweeping in opposite directions; where they cross they
-     interfere, so the field never looks like a single repeating loop */
-  .sheet, .sheet2 {
-    position: absolute; inset: -25%;
-    background-size: 320% 320%;
-    will-change: background-position;
-  }
-  .sheet {
-    background: linear-gradient(115deg, var(--a1) 0%, var(--a2) 28%, var(--a3) 54%, var(--a1) 78%, var(--a2) 100%);
-    opacity: .30; filter: blur(70px);
-    animation: sheetMove 16s ease-in-out infinite;
-  }
-  .sheet2 {
-    background: linear-gradient(295deg, var(--a3) 0%, var(--a1) 34%, var(--a2) 66%, var(--a3) 100%);
-    background-size: 280% 280%;
-    opacity: .22; filter: blur(90px);
-    animation: sheetMove 21s ease-in-out infinite reverse;
-  }
-  :root[data-theme="light"] .sheet { opacity: .22; filter: blur(90px); }
-  :root[data-theme="light"] .sheet2 { opacity: .16; filter: blur(110px); }
-  @keyframes sheetMove {
-    0%   { background-position: 0% 42% }
-    25%  { background-position: 62% 100% }
-    50%  { background-position: 100% 58% }
-    75%  { background-position: 38% 0% }
-    100% { background-position: 0% 42% }
+  /* two gradient sheets, each 4.8 screens across, sweeping in opposite directions; where
+     they cross they interfere, so the field never looks like a single repeating loop */
+  .sheet, .sheet2 { left: -190%; top: -190%; width: 480%; height: 480%; }
+  .sheet  { opacity: .30; animation: sheetMove 16s ease-in-out infinite; }
+  .sheet2 { opacity: .22; animation: sheetMove 21s ease-in-out infinite reverse; }
+  :root[data-theme="light"] .sheet { opacity: .22; }
+  :root[data-theme="light"] .sheet2 { opacity: .16; }
+  @keyframes sheetMove {              /* ±38% of its own size keeps the screen covered */
+    0%   { transform: translate3d(38%, 6%, 0) }
+    25%  { transform: translate3d(-9%, -38%, 0) }
+    50%  { transform: translate3d(-38%, -6%, 0) }
+    75%  { transform: translate3d(9%, 38%, 0) }
+    100% { transform: translate3d(38%, 6%, 0) }
   }
 
   /* keeps body text readable when the sheets peak in brightness */
@@ -129,24 +113,26 @@
       color-mix(in srgb, var(--bg) 34%, transparent) 38%,
       color-mix(in srgb, var(--bg) 66%, transparent) 100%);
   }
-  .blob { position: absolute; border-radius: 50%; filter: blur(110px); opacity: .26; will-change: transform; }
-  .blob.b1 { width: 52vw; height: 52vw; background: var(--a1); top: -16vw; left: -14vw; animation: drift1 15s ease-in-out infinite; }
-  .blob.b2 { width: 46vw; height: 46vw; background: var(--a2); top: 14vh; right: -18vw; opacity: .21; animation: drift2 19s ease-in-out infinite; }
-  .blob.b3 { width: 42vw; height: 42vw; background: var(--a3); bottom: -18vw; left: 22vw; opacity: .18; animation: drift3 23s ease-in-out infinite; }
-  :root[data-theme="light"] .blob { opacity: .18; filter: blur(130px); }
+
+  /* soft colour blobs: images that fade to transparent, so they need no blur either */
+  .blob { opacity: .26; }
+  .blob.b1 { width: 88vw; height: 88vw; top: -34vw; left: -32vw; animation: drift1 15s ease-in-out infinite; }
+  .blob.b2 { width: 78vw; height: 78vw; top: calc(14vh - 16vw); right: -34vw; opacity: .21; animation: drift2 19s ease-in-out infinite; }
+  .blob.b3 { width: 71vw; height: 71vw; bottom: -32.5vw; left: 7.5vw; opacity: .18; animation: drift3 23s ease-in-out infinite; }
+  :root[data-theme="light"] .blob { opacity: .18; }
   :root[data-theme="light"] .blob.b2, :root[data-theme="light"] .blob.b3 { opacity: .13; }
   @keyframes drift1 { 0%,100% { transform: translate3d(0,0,0) scale(1);} 50% { transform: translate3d(14vw,16vh,0) scale(1.28);} }
   @keyframes drift2 { 0%,100% { transform: translate3d(0,0,0) scale(1);} 50% { transform: translate3d(-18vw,-12vh,0) scale(1.22);} }
   @keyframes drift3 { 0%,100% { transform: translate3d(0,0,0) scale(1);} 50% { transform: translate3d(12vw,-18vh,0) scale(1.32);} }
 
   .grain {
-    position: fixed; inset: -50%; z-index: -1; pointer-events: none; opacity: .035;
+    position: fixed; inset: -4%; z-index: -1; pointer-events: none; opacity: .035;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
     animation: grainShift 1.2s steps(4) infinite;
   }
   @keyframes grainShift {
-    0%{transform:translate(0,0)} 25%{transform:translate(-2%,1%)}
-    50%{transform:translate(1%,-2%)} 75%{transform:translate(-1%,-1%)} 100%{transform:translate(0,0)}
+    0%{transform:translate(0,0)} 25%{transform:translate(-1.5%,1%)}
+    50%{transform:translate(1%,-1.5%)} 75%{transform:translate(-1%,-1%)} 100%{transform:translate(0,0)}
   }
 
   /* ---------- header ---------- */
@@ -629,12 +615,10 @@
       mask-image: linear-gradient(90deg, #000 82%, transparent);
     }
   }
-  /* fewer large blurred layers on phones — five animating blur surfaces plus a
-     hue-rotate over all of them is a lot of compositing for a low-end device */
+  /* fewer full-screen layers on phones: every one is blended over the whole screen on
+     each frame, and film grain this faint is not visible at that size anyway */
   @media (max-width: 640px) {
-    .sheet2, .blob.b3 { display: none; }
-    .blob { filter: blur(80px); }
-    .sheet { filter: blur(60px); }
+    .sheet2, .blob.b3, .grain { display: none; }
   }
   @media (max-width: 460px) {
     .wrap { padding: 0 16px; }
@@ -657,9 +641,8 @@
 <body>
 
 <div class="aurora" aria-hidden="true">
-  <span class="sheet"></span>
-  <span class="sheet2"></span>
-  <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+  <img class="sheet" id="amb-s1" alt=""><img class="sheet2" id="amb-s2" alt="">
+  <img class="blob b1" id="amb-b1" alt=""><img class="blob b2" id="amb-b2" alt=""><img class="blob b3" id="amb-b3" alt="">
 </div>
 <div class="scrim" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
@@ -1295,9 +1278,56 @@
     var saved = localStorage.getItem('theme');
     if (saved) root.setAttribute('data-theme', saved);
   } catch (e) {}
+
+  /* Paint the ambient artwork: five 128px images that the GPU stretches across the page.
+     Doing it here rather than with CSS gradients keeps each moving layer a small, plain
+     texture with nothing to repaint or blur. Repainted when the theme changes palette. */
+  function paintAmbient() {
+    var cs = getComputedStyle(root);
+    var col = function (name) { return cs.getPropertyValue(name).trim(); };
+    var a1 = col('--a1'), a2 = col('--a2'), a3 = col('--a3');
+    var c = document.createElement('canvas');
+    if (!c.getContext) return;
+    var S = 128;
+    function put(id, make) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      c.width = c.height = S;                          /* resizing also clears it */
+      var g = c.getContext('2d');
+      g.fillStyle = make(g);
+      g.fillRect(0, 0, S, S);
+      el.src = c.toDataURL('image/png');
+    }
+    function sheet(deg, stops) {
+      return function (g) {
+        var t = deg * Math.PI / 180, dx = Math.sin(t), dy = -Math.cos(t);
+        var half = (Math.abs(dx) + Math.abs(dy)) * S / 2, m = S / 2;
+        var gr = g.createLinearGradient(m - dx * half, m - dy * half, m + dx * half, m + dy * half);
+        stops.forEach(function (st) { gr.addColorStop(st[0], st[1]); });
+        return gr;
+      };
+    }
+    function blob(hex) {
+      var n = parseInt(hex.replace('#', ''), 16);
+      var rgb = [(n >> 16) & 255, (n >> 8) & 255, n & 255].join(',');
+      return function (g) {
+        var m = S / 2, gr = g.createRadialGradient(m, m, 0, m, m, m);
+        /* the falloff a blurred disc has: solid core, long soft tail */
+        [[0, 1], [.30, 1], [.44, .8], [.59, .5], [.68, .3], [.77, .16], [.88, .05], [1, 0]].forEach(function (st) {
+          gr.addColorStop(st[0], 'rgba(' + rgb + ',' + st[1] + ')');
+        });
+        return gr;
+      };
+    }
+    put('amb-s1', sheet(115, [[0, a1], [.28, a2], [.54, a3], [.78, a1], [1, a2]]));
+    put('amb-s2', sheet(295, [[0, a3], [.34, a1], [.66, a2], [1, a3]]));
+    put('amb-b1', blob(a1)); put('amb-b2', blob(a2)); put('amb-b3', blob(a3));
+  }
+  paintAmbient();
   document.getElementById('themer').addEventListener('click', function () {
     var now = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     root.setAttribute('data-theme', now);
+    paintAmbient();
     try { localStorage.setItem('theme', now); } catch (e) {}
   });
 })();
