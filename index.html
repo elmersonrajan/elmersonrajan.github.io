@@ -331,6 +331,8 @@
   .rv.in { opacity: 1; transform: none; filter: blur(0); }
 
   /* ---------- experience ---------- */
+  .job + .job { margin-top: 38px; padding-top: 30px; border-top: 1px dashed var(--line); }
+  .job-note { margin: 12px 0 0; color: var(--dim); font-size: .97rem; max-width: 64ch; }
   .job-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-bottom: 6px; }
   .job-head h3 { margin: 0; font-family: "Space Grotesk", Inter, sans-serif; font-size: 1.16rem; font-weight: 600; letter-spacing: -.02em; }
   .job-head .where { color: var(--accent); font-weight: 600; font-size: 1.1rem; letter-spacing: -.015em; }
@@ -582,7 +584,7 @@
 
     <section id="experience">
       <h2 class="rv">Experience</h2>
-      <div class="rv" style="--i:1">
+      <div class="job rv" style="--i:1">
         <div class="job-head">
           <h3>Software Developer Intern</h3>
           <span class="where">Doxa Technology Solutions</span>
@@ -596,17 +598,33 @@
             deployed on AWS EC2 with Supabase as the data and call-log layer.
           </li>
           <li>
-            <strong>Goimomi Holidays AI Booking Bot</strong> — a chat assistant that takes a
-            traveller from enquiry to confirmed booking in one conversation: hotel rooms and cab
-            reservations handled inside the chat, with Zoho Payments integrated so the customer
-            pays without ever leaving it.
-          </li>
-          <li>
             <strong>Thangam Stay Inn</strong> — a hotel website with an integrated booking engine,
             Aadhaar-based guest verification and Razorpay payments, backed by an admin CRM for
             reservations, guest records and occupancy.
           </li>
+          <li>
+            <strong>MedPhil AI WhatsApp Bot</strong> — an AI WhatsApp assistant that guides students
+            through medical-college admissions and automatically routes qualified leads, with their
+            enquiry data, to the admin team.
+          </li>
+          <li>
+            <strong>OJK Jobs WhatsApp Bot</strong> — a job-alert and application bot on the WhatsApp
+            Business Platform, set up through Meta for Developers and a Facebook Business account,
+            with CRM integration so candidate enquiries and applications flow straight to the
+            recruitment team.
+          </li>
         </ul>
+      </div>
+      <div class="job rv" style="--i:2">
+        <div class="job-head">
+          <h3>Freelance Full-Stack Developer</h3>
+          <span class="where">Self-Employed</span>
+          <span class="when">2025 – Present</span>
+        </div>
+        <p class="job-note">
+          Production apps for clients and communities — LYN MEET, MLCC Youth, David Bikes and
+          Mathan Jewellers. The details are under <a href="#work">Selected work</a>.
+        </p>
       </div>
     </section>
 
