@@ -631,6 +631,12 @@
      each frame, and film grain this faint is not visible at that size anyway */
   @media (max-width: 640px) {
     .sheet2, .blob.b3, .grain { display: none; }
+    /* the old blurred blobs were small next to their blur radius on a phone, which
+       diluted them to about half strength; these match that */
+    .blob { opacity: .15; }
+    .blob.b2 { opacity: .11; }
+    :root[data-theme="light"] .blob { opacity: .10; }
+    :root[data-theme="light"] .blob.b2 { opacity: .07; }
   }
   @media (max-width: 460px) {
     .wrap { padding: 0 16px; }
