@@ -532,10 +532,11 @@
   .scene .a-toast { animation: scToast 6.5s cubic-bezier(.22,1,.36,1) infinite; }
   .scene .a-spin { transform-box: fill-box; transform-origin: center; animation: scSpin 5s linear infinite; }
   .scene .a-scan { animation: scScan 3.4s cubic-bezier(.45,0,.55,1) infinite; }
-  .scene .a-play { animation: scPlay 6s linear infinite; }
+  /* rests mid-timeline, so it is not stranded at x=0 when animation is switched off */
+  .scene .a-play { transform: translateX(206px); animation: scPlay 6s linear infinite; }
   .scene .a-row { animation: scRow 7s ease-out infinite backwards; animation-delay: calc(var(--d, 0) * .32s); }
-  /* illustrations only run while their card is on screen */
-  .cell:not(.live) .scene * { animation-play-state: paused; }
+  /* illustrations and card rings only run while their card is on screen */
+  .cell:not(.live) .scene *, .cell:not(.live) .proj::before { animation-play-state: paused; }
   @keyframes scBlink { 50% { opacity: .2 } }
   @keyframes scPulse { 0%, 100% { opacity: .15 } 50% { opacity: 1 } }
   @keyframes scDraw {
