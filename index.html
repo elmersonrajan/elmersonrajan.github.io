@@ -345,57 +345,161 @@
   }
   .bullets li strong { color: var(--text); font-weight: 600; }
 
-  /* ---------- work cards ---------- */
-  .cards { display: grid; gap: 14px; }
-  .card {
-    position: relative; overflow: hidden;
-    display: block; text-decoration: none; color: inherit;
-    background: var(--card); border: 1px solid var(--line);
-    border-radius: 16px; padding: 22px 24px;
-    transition: transform .3s cubic-bezier(.22,1,.36,1), border-color .3s, background .3s, box-shadow .3s;
+  /* ---------- projects: bento showcase ---------- */
+  .work-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px 28px; flex-wrap: wrap; margin: -6px 0 30px; }
+  .work-title {
+    margin: 0;
+    font-family: "Space Grotesk", Inter, sans-serif; font-weight: 700;
+    font-size: clamp(1.7rem, 4.4vw, 2.6rem); line-height: 1.06; letter-spacing: -.035em; color: var(--text);
   }
-  .card::before {
-    content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0;
-    background: radial-gradient(360px circle at var(--x, 50%) var(--y, 50%), color-mix(in srgb, var(--accent) 12%, transparent), transparent 62%);
-    transition: opacity .3s;
+  .work-title em {
+    font-style: normal;
+    background: linear-gradient(100deg, var(--a1), var(--a2) 55%, var(--a3));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .card:hover::before { opacity: 1; }
-  a.card:hover { transform: translateY(-4px); border-color: var(--line-2); background: var(--card-hi); box-shadow: 0 18px 44px rgba(0,0,0,.34); }
-  .card h3 { margin: 0 0 4px; font-family: "Space Grotesk", Inter, sans-serif; font-size: 1.1rem; font-weight: 600; letter-spacing: -.02em; display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
-  .card h3 .arrow { color: var(--faint); font-weight: 400; transition: transform .3s cubic-bezier(.22,1,.36,1), color .3s; }
-  a.card:hover h3 .arrow { transform: translateX(5px); color: var(--accent); }
-  .card .meta { font-size: 12.5px; color: var(--faint); font-weight: 500; margin: 0 0 12px; letter-spacing: .01em; }
-  .card p { margin: 0 0 14px; font-size: .95rem; color: var(--dim); }
-  .stack { display: flex; flex-wrap: wrap; gap: 6px; }
-  .stack span {
-    font-size: 11.5px; font-weight: 500; color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 11%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
-    padding: 2px 9px; border-radius: 7px;
-  }
+  .work-count { margin: 0 0 4px; color: var(--faint); font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
+  .work-count b { font-family: "Space Grotesk", Inter, sans-serif; font-size: 2.1rem; font-weight: 700; letter-spacing: -.03em; color: var(--text); margin-right: 8px; vertical-align: -4px; }
 
-  /* ---------- featured projects ---------- */
-  .card.featured { padding: 24px 26px; border-color: transparent; box-shadow: 0 14px 44px -18px var(--glow); }
-  .card.featured::after {                /* animated gradient ring, drawn only on the border */
-    content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px; pointer-events: none;
-    background: linear-gradient(120deg, var(--a1), var(--a2), var(--a3), var(--a1));
+  .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 18px; }
+  .cell { display: flex; min-width: 0; grid-column: span 12; }
+  .cell.w7 { grid-column: span 7; }
+  .cell.w5 { grid-column: span 5; }
+
+  /* one card = one project, each with its own two-colour identity */
+  .proj {
+    --c1: var(--a1); --c2: var(--a2); --ct: var(--c1);
+    position: relative; isolation: isolate; overflow: hidden;
+    display: flex; flex-direction: column; flex: 1; min-width: 0;
+    color: inherit; text-decoration: none; border-radius: 24px;
+    background:
+      linear-gradient(160deg, color-mix(in srgb, var(--c1) 10%, transparent), transparent 44%),
+      linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.022));
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,.11),
+      0 34px 60px -36px rgba(0,0,0,.8),
+      0 26px 70px -44px var(--c1);
+    transform: perspective(1200px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+    transition: transform .5s cubic-bezier(.22,1,.36,1), box-shadow .5s;
+  }
+  .proj.lyn    { --c1: #7ef0b0; --c2: #38bdf8; }
+  .proj.mlcc   { --c1: #c4a5ff; --c2: #f472b6; }
+  .proj.bikes  { --c1: #fdba74; --c2: #fb7185; }
+  .proj.mathan { --c1: #fde68a; --c2: #f59e0b; }
+  .proj.learn  { --c1: #7dd3fc; --c2: #818cf8; }
+  .proj.recipe { --c1: #bef264; --c2: #34d399; }
+
+  .proj::before {                        /* gradient ring, drawn only on the border */
+    content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; padding: 1.2px; pointer-events: none;
+    background: linear-gradient(120deg, var(--c1), var(--c2) 30%, rgba(255,255,255,.1) 58%, var(--c1));
     background-size: 300% 300%;
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
-    animation: ringFlow 6s linear infinite;
+    opacity: .5; transition: opacity .4s;
+    animation: ringFlow 9s linear infinite;
   }
   @keyframes ringFlow { to { background-position: 300% 0 } }
-  a.card.featured:hover { box-shadow: 0 22px 56px -16px var(--glow); }
-  .feat-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
-  .badge {
-    display: inline-flex; align-items: center; gap: 7px;
-    font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--accent-ink); background: linear-gradient(135deg, var(--a1), var(--a2));
-    padding: 4px 10px 4px 9px; border-radius: 999px;
+  .proj::after {                         /* glow that follows the cursor */
+    content: ""; position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .35s;
+    background: radial-gradient(440px circle at var(--x, 50%) var(--y, 0%), color-mix(in srgb, var(--c1) 17%, transparent), transparent 60%);
   }
-  .badge .bdot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .85; animation: blink 1.8s ease-in-out infinite; }
-  @keyframes blink { 50% { opacity: .25 } }
-  .live { font-size: 12.5px; font-weight: 600; color: var(--accent); letter-spacing: .01em; }
+  .proj:hover {
+    --lift: -6px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.16), 0 46px 70px -36px rgba(0,0,0,.85), 0 34px 90px -40px var(--c1);
+    transition: transform .16s ease-out, box-shadow .5s;
+  }
+  .proj:hover::before, .proj:hover::after { opacity: 1; }
+
+  /* the stage each project's illustration sits on */
+  .proj-visual {
+    position: relative; z-index: 1; overflow: hidden; flex: none; height: 250px;
+    border-bottom: 1px solid var(--line);
+    background:
+      radial-gradient(120% 90% at 18% 0%, color-mix(in srgb, var(--c1) 34%, transparent), transparent 62%),
+      radial-gradient(110% 100% at 100% 100%, color-mix(in srgb, var(--c2) 30%, transparent), transparent 60%),
+      #0a0d12;
+  }
+  .proj-visual::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.14) 1px, transparent 1.4px);
+    background-size: 18px 18px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 28%, transparent 76%);
+    mask-image: radial-gradient(ellipse at center, #000 28%, transparent 76%);
+  }
+
+  .proj-body { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 12px; flex: 1; padding: 22px 24px 24px; }
+  .proj-num {
+    position: absolute; top: 14px; right: 20px; pointer-events: none; user-select: none;
+    font-family: "Space Grotesk", Inter, sans-serif; font-weight: 700; font-size: 3.3rem; line-height: 1; letter-spacing: -.04em;
+    color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--c1) 50%, transparent); opacity: .75;
+  }
+  .proj-kind { display: inline-flex; align-items: center; gap: 10px; margin: 0; padding-right: 70px; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ct); }
+  .proj-kind i { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--c1); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c1) 22%, transparent), 0 0 14px var(--c1); }
+  .proj h3 { margin: 0; padding-right: 64px; font-family: "Space Grotesk", Inter, sans-serif; font-weight: 700; font-size: 1.5rem; line-height: 1.1; letter-spacing: -.03em; color: var(--text); }
+  .proj-desc { margin: 0; color: var(--dim); font-size: .97rem; line-height: 1.55; }
+  .proj-facts { list-style: none; margin: 2px 0 0; padding: 0; display: grid; gap: 8px; }
+  .proj-facts li { position: relative; padding-left: 20px; font-size: .9rem; line-height: 1.45; color: var(--dim); }
+  .proj-facts li::before {
+    content: ""; position: absolute; left: 2px; top: .5em; width: 7px; height: 7px; border-radius: 2px;
+    transform: rotate(45deg); background: linear-gradient(135deg, var(--c1), var(--c2));
+  }
+  .proj-facts b { color: var(--text); font-weight: 600; }
+  .proj-stats { list-style: none; display: flex; flex-wrap: wrap; gap: 14px 30px; margin: 4px 0 0; padding: 0; }
+  .proj-stats li { display: grid; }
+  .proj-stats b {
+    font-family: "Space Grotesk", Inter, sans-serif; font-size: 2.2rem; font-weight: 700; line-height: 1; letter-spacing: -.035em;
+    background: linear-gradient(120deg, var(--c1), var(--c2)); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .proj-stats span { margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+  .proj-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px 14px; flex-wrap: wrap; margin-top: auto; padding-top: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chips span {
+    font-size: 11.5px; font-weight: 500; color: var(--dim);
+    background: rgba(255,255,255,.05); border: 1px solid var(--line);
+    padding: 3px 9px; border-radius: 999px; transition: color .3s, border-color .3s, background .3s;
+  }
+  .proj:hover .chips span { color: var(--text); border-color: color-mix(in srgb, var(--c1) 40%, transparent); background: color-mix(in srgb, var(--c1) 10%, transparent); }
+  .cta {
+    display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+    font-size: 13px; font-weight: 700; color: #06110c;
+    background: linear-gradient(135deg, var(--c1), var(--c2));
+    padding: 8px 14px; border-radius: 999px; box-shadow: 0 10px 24px -12px var(--c1);
+  }
+  .cta svg { width: 13px; height: 13px; transition: transform .35s cubic-bezier(.22,1,.36,1); }
+  .proj:hover .cta svg { transform: translate(2px, -2px); }
+
+  /* wide tiles: text and illustration side by side */
+  .proj.wide { flex-direction: row; }
+  .proj.wide .proj-visual { order: 2; flex: 0 0 47%; height: auto; min-height: 320px; border-bottom: 0; border-left: 1px solid var(--line); }
+  .proj.wide .proj-body { padding: 30px 30px 30px 32px; gap: 14px; }
+  .proj.wide h3 { font-size: clamp(1.8rem, 3.6vw, 2.5rem); }
+  .proj.wide.flip .proj-visual { order: 0; flex-basis: 41%; min-height: 280px; border-left: 0; border-right: 1px solid var(--line); }
+
+  :root[data-theme="light"] .proj {
+    --ct: color-mix(in srgb, var(--c1) 52%, #10131a);
+    background: linear-gradient(160deg, color-mix(in srgb, var(--c1) 14%, transparent), transparent 44%), #fff;
+    box-shadow: inset 0 1px 0 #fff, 0 30px 50px -36px rgba(20,22,26,.4), 0 24px 60px -44px var(--c1);
+  }
+  :root[data-theme="light"] .proj:hover { box-shadow: inset 0 1px 0 #fff, 0 40px 60px -36px rgba(20,22,26,.5), 0 30px 80px -40px var(--c1); }
+  :root[data-theme="light"] .proj-num { -webkit-text-stroke-color: color-mix(in srgb, var(--c1) 62%, #10131a); }
+  :root[data-theme="light"] .chips span { background: rgba(0,0,0,.035); }
+
+  @media (max-width: 900px) {
+    .bento { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .cell, .cell.w7, .cell.w5 { grid-column: auto; }
+    .proj.wide, .proj.wide.flip { flex-direction: column; }
+    .proj-visual, .proj.wide .proj-visual, .proj.wide.flip .proj-visual {
+      order: 0; flex: none; height: auto; min-height: 0; aspect-ratio: 3 / 2; border: 0; border-bottom: 1px solid var(--line);
+    }
+    .proj.wide .proj-body { padding: 22px 22px 24px; gap: 12px; }
+    .proj.wide h3 { font-size: 1.75rem; }
+  }
+  @media (max-width: 460px) {
+    .proj { border-radius: 20px; }
+    .proj-body, .proj.wide .proj-body { padding: 20px 18px 22px; }
+    .proj-num { font-size: 2.8rem; right: 14px; }
+    .proj-stats { gap: 12px 22px; }
+    .proj-stats b { font-size: 1.9rem; }
+  }
 
   /* ---------- education ---------- */
   .edu { display: grid; gap: 0; }
@@ -464,7 +568,6 @@
     .btn { padding: 12px 17px; }       /* comfortable tap target */
     .when { margin-left: 0; width: 100%; }
     section { padding: 56px 0; }
-    .card { padding: 19px 18px; border-radius: 14px; }
     nav {
       -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent);
       mask-image: linear-gradient(90deg, #000 82%, transparent);
@@ -632,83 +735,141 @@
 
     <section id="work">
       <h2 class="rv">Selected work</h2>
-      <div class="cards">
+      <div class="work-head rv" style="--i:1">
+        <p class="work-title">Real products, real users.<br><em>And a couple of experiments.</em></p>
+        <p class="work-count"><b>06</b>projects</p>
+      </div>
 
-        <a class="card featured rv" style="--i:1" href="https://class.lynindia.in" target="_blank" rel="noopener" data-track="lynmeet">
-          <div class="feat-top"><span class="badge"><span class="bdot"></span>Featured</span><span class="live">class.lynindia.in &#8599;</span></div>
-          <h3>LYN MEET <span class="arrow" aria-hidden="true">&rarr;</span></h3>
-          <p class="meta">Live virtual classroom · web + mobile · in production</p>
-          <p>
-            An end-to-end classroom meeting platform that replaced third-party conferencing with a
-            self-hosted stack. A mediasoup SFU carries multi-party camera, mic and screen sharing
-            with ICE/TURN, adaptive quality and reconnect handling that keeps a class alive through
-            a teacher's network drop. Alongside it: a collaborative whiteboard with multiple board
-            tabs, PDF import and late-join state sync, and a server-side recording pipeline where a
-            single FFmpeg ingest keeps audio, camera and screen on one clock before composing one
-            MP4 per session. Roles, SSO tickets and attendance are all enforced server-side.
-          </p>
-          <div class="stack"><span>Node.js</span><span>mediasoup</span><span>Socket.IO</span><span>React</span><span>MySQL</span><span>FFmpeg</span><span>Flutter</span><span>coturn</span></div>
-        </a>
+      <div class="bento">
 
-        <a class="card featured rv" style="--i:2" href="https://play.google.com/store/apps/details?id=com.mlccapp.mlccapp" target="_blank" rel="noopener" data-track="mlcc">
-          <div class="feat-top"><span class="badge"><span class="bdot"></span>Featured</span><span class="live">Google Play &#8599;</span></div>
-          <h3>MLCC Youth <span class="arrow" aria-hidden="true">&rarr;</span></h3>
-          <p class="meta">Community app · live on Google Play</p>
-          <p>
-            A community app for a youth organisation covering events, announcements and member
-            content, with Firebase auth and real-time updates and OneSignal for targeted push and
-            event reminders. I ran the full release cycle — Play Console listing, store compliance,
-            versioned rollouts and post-launch updates from user feedback.
-          </p>
-          <div class="stack"><span>Flutter</span><span>Firebase</span><span>OneSignal</span><span>Play Console</span></div>
-        </a>
-
-        <div class="card rv" style="--i:3">
-          <h3>David Bikes</h3>
-          <p class="meta">Bike workshop management · mobile</p>
-          <p>
-            Digitised a workshop's customer and vehicle records so staff can register bikes against
-            an owner and track each vehicle's service history. Live invoice updates and one-tap PDF
-            bills shareable straight from the app, replacing paper-based billing with a single
-            searchable database.
-          </p>
-          <div class="stack"><span>Flutter</span><span>Firebase</span><span>PDF generation</span></div>
+        <div class="cell rv" style="--i:1">
+          <a class="proj wide lyn" href="https://class.lynindia.in" target="_blank" rel="noopener" data-track="lynmeet">
+            <div class="proj-visual">
+            </div>
+            <div class="proj-body">
+              <span class="proj-num" aria-hidden="true">01</span>
+              <p class="proj-kind"><i></i>Live classroom platform</p>
+              <h3>LYN MEET</h3>
+              <p class="proj-desc">A self-hosted virtual classroom that replaced third-party conferencing for teachers and students, in production.</p>
+              <ul class="proj-facts">
+                <li><b>mediasoup SFU</b> — multi-party camera, mic and screen share that stays up through a teacher's network drop</li>
+                <li><b>Live whiteboard</b> — multiple board tabs, PDF import and late-join sync</li>
+                <li><b>Server-side recording</b> — one FFmpeg clock, one MP4 per session</li>
+                <li><b>No client-trusted roles</b> — permissions, SSO tickets and attendance enforced on the server</li>
+              </ul>
+              <div class="proj-foot">
+                <div class="chips"><span>Node.js</span><span>mediasoup</span><span>Socket.IO</span><span>React</span><span>MySQL</span><span>FFmpeg</span><span>Flutter</span><span>coturn</span></div>
+                <span class="cta">class.lynindia.in <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+            </div>
+          </a>
         </div>
 
-        <a class="card rv" style="--i:4" href="https://mathan-jewellers.web.app" target="_blank" rel="noopener" data-track="mathan">
-          <h3>Mathan Jewellers <span class="arrow" aria-hidden="true">&rarr;</span></h3>
-          <p class="meta">Chit fund register · web + installable app</p>
-          <p>
-            A bilingual English/Tamil chit-fund register that replaced a paper ledger with
-            searchable customer and payment records shared live across every device. Instant
-            client-side search with ranked partial matching across name, chit number and phone, a
-            month-by-month collection feed with running totals, and branded paginated PDF
-            statements that share to WhatsApp through the native share sheet.
-          </p>
-          <div class="stack"><span>React</span><span>TypeScript</span><span>Vite</span><span>Firestore</span><span>Tailwind</span><span>jsPDF</span></div>
-        </a>
+        <div class="cell w7 rv" style="--i:2">
+          <a class="proj mlcc" href="https://play.google.com/store/apps/details?id=com.mlccapp.mlccapp" target="_blank" rel="noopener" data-track="mlcc">
+            <div class="proj-visual">
+            </div>
+            <div class="proj-body">
+              <span class="proj-num" aria-hidden="true">02</span>
+              <p class="proj-kind"><i></i>Community app</p>
+              <h3>MLCC Youth</h3>
+              <p class="proj-desc">Events, announcements and member content for a youth organisation — designed, launched and kept up to date on the Play Store.</p>
+              <ul class="proj-facts">
+                <li><b>Push reminders</b> for events, through OneSignal</li>
+                <li><b>Realtime content</b> and sign-in on Firebase</li>
+                <li><b>The full release cycle</b> — listing, store compliance, versioned rollouts</li>
+              </ul>
+              <div class="proj-foot">
+                <div class="chips"><span>Flutter</span><span>Firebase</span><span>OneSignal</span><span>Play Console</span></div>
+                <span class="cta">Open on Google Play <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </div>
 
-        <a class="card rv" style="--i:5" href="https://github.com/elmersonrajan/ai-personalized-learning" target="_blank" rel="noopener" data-track="learning">
-          <h3>AI Personalized Learning System <span class="arrow" aria-hidden="true">&rarr;</span></h3>
-          <p class="meta">Adaptive learning · research project</p>
-          <p>
-            Analyses learner behaviour and delivers personalized recommendations, profiling learners
-            with a Random Forest classifier. Streamlit dashboards for students and teachers with
-            progress tracking and analytics, plus the Gemini API as an interactive tutor. Trained
-            exclusively on privacy-safe synthetic data.
-          </p>
-          <div class="stack"><span>Python</span><span>Scikit-learn</span><span>Streamlit</span><span>Gemini</span></div>
-        </a>
+        <div class="cell w5 rv" style="--i:3">
+          <div class="proj bikes">
+            <div class="proj-visual">
+            </div>
+            <div class="proj-body">
+              <span class="proj-num" aria-hidden="true">03</span>
+              <p class="proj-kind"><i></i>Workshop app</p>
+              <h3>David Bikes</h3>
+              <p class="proj-desc">A bike workshop's paper billing, replaced by one searchable customer and vehicle database.</p>
+              <ul class="proj-facts">
+                <li><b>Service history</b> for every bike, tied to its owner</li>
+                <li><b>Live invoices</b> and one-tap PDF bills, shared from the app</li>
+              </ul>
+              <div class="proj-foot">
+                <div class="chips"><span>Flutter</span><span>Firebase</span><span>PDF generation</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-        <div class="card rv" style="--i:6">
-          <h3>AI-Driven Recipe Generator</h3>
-          <p class="meta">Computer vision · research project</p>
-          <p>
-            A dual-model system: one network classifies food images across 63 classes trained on
-            8,000 images, a second generates the ingredient list from what it detects. Accuracy on
-            ingredient prediction came largely from investing in a large, well-labelled dataset.
-          </p>
-          <div class="stack"><span>Python</span><span>Deep Learning</span><span>Computer Vision</span></div>
+        <div class="cell w5 rv" style="--i:4">
+          <a class="proj mathan" href="https://mathan-jewellers.web.app" target="_blank" rel="noopener" data-track="mathan">
+            <div class="proj-visual">
+            </div>
+            <div class="proj-body">
+              <span class="proj-num" aria-hidden="true">04</span>
+              <p class="proj-kind"><i></i>Chit-fund register</p>
+              <h3>Mathan Jewellers</h3>
+              <p class="proj-desc">A bilingual English / Tamil register that retired a jeweller's paper ledger, live across every device.</p>
+              <ul class="proj-facts">
+                <li><b>Instant ranked search</b> by name, chit number or phone</li>
+                <li><b>Branded PDF statements</b>, shared straight to WhatsApp</li>
+                <li><b>Locked down in Firestore rules</b>, and it works offline</li>
+              </ul>
+              <div class="proj-foot">
+                <div class="chips"><span>React</span><span>TypeScript</span><span>Vite</span><span>Firestore</span><span>Tailwind</span><span>jsPDF</span></div>
+                <span class="cta">Open the app <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="cell w7 rv" style="--i:5">
+          <a class="proj learn" href="https://github.com/elmersonrajan/ai-personalized-learning" target="_blank" rel="noopener" data-track="learning">
+            <div class="proj-visual">
+            </div>
+            <div class="proj-body">
+              <span class="proj-num" aria-hidden="true">05</span>
+              <p class="proj-kind"><i></i>Machine-learning research</p>
+              <h3>AI Personalized Learning System</h3>
+              <p class="proj-desc">Profiles how a student learns, then recommends what to study next.</p>
+              <ul class="proj-facts">
+                <li><b>Random Forest</b> learner profiling</li>
+                <li><b>Dashboards</b> for students and teachers, with progress analytics</li>
+                <li><b>A Gemini tutor</b> built in, trained only on privacy-safe synthetic data</li>
+              </ul>
+              <div class="proj-foot">
+                <div class="chips"><span>Python</span><span>Scikit-learn</span><span>Streamlit</span><span>Gemini</span></div>
+                <span class="cta">View the code <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="cell rv" style="--i:6">
+          <div class="proj wide flip recipe">
+            <div class="proj-visual">
+            </div>
+            <div class="proj-body">
+              <span class="proj-num" aria-hidden="true">06</span>
+              <p class="proj-kind"><i></i>Computer-vision research</p>
+              <h3>AI-Driven Recipe Generator</h3>
+              <p class="proj-desc">Show it a food photo and it writes the ingredient list: one model recognises the dish, a second generates what goes into it.</p>
+              <ul class="proj-stats">
+                <li><b>63</b><span>food classes</span></li>
+                <li><b>8,000</b><span>training images</span></li>
+                <li><b>2</b><span>models, one pipeline</span></li>
+              </ul>
+              <div class="proj-foot">
+                <div class="chips"><span>Python</span><span>Deep Learning</span><span>Computer Vision</span></div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -851,12 +1012,12 @@
   }, { rootMargin: '-45% 0px -50% 0px' });
   document.querySelectorAll('main section[id]').forEach(function (s) { spy.observe(s); });
 
-  /* cursor spotlight on cards */
-  document.querySelectorAll('.card').forEach(function (card) {
-    card.addEventListener('pointermove', function (ev) {
-      var r = card.getBoundingClientRect();
-      card.style.setProperty('--x', (ev.clientX - r.left) + 'px');
-      card.style.setProperty('--y', (ev.clientY - r.top) + 'px');
+  /* project cards: a glow that follows the cursor */
+  document.querySelectorAll('.proj').forEach(function (el) {
+    el.addEventListener('pointermove', function (ev) {
+      var r = el.getBoundingClientRect();
+      el.style.setProperty('--x', ((ev.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+      el.style.setProperty('--y', ((ev.clientY - r.top) / r.height * 100).toFixed(1) + '%');
     });
   });
 
