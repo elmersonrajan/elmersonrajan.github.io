@@ -218,18 +218,23 @@
   }
   @keyframes spin { to { transform: rotate(360deg) } }
 
-  .cutout {
-    position: absolute; z-index: 2; right: 0; bottom: 0;
-    height: 580px; width: auto; display: block;
-    filter: drop-shadow(0 28px 50px rgba(0,0,0,.55));
+  /* The photo is two elements on purpose: the wrapper does the one-off entrance, the
+     image inside does the endless float. With both animations on one element Chrome
+     reports "target has incompatible animations" for the float and runs it on the main
+     thread, on every frame of the visit, even with the hero scrolled out of view. */
+  .cutout-wrap {
+    position: absolute; z-index: 2; right: 0; bottom: 0; display: block;
     opacity: 0; transform: translateY(34px) scale(.95);
     will-change: transform, opacity;
   }
-  :root[data-theme="light"] .cutout { filter: drop-shadow(0 24px 44px rgba(20,22,26,.26)); }
-  .loaded .cutout {
-    animation: meIn 1.15s cubic-bezier(.19,1,.22,1) .25s forwards,
-               float 7s ease-in-out 1.55s infinite;
+  .loaded .cutout-wrap { animation: meIn 1.15s cubic-bezier(.19,1,.22,1) .25s forwards; }
+  .cutout {
+    display: block; height: 580px; width: auto;
+    filter: drop-shadow(0 28px 50px rgba(0,0,0,.55));
+    will-change: transform;
   }
+  :root[data-theme="light"] .cutout { filter: drop-shadow(0 24px 44px rgba(20,22,26,.26)); }
+  .loaded .cutout { animation: float 7s ease-in-out 1.55s infinite; }
   @keyframes meIn { to { opacity: 1; transform: translateY(0) scale(1) } }
   @keyframes float { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-14px) } }
 
@@ -603,12 +608,8 @@
       margin: 0 0 -.40em;              /* em, so the overlap scales with the word */
       white-space: nowrap;
     }
-    .stage picture { display: block; }
-    .cutout {
-      position: relative; right: auto; bottom: auto; z-index: 2;
-      display: block; height: clamp(300px, 52vw + 160px, 460px);
-      width: auto; margin: 0 auto;           /* centred on phones */
-    }
+    .cutout-wrap { position: relative; right: auto; bottom: auto; }
+    .cutout { height: clamp(300px, 52vw + 160px, 460px); margin: 0 auto; }   /* centred on phones */
     .halo {
       width: clamp(270px, 62vw, 420px); height: clamp(270px, 62vw, 420px);
       top: 14%; bottom: auto; left: 0; right: 0; margin: 0 auto;   /* centred behind the figure */
@@ -683,7 +684,7 @@
         <h1 class="bigword" id="bigword" data-text="ELMERSON">ELMERSON</h1>
         <span class="halo" id="halo" aria-hidden="true"></span>
         <span class="ring" aria-hidden="true"></span>
-        <picture>
+        <picture class="cutout-wrap">
           <source srcset="me4.webp" type="image/webp">
           <img class="cutout" id="cutout" src="me4.png" width="780" height="1166" alt="Elmerson R" fetchpriority="high">
         </picture>
