@@ -7,6 +7,30 @@ A single static page: no framework, no build step. Edit `index.html`, push, and
 GitHub Pages republishes in about a minute. Pages are cached for 10 minutes, so
 add `?x=1` to the URL to see a change straight away.
 
+## Layout
+
+Top to bottom, each block is one `<section>` in `index.html`:
+
+| Section | What it shows |
+|---|---|
+| Hero | The name set page-wide behind the photo, with an outline copy drawn over it |
+| About (`#about`) | An intro line that fills in word by word on scroll, then five claims |
+| Now (`#experience`) | The four Doxa builds; pressing one plays a short walkthrough on a phone |
+| Work (`#work`) | Six project cards that pin and pile up on large screens |
+| Path (`#education`) | Degrees on a timeline, certificates underneath |
+| Toolbox (`#skills`) | Skills grouped by area |
+| Contact (`#contact`) | Email, LinkedIn, GitHub and the résumé |
+
+Things to keep when editing:
+
+- The phone walkthroughs are illustrations written for this page, not recordings.
+  Their text lives in the `DEMOS` object near the end of `index.html`.
+- The LYN MEET and Mathan Jewellers cards do not link out on purpose. They show a
+  "Live in production" label instead of a button.
+- The visit counter relies on the `data-track` attributes and on the sections
+  keeping the ids `work` and `contact`.
+- Colours and fonts are set once, in the `:root` block at the top of the `<style>`.
+
 ## Files
 
 | File | What it is |
@@ -29,7 +53,7 @@ no account.
 **What is counted:** page views (total and per day), new vs returning visitors,
 unique visitors per day, region, how people arrived, phone vs laptop, whether
 they reached the Work and Contact sections, and clicks on the résumé, GitHub,
-LinkedIn, email and each live project.
+LinkedIn, email and each linked project.
 
 **What is not:** no cookies, no IP addresses, no fingerprinting. Region comes
 from the browser's time-zone setting, not an IP lookup. Visitors with Do Not
