@@ -182,9 +182,9 @@
 
   .label {
     display: flex; align-items: center; gap: 14px; margin: 0;
-    font: 500 12px/1.2 var(--f-sans); letter-spacing: .18em; text-transform: uppercase; color: var(--faint);
+    font: 600 .76rem/1.2 var(--f-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--faint);
   }
-  .label::before { content: ""; width: 34px; height: 1px; flex: none; background: linear-gradient(90deg, var(--a1), var(--a2)); }
+  .label::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line-2), transparent); }
   .title {
     margin: .55em 0 0;
     font: 600 clamp(1.75rem, 3.4vw, 2.75rem)/1.12 var(--f-display);
@@ -802,10 +802,10 @@
   <a class="brand" href="#top"><i></i>Elmerson R</a>
   <nav class="nav-links" id="nav" aria-label="Sections">
     <a href="#about">About</a>
-    <a href="#experience">Now</a>
+    <a href="#experience">Experience</a>
     <a href="#work">Work</a>
-    <a href="#education">Path</a>
-    <a href="#skills">Toolbox</a>
+    <a href="#education">Education</a>
+    <a href="#skills">Skills</a>
     <a href="#contact">Contact</a>
   </nav>
   <div class="nav-end">
@@ -820,10 +820,10 @@
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
   <nav aria-label="Sections">
     <a href="#about"><small>01</small>About</a>
-    <a href="#experience"><small>02</small>Now</a>
+    <a href="#experience"><small>02</small>Experience</a>
     <a href="#work"><small>03</small>Work</a>
-    <a href="#education"><small>04</small>Path</a>
-    <a href="#skills"><small>05</small>Toolbox</a>
+    <a href="#education"><small>04</small>Education</a>
+    <a href="#skills"><small>05</small>Skills</a>
     <a href="#contact"><small>06</small>Contact</a>
   </nav>
   <div class="menu-foot">
@@ -894,7 +894,7 @@
   <!-- ===================== about ===================== -->
   <section id="about">
     <div class="wrap">
-      <p class="label rv">01 — About</p>
+      <p class="label rv">About</p>
       <p class="scrub" id="scrub">AI &amp; Data Science grad. <em>M.E. in Computer Science</em> underway. Already <em>shipping to production.</em></p>
 
       <ol class="claims">
@@ -910,7 +910,7 @@
   <!-- ===================== experience ===================== -->
   <section id="experience" class="exp panel">
     <div class="wrap">
-      <p class="label rv">02 — On the clock</p>
+      <p class="label rv">Experience</p>
       <h2 class="title rv">Software that <em>picks up the phone.</em></h2>
       <p class="sub rv">
         Then books the room, takes the payment and sends the job alert.
@@ -987,7 +987,7 @@
     <div class="wrap">
       <div class="work-head">
         <div>
-          <p class="label rv">03 — Selected work</p>
+          <p class="label rv">Selected work</p>
           <h2 class="title rv">Real products, <em>real users.</em></h2>
           <p class="sub rv">And a couple of experiments. <strong>Freelance full-stack developer</strong> since 2025 — production apps for clients and communities.</p>
         </div>
@@ -1267,7 +1267,7 @@
   <!-- ===================== education ===================== -->
   <section id="education" class="panel">
     <div class="wrap">
-      <p class="label rv">04 — Path</p>
+      <p class="label rv">Education</p>
       <h2 class="title rv">Still studying. <em>Already shipping.</em></h2>
 
       <div class="route" id="route">
@@ -1302,8 +1302,8 @@
   <!-- ===================== skills ===================== -->
   <section id="skills">
     <div class="wrap">
-      <p class="label rv">05 — Toolbox</p>
-      <h2 class="title rv">What I <em>reach for.</em></h2>
+      <p class="label rv">Skills</p>
+      <h2 class="title rv">What I <em>work with.</em></h2>
 
       <div class="kit">
         <div class="kit-row rv">
@@ -1342,9 +1342,9 @@
   <section id="contact" class="contact">
     <div class="wrap">
       <div class="cta-panel">
-        <p class="label rv">06 — Contact</p>
-        <h2 class="title rv">Let's build something <em>real.</em></h2>
-        <p class="sub rv">Open to work. The quickest ways to reach me:</p>
+        <p class="label rv">Contact</p>
+        <h2 class="title rv">Open to <em>work.</em></h2>
+        <p class="sub rv">The quickest ways to reach me:</p>
         <div class="mail-row rv">
           <a class="mail" href="mailto:elmersonrajan@gmail.com" data-track="email">elmersonrajan@gmail.com</a>
           <button class="btn" id="copy" type="button" aria-live="polite">Copy</button>
