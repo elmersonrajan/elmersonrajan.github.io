@@ -186,12 +186,12 @@
   }
   .label::before { content: ""; width: 34px; height: 1px; flex: none; background: linear-gradient(90deg, var(--a1), var(--a2)); }
   .title {
-    margin: .34em 0 0;
-    font: 700 clamp(2.5rem, 6.6vw, 5.8rem)/1.02 var(--f-display);
-    letter-spacing: -.045em; text-wrap: balance;
+    margin: .55em 0 0;
+    font: 600 clamp(1.75rem, 3.4vw, 2.75rem)/1.12 var(--f-display);
+    letter-spacing: -.03em; text-wrap: balance;
   }
   .title em { font-style: normal; color: var(--accent); }
-  .sub { margin: 20px 0 0; max-width: 58ch; font-size: clamp(1.02rem, 1.3vw, 1.16rem); color: var(--dim); }
+  .sub { margin: 14px 0 0; max-width: 60ch; font-size: 1.02rem; color: var(--dim); }
   .sub strong { color: var(--text); font-weight: 600; }
   section { position: relative; padding: clamp(76px, 10vw, 150px) 0; }
   /* a section that sits on its own raised sheet */
@@ -257,7 +257,7 @@
   .menu.open { opacity: 1; transform: none; }
   .menu[hidden] { display: none; }
   .menu nav { display: grid; }
-  .menu nav a { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); font: 600 clamp(2.1rem, 10vw, 3.6rem)/1.15 var(--f-display); letter-spacing: -.04em; text-decoration: none; }
+  .menu nav a { display: flex; align-items: baseline; gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--line); font: 600 clamp(1.45rem, 6.2vw, 2rem)/1.3 var(--f-display); letter-spacing: -.025em; text-decoration: none; }
   .menu nav a small { font: 500 12px/1 var(--f-sans); letter-spacing: .1em; color: var(--accent); }
   .menu-foot { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 26px; font-size: 14.5px; color: var(--dim); }
 
@@ -281,7 +281,7 @@
     animation: shimmer 7s linear 2;       /* twice after load, then still: it repaints while it runs */
   }
   @keyframes shimmer { to { background-position: -220% 0 } }
-  .lede { margin: 0; color: var(--dim); font-size: clamp(1.1rem, 1.45vw, 1.36rem); line-height: 1.42; letter-spacing: -.012em; }
+  .lede { margin: 0; color: var(--dim); font-size: clamp(1.02rem, 1.25vw, 1.15rem); line-height: 1.5; }
   .lede em { font-style: normal; font-weight: 500; color: var(--text); }
   .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; }
 
@@ -409,8 +409,8 @@
 
   /* ---------- about ---------- */
   .scrub {
-    margin: clamp(22px, 3vw, 40px) 0 0; max-width: 21ch;
-    font: 600 clamp(2rem, 5.6vw, 5rem)/1.05 var(--f-display); letter-spacing: -.045em;
+    margin: clamp(18px, 2.4vw, 28px) 0 0; max-width: 32ch;
+    font: 500 clamp(1.4rem, 2.7vw, 2.2rem)/1.28 var(--f-display); letter-spacing: -.025em;
   }
   .scrub em { font-style: normal; color: var(--accent); }
   .scrub .w { opacity: .15; transition: opacity .4s ease; }
@@ -427,9 +427,9 @@
     transform: scaleX(0); transform-origin: 0 50%; transition: transform .5s var(--ease);
   }
   .claim::after { content: ""; position: absolute; left: 0; top: -1px; width: 100%; height: 1px; background: linear-gradient(90deg, var(--a1), var(--a2), transparent 70%); transform: scaleX(0); transform-origin: 0 50%; transition: transform .6s var(--ease); }
-  .claim b { font: 600 clamp(1.35rem, 2.5vw, 2.1rem)/1.14 var(--f-display); letter-spacing: -.035em; transition: transform .45s var(--ease); }
+  .claim b { font: 600 clamp(1.06rem, 1.45vw, 1.24rem)/1.3 var(--f-display); letter-spacing: -.02em; transition: transform .45s var(--ease); }
   .claim .n { font: 500 12.5px/1 var(--f-sans); letter-spacing: .1em; color: var(--faint); transition: color .3s; }
-  .claim .p { color: var(--dim); font-size: 1rem; line-height: 1.55; }
+  .claim .p { color: var(--dim); font-size: .96rem; line-height: 1.6; }
   @media (hover: hover) {
     .claim:hover::before, .claim:hover::after { transform: scaleX(1); }
     .claim:hover b { transform: translateX(10px); }
@@ -457,7 +457,7 @@
   }
   .tab::before { content: ""; position: absolute; left: -1px; top: 22%; bottom: 22%; width: 3px; border-radius: 3px; background: linear-gradient(180deg, var(--a1), var(--a2)); transform: scaleY(0); transition: transform .4s var(--ease); }
   .tab .t-n { font: 500 12.5px/1 var(--f-sans); letter-spacing: .1em; color: var(--faint); }
-  .tab .t-name { display: block; font: 600 clamp(1.2rem, 2.1vw, 1.7rem)/1.12 var(--f-display); letter-spacing: -.03em; }
+  .tab .t-name { display: block; font: 600 clamp(1rem, 1.3vw, 1.14rem)/1.25 var(--f-display); letter-spacing: -.015em; }
   .tab .t-who { display: block; margin-top: 6px; font: 500 11.5px/1.2 var(--f-sans); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
   .tab .t-go { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line-2); border-radius: 50%; color: var(--dim); transition: background .3s, color .3s, border-color .3s, box-shadow .3s; }
   .tab .t-go svg { width: 13px; height: 13px; fill: currentColor; margin-left: 2px; }
@@ -467,7 +467,7 @@
   .tab[aria-selected="true"] .t-n { color: var(--accent); }
   .tab[aria-selected="true"] .t-go { background: linear-gradient(135deg, var(--a1), color-mix(in srgb, var(--a2) 55%, var(--a1))); border-color: transparent; color: var(--accent-ink); box-shadow: 0 0 24px -4px var(--glow); }
   .info { grid-area: info; }
-  .info h3 { margin: 0 0 8px; font: 600 1.22rem/1.2 var(--f-display); letter-spacing: -.025em; }
+  .info h3 { margin: 0 0 8px; font: 600 1.06rem/1.3 var(--f-display); letter-spacing: -.015em; }
   .info p { margin: 0 0 16px; color: var(--dim); max-width: 60ch; }
   .info-item { animation: fadeUp .45s var(--ease); }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(10px) } }
@@ -537,7 +537,7 @@
     .tab::before { left: 22%; right: 22%; top: -1px; bottom: auto; width: auto; height: 3px; background: linear-gradient(90deg, var(--a1), var(--a2)); transform: scaleX(0); }
     .tab[aria-selected="true"]::before { transform: scaleX(1); }
     .tab .t-n, .tab .t-go { display: none; }
-    .tab .t-name { font-size: clamp(1.02rem, 4.4vw, 1.4rem); }
+    .tab .t-name { font-size: clamp(.94rem, 3.9vw, 1.06rem); }
     .tab .t-who { font-size: 10.5px; margin-top: 5px; }
     .device { margin-top: 10px; }
   }
@@ -545,7 +545,7 @@
   /* ---------- work: the stack ---------- */
   .work-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px; }
   .work-count { margin: 0 0 6px; font: 500 12px/1.5 var(--f-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
-  .work-count b { margin-right: 10px; font: 700 clamp(2.4rem, 5vw, 4rem)/.9 var(--f-display); letter-spacing: -.04em; color: var(--text); vertical-align: -6px; }
+  .work-count b { margin-right: 8px; font: 700 1.8rem/1 var(--f-display); letter-spacing: -.03em; color: var(--text); vertical-align: -3px; }
   .cases { display: grid; gap: 22px; margin-top: clamp(40px, 6vw, 80px); }
   /* one card = one project, each with its own two-colour identity */
   .case {
@@ -574,23 +574,23 @@
   }
   .case::after { content: ""; position: absolute; inset: 0; z-index: 4; border-radius: inherit; background: #000; opacity: var(--shade, 0); pointer-events: none; }
   .case-body { position: relative; display: flex; flex-direction: column; gap: clamp(10px, 1.3vw, 16px); min-width: 0; padding: clamp(4px, .8vw, 12px); }
-  .case-top { display: flex; align-items: center; gap: 10px; margin: 0; padding-right: 86px; font-size: 11px; font-weight: 700; line-height: 1.3; letter-spacing: .16em; text-transform: uppercase; color: var(--ct); }
+  .case-top { display: flex; align-items: center; gap: 10px; margin: 0; padding-right: 58px; font-size: 11px; font-weight: 700; line-height: 1.3; letter-spacing: .16em; text-transform: uppercase; color: var(--ct); }
   .case-top::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--c1); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c1) 22%, transparent), 0 0 14px var(--c1); }
   .case-num {
     position: absolute; top: clamp(0px, .4vw, 8px); right: clamp(4px, .8vw, 12px); pointer-events: none; user-select: none;
-    font: 700 clamp(2.8rem, 4.4vw, 3.8rem)/1 var(--f-display); letter-spacing: -.04em;
+    font: 700 clamp(1.8rem, 2.4vw, 2.2rem)/1 var(--f-display); letter-spacing: -.03em;
     color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--c1) 52%, transparent); opacity: .8;
   }
-  .case h3 { margin: 4px 0 0; font: 700 clamp(2.2rem, 4.8vw, 4.1rem)/1 var(--f-display); letter-spacing: -.045em; text-wrap: balance; }
-  .case.long h3 { font-size: clamp(1.8rem, 3.3vw, 2.8rem); letter-spacing: -.04em; line-height: 1.04; }
-  .case-desc { margin: 0; max-width: 48ch; font-size: clamp(1rem, 1.25vw, 1.12rem); line-height: 1.5; color: var(--text); }
+  .case h3 { margin: 2px 0 0; font: 700 clamp(1.5rem, 2.4vw, 2.05rem)/1.12 var(--f-display); letter-spacing: -.03em; text-wrap: balance; }
+  .case.long h3 { font-size: clamp(1.3rem, 1.9vw, 1.65rem); line-height: 1.18; }
+  .case-desc { margin: 0; max-width: 52ch; font-size: 1rem; line-height: 1.55; color: var(--text); }
   .case-facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: .93rem; line-height: 1.45; color: var(--dim); }
   .case-facts li { position: relative; padding-left: 20px; }
   .case-facts li::before { content: ""; position: absolute; left: 2px; top: .5em; width: 7px; height: 7px; border-radius: 2px; transform: rotate(45deg); background: linear-gradient(135deg, var(--c1), var(--c2)); }
   .case-facts b { color: var(--text); font-weight: 600; }
   .case-stats { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px 34px; }
   .case-stats li { display: grid; }
-  .case-stats b { font: 700 clamp(2.2rem, 4vw, 3.2rem)/1 var(--f-display); letter-spacing: -.04em; background: linear-gradient(120deg, var(--c1), var(--c2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .case-stats b { font: 700 clamp(1.5rem, 2.1vw, 1.85rem)/1.1 var(--f-display); letter-spacing: -.03em; background: linear-gradient(120deg, var(--c1), var(--c2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .case-stats span { margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
   .case-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-top: auto; padding-top: 6px; }
   .case:hover .chips span { color: var(--text); border-color: color-mix(in srgb, var(--c1) 40%, transparent); background: color-mix(in srgb, var(--c1) 9%, transparent); }
@@ -627,7 +627,7 @@
 
   /* on a large screen the cards pin under the nav and pile up as you scroll; the
      script switches this on only when every card fits the window */
-  .cases.stack { display: block; --stick: 96px; --case-h: min(690px, calc(100vh - 96px - 70px - 30px)); }
+  .cases.stack { display: block; --stick: 96px; --case-h: min(560px, calc(100vh - 96px - 70px - 30px)); }
   .cases.stack .case { position: sticky; top: calc(var(--stick) + var(--n) * 14px); height: var(--case-h); margin-bottom: 30px; will-change: transform; }
   .cases.stack .case:last-child { margin-bottom: 0; }
   .cases.stack .case-visual { min-height: 0; }
@@ -710,9 +710,9 @@
   .stop.now::after { content: ""; position: absolute; left: 0; top: -50px; width: 18px; height: 18px; border-radius: 50%; background: var(--c); animation: ping 2.4s ease-out infinite; }
   @keyframes ping { 0% { transform: scale(1); opacity: .55 } 75%, 100% { transform: scale(3); opacity: 0 } }
   .route:not(.live) .stop.now::after { animation-play-state: paused; }
-  .yr { display: flex; align-items: center; gap: 12px; margin: 0; font: 700 clamp(1.9rem, 3.8vw, 3.2rem)/1 var(--f-display); letter-spacing: -.045em; white-space: nowrap; }
+  .yr { display: flex; align-items: center; gap: 12px; margin: 0; font: 700 clamp(1.3rem, 1.9vw, 1.6rem)/1.15 var(--f-display); letter-spacing: -.025em; white-space: nowrap; }
   .yr small { padding: 5px 10px; border-radius: 999px; background: color-mix(in srgb, var(--c) 16%, transparent); border: 1px solid color-mix(in srgb, var(--c) 45%, transparent); color: var(--c); font: 500 10.5px/1 var(--f-sans); letter-spacing: .14em; }
-  .deg { margin: 14px 0 4px; font: 600 clamp(1.05rem, 1.4vw, 1.22rem)/1.25 var(--f-display); letter-spacing: -.02em; }
+  .deg { margin: 10px 0 4px; font: 600 1.02rem/1.35 var(--f-display); letter-spacing: -.01em; }
   .inst { margin: 0; color: var(--dim); }
   .when { margin: 10px 0 0; font: 500 11.5px/1.3 var(--f-sans); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
   .tickets { list-style: none; margin: clamp(44px, 6vw, 80px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
@@ -736,7 +736,7 @@
   /* ---------- toolbox ---------- */
   .kit { margin-top: clamp(40px, 6vw, 80px); border-bottom: 1px solid var(--line); }
   .kit-row { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 2fr); gap: 12px 32px; align-items: start; padding: clamp(18px, 2.2vw, 28px) 0; border-top: 1px solid var(--line); }
-  .kit-row h3 { margin: 0; font: 600 clamp(1.25rem, 2.2vw, 1.8rem)/1.15 var(--f-display); letter-spacing: -.035em; }
+  .kit-row h3 { margin: 4px 0 0; font: 600 1rem/1.4 var(--f-display); letter-spacing: -.01em; }
   .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
   .pills li {
     padding: 6px 14px; border: 1px solid var(--line); border-radius: 11px; background: var(--card); color: var(--dim);
@@ -760,10 +760,10 @@
       color-mix(in srgb, var(--bg-2) 88%, transparent);
     box-shadow: inset 0 1px 0 var(--hi), 0 60px 120px -80px var(--glow);
   }
-  .cta-panel .title { font-size: clamp(2.7rem, 8.6vw, 7.6rem); }
+  .cta-panel .title { font-size: clamp(1.9rem, 3.8vw, 3rem); }
   .mail-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: clamp(26px, 4vw, 48px); }
   .mail {
-    font: 600 clamp(1.3rem, 4.6vw, 3.7rem)/1.15 var(--f-display); letter-spacing: -.04em; text-decoration: none;
+    font: 600 clamp(1.08rem, 2vw, 1.55rem)/1.25 var(--f-display); letter-spacing: -.02em; text-decoration: none;
     background: linear-gradient(90deg, var(--a1), var(--a2)) 0 100% / 100% 2px no-repeat;
     padding-bottom: .12em; transition: background-size .45s var(--ease);
     overflow-wrap: anywhere;
