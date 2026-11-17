@@ -299,8 +299,6 @@
     animation: spin 46s linear infinite;
   }
   .ring::after { content: ""; position: absolute; top: -4px; left: 50%; width: 7px; height: 7px; margin-left: -3.5px; border-radius: 50%; background: var(--a1); box-shadow: 0 0 14px var(--glow); }
-  .ring.r2 { bottom: 29%; width: calc(var(--ph) * .96); margin-left: calc(var(--ph) * -.48); border-style: solid; border-color: var(--line); animation-duration: 72s; animation-direction: reverse; }
-  .ring.r2::after { background: var(--a2); box-shadow: 0 0 14px color-mix(in srgb, var(--a2) 50%, transparent); }
   @keyframes spin { to { transform: rotate(360deg) } }
   .word {
     position: absolute; left: 0; right: 0; bottom: var(--wb); margin: 0;
@@ -330,13 +328,6 @@
   .me img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 28px 50px rgba(0,0,0,.55)); }
   :root[data-theme="light"] .me img { filter: drop-shadow(0 24px 44px rgba(20,22,26,.26)); }
 
-  .badge { position: relative; display: grid; place-items: center; width: 128px; height: 128px; border-radius: 50%; text-decoration: none; transition: transform .3s var(--ease); }
-  .badge:hover { transform: scale(1.06); }
-  .badge-ring { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 22s linear infinite; }
-  .badge-ring text { font: 500 10.5px var(--f-sans); letter-spacing: .08em; fill: var(--dim); }
-  .badge-core { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; background: linear-gradient(135deg, var(--a1), color-mix(in srgb, var(--a2) 55%, var(--a1))); color: var(--accent-ink); box-shadow: 0 0 34px -4px var(--glow); }
-  .badge-core svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; transition: transform .3s var(--ease); }
-  .badge:hover .badge-core svg { transform: translate(2px, -2px); }
   .hero-facts { margin: 0; padding: 0; list-style: none; text-align: right; font: 500 12px/2 var(--f-sans); letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
   .hero-facts li::after { content: ""; display: inline-block; width: 6px; height: 6px; margin-left: 12px; border-radius: 50%; background: var(--accent); vertical-align: 1px; }
   .hero-facts li:nth-child(2)::after { background: var(--a2); }
@@ -355,8 +346,7 @@
     .poster { position: absolute; left: 0; right: 0; bottom: 0; }
     .hero-lede { position: absolute; z-index: 4; left: 0; bottom: calc(var(--wb) + var(--wh) + 34px); max-width: min(430px, 30vw); }
     .hero-cta { position: absolute; z-index: 5; left: 0; bottom: 44px; }
-    .hero-aside { position: absolute; z-index: 4; right: 0; bottom: calc(var(--wb) + var(--wh) + 34px); }
-    .hero-facts { position: absolute; z-index: 4; right: 0; bottom: 44px; }
+    .hero-facts { position: absolute; z-index: 4; right: 0; bottom: calc(var(--wb) + var(--wh) + 34px); }
   }
   @media (max-width: 899.98px) {
     .hero {
@@ -367,12 +357,7 @@
     }
     .hero-cta { margin-top: 22px; }
     .poster { margin-top: clamp(40px, 10vw, 70px); }
-    .hero-aside { position: absolute; z-index: 4; right: -6px; bottom: calc(var(--ph) * .74); }
-    .badge { width: 96px; height: 96px; }
-    .badge-ring text { font-size: 11.5px; }
-    .badge-core { width: 40px; height: 40px; }
-    .badge-core svg { width: 16px; height: 16px; }
-    .hero-facts, .ring.r2 { display: none; }
+    .hero-facts { display: none; }
     .word-front { -webkit-text-stroke-width: 1px; }
   }
 
@@ -385,13 +370,10 @@
   @keyframes meIn { to { opacity: 1; transform: none; } }
   .js .halo, .js .ring { opacity: 0; }
   .js .loaded .halo, .js .loaded .ring { transition: opacity 1.4s ease .5s; opacity: 1; }
-  .js .badge { opacity: 0; scale: .8; }
-  .js .loaded .badge { animation: pop .7s var(--ease) forwards; animation-delay: calc(.95s + var(--i, 0) * 120ms); }
-  @keyframes pop { to { opacity: 1; scale: 1; } }
   .js .hero-lede > *, .js .hero-cta, .js .hero-facts { opacity: 0; transform: translateY(18px); }
   .js .loaded .hero-lede > *, .js .loaded .hero-cta, .js .loaded .hero-facts { animation: up .85s cubic-bezier(.19,1,.22,1) forwards; animation-delay: calc(.5s + var(--i, 0) * 110ms); }
   @keyframes up { to { opacity: 1; transform: none; } }
-  .hero:not(.live) .badge-ring, .hero:not(.live) .ring { animation-play-state: paused; }
+  .hero:not(.live) .ring { animation-play-state: paused; }
 
   /* ---------- marquee ---------- */
   .ribbon {
@@ -800,7 +782,6 @@
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .js .rv, .js .hero-lede > *, .js .hero-cta, .js .hero-facts, .js .me img, .js .halo, .js .ring { opacity: 1 !important; transform: none !important; }
     .js .word { clip-path: none !important; opacity: 1 !important; }
-    .js .badge { scale: 1 !important; opacity: 1 !important; }
     .scrub .w { opacity: 1 !important; }
     .route::before { transform: none !important; }
   }
@@ -886,23 +867,12 @@
       <div class="poster" id="poster">
         <span class="halo" aria-hidden="true"></span>
         <span class="ring" aria-hidden="true"></span>
-        <span class="ring r2" aria-hidden="true"></span>
         <h1 class="word word-back" aria-label="Elmerson R"><span aria-hidden="true">ELMERSON</span></h1>
         <picture class="me">
           <source srcset="me4.webp" type="image/webp">
           <img src="me4.png" width="780" height="1166" alt="Elmerson R, smiling, with a camera bag over his shoulder" fetchpriority="high">
         </picture>
         <div class="word word-front" aria-hidden="true"><span>ELMERSON</span></div>
-      </div>
-
-      <div class="hero-aside">
-        <a class="badge" href="#contact" style="--i:4" aria-label="Open to work — get in touch">
-          <svg class="badge-ring" viewBox="0 0 132 132" aria-hidden="true">
-            <defs><path id="badge-arc" d="M66 66m-48 0a48 48 0 1 1 96 0a48 48 0 1 1-96 0"/></defs>
-            <text><textPath href="#badge-arc" textLength="296" lengthAdjust="spacing">SAY HELLO ✦ LET'S BUILD SOMETHING REAL ✦</textPath></text>
-          </svg>
-          <span class="badge-core"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></span>
-        </a>
       </div>
 
       <ul class="hero-facts" style="--i:3" aria-label="What I build">
