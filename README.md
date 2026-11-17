@@ -15,10 +15,10 @@ Top to bottom, each block is one `<section>` in `index.html`:
 |---|---|
 | Hero | The name set page-wide behind the photo, with an outline copy drawn over it |
 | About (`#about`) | An intro line that fills in word by word on scroll, then five claims |
-| Now (`#experience`) | The four Doxa builds; pressing one plays a short walkthrough on a phone |
+| Experience (`#experience`) | The four Doxa builds; pressing one plays a short walkthrough on a phone |
 | Work (`#work`) | Six project cards that pin and pile up on large screens |
-| Path (`#education`) | Degrees on a timeline, certificates underneath |
-| Toolbox (`#skills`) | Skills grouped by area |
+| Education (`#education`) | Degrees on a timeline, certificates underneath |
+| Skills (`#skills`) | Skills grouped by area |
 | Contact (`#contact`) | Email, LinkedIn, GitHub and the résumé |
 
 Things to keep when editing:
