@@ -337,20 +337,6 @@
   }
   .me img { display: block; width: 100%; height: 100%; filter: drop-shadow(0 28px 50px rgba(0,0,0,.55)); }
   :root[data-theme="light"] .me img { filter: drop-shadow(0 24px 44px rgba(20,22,26,.26)); }
-  /* small glass labels floating beside the figure */
-  .tag {
-    position: absolute; z-index: 4; display: inline-flex; align-items: center; gap: 9px; padding: 8px 14px 8px 12px;
-    border: 1px solid var(--line-2); border-radius: 999px;
-    background: color-mix(in srgb, var(--bg) 62%, transparent);
-    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-    box-shadow: inset 0 1px 0 var(--hi), 0 14px 30px -16px var(--shadow);
-    font-size: 13px; font-weight: 600; line-height: 1.2; white-space: nowrap;
-    transform: translate3d(calc(var(--px, 0) * var(--k, 20) * 1px), calc(var(--py, 0) * var(--k, 20) * .6px), 0);
-  }
-  .tag i { width: 7px; height: 7px; border-radius: 50%; background: var(--c, var(--a1)); box-shadow: 0 0 12px var(--c, var(--a1)); }
-  .tag.t1 { --k: 26; left: 17%; bottom: calc(var(--wb) + var(--wh) - 20px); }
-  .tag.t2 { --k: -22; --c: var(--a2); right: 13%; bottom: calc(var(--wb) + var(--wh) * .4); }
-  .tag.t3 { --k: 16; --c: var(--a3); left: 26%; bottom: calc(var(--wb) - 18px); }
 
   .badge { position: relative; display: grid; place-items: center; width: 128px; height: 128px; border-radius: 50%; text-decoration: none; transition: transform .3s var(--ease); }
   .badge:hover { transform: scale(1.06); }
@@ -395,10 +381,6 @@
     .badge-core { width: 40px; height: 40px; }
     .badge-core svg { width: 16px; height: 16px; }
     .hero-facts, .ring.r2 { display: none; }
-    .tag { font-size: 11.5px; padding: 6px 11px 6px 9px; gap: 7px; }
-    .tag.t1 { left: 0; bottom: calc(var(--wb) + var(--wh) + 6px); }
-    .tag.t2 { right: 0; bottom: calc(var(--wb) - 34px); }
-    .tag.t3 { display: none; }
     .word-front { -webkit-text-stroke-width: 1px; }
   }
 
@@ -411,8 +393,8 @@
   @keyframes meIn { to { opacity: 1; transform: none; } }
   .js .halo, .js .ring { opacity: 0; }
   .js .loaded .halo, .js .loaded .ring { transition: opacity 1.4s ease .5s; opacity: 1; }
-  .js .tag, .js .badge { opacity: 0; scale: .8; }
-  .js .loaded .tag, .js .loaded .badge { animation: pop .7s var(--ease) forwards; animation-delay: calc(.95s + var(--i, 0) * 120ms); }
+  .js .badge { opacity: 0; scale: .8; }
+  .js .loaded .badge { animation: pop .7s var(--ease) forwards; animation-delay: calc(.95s + var(--i, 0) * 120ms); }
   @keyframes pop { to { opacity: 1; scale: 1; } }
   .js .hero-lede > *, .js .hero-cta, .js .hero-facts { opacity: 0; transform: translateY(18px); }
   .js .loaded .hero-lede > *, .js .loaded .hero-cta, .js .loaded .hero-facts { animation: up .85s cubic-bezier(.19,1,.22,1) forwards; animation-delay: calc(.5s + var(--i, 0) * 110ms); }
@@ -826,7 +808,7 @@
     *, *::before, *::after { animation: none !important; transition: none !important; }
     .js .rv, .js .hero-lede > *, .js .hero-cta, .js .hero-facts, .js .me img, .js .halo, .js .ring { opacity: 1 !important; transform: none !important; }
     .js .word { clip-path: none !important; opacity: 1 !important; }
-    .js .tag, .js .badge { scale: 1 !important; opacity: 1 !important; }
+    .js .badge { scale: 1 !important; opacity: 1 !important; }
     .scrub .w { opacity: 1 !important; }
     .route::before { transform: none !important; }
   }
