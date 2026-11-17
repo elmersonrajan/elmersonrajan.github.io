@@ -766,6 +766,10 @@
     .hero-cta .btn.icon { width: auto; padding: 0 20px; }
     .hero-cta .btn.icon .btn-text { display: inline; }
   }
+  @media (max-width: 560px) {
+    .foot-row { display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; }
+    .foot-row > :nth-child(even) { justify-self: end; text-align: right; }
+  }
   @media (max-width: 460px) {
     .contact-links .btn { flex: 1 1 auto; }
   }
