@@ -193,7 +193,7 @@
   .title em { font-style: normal; color: var(--accent); }
   .sub { margin: 14px 0 0; max-width: 60ch; font-size: 1.02rem; color: var(--dim); }
   .sub strong { color: var(--text); font-weight: 600; }
-  section { position: relative; padding: clamp(76px, 10vw, 150px) 0; }
+  section { position: relative; padding: clamp(60px, 7.5vw, 108px) 0; }
   /* a section that sits on its own raised sheet */
   .panel {
     margin-inline: clamp(8px, 1.4vw, 22px);
@@ -397,11 +397,11 @@
   .scrub em { font-style: normal; color: var(--accent); }
   .scrub .w { opacity: .15; transition: opacity .4s ease; }
   .scrub .w.on { opacity: 1; }
-  .claims { list-style: none; margin: clamp(48px, 8vw, 110px) 0 0; padding: 0; border-bottom: 1px solid var(--line); }
+  .claims { list-style: none; margin: clamp(30px, 4.5vw, 52px) 0 0; padding: 0; border-bottom: 1px solid var(--line); }
   .claim {
     position: relative; isolation: isolate;
     display: grid; grid-template-columns: 4.4rem minmax(0, 1.15fr) minmax(0, 1fr); gap: 6px clamp(18px, 3vw, 44px); align-items: baseline;
-    padding: clamp(20px, 2.4vw, 32px) clamp(8px, 1.4vw, 20px); border-top: 1px solid var(--line);
+    padding: clamp(15px, 1.7vw, 21px) clamp(8px, 1.2vw, 16px); border-top: 1px solid var(--line);
   }
   .claim::before {                       /* a wash of the accent that wipes in from the left */
     content: ""; position: absolute; inset: 0; z-index: -1;
@@ -427,12 +427,12 @@
     display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr);
     grid-template-areas: "tabs device" "info device";
     gap: 30px clamp(28px, 6vw, 96px); align-items: start;
-    margin-top: clamp(40px, 6vw, 80px);
+    margin-top: clamp(28px, 4vw, 46px);
   }
   .tabs { grid-area: tabs; display: grid; gap: 8px; }
   .tab {
     position: relative; display: grid; grid-template-columns: 2.4rem minmax(0, 1fr) auto; align-items: center; gap: 4px 14px;
-    width: 100%; margin: 0; padding: 15px 16px 15px 20px; text-align: left;
+    width: 100%; margin: 0; padding: 12px 14px 12px 18px; text-align: left;
     border: 1px solid var(--line); border-radius: 18px;
     background: var(--card); color: inherit; font: inherit; cursor: pointer;
     transition: background .25s, border-color .25s, box-shadow .3s;
@@ -441,7 +441,7 @@
   .tab .t-n { font: 500 12.5px/1 var(--f-sans); letter-spacing: .1em; color: var(--faint); }
   .tab .t-name { display: block; font: 600 clamp(1rem, 1.3vw, 1.14rem)/1.25 var(--f-display); letter-spacing: -.015em; }
   .tab .t-who { display: block; margin-top: 6px; font: 500 11.5px/1.2 var(--f-sans); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
-  .tab .t-go { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line-2); border-radius: 50%; color: var(--dim); transition: background .3s, color .3s, border-color .3s, box-shadow .3s; }
+  .tab .t-go { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--line-2); border-radius: 50%; color: var(--dim); transition: background .3s, color .3s, border-color .3s, box-shadow .3s; }
   .tab .t-go svg { width: 13px; height: 13px; fill: currentColor; margin-left: 2px; }
   .tab:hover { border-color: var(--line-2); background: var(--card-hi); }
   .tab[aria-selected="true"] { background: var(--card-hi); border-color: color-mix(in srgb, var(--a1) 42%, var(--line)); box-shadow: inset 0 1px 0 var(--hi); }
@@ -528,7 +528,7 @@
   .work-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px; }
   .work-count { margin: 0 0 6px; font: 500 12px/1.5 var(--f-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
   .work-count b { margin-right: 8px; font: 700 1.8rem/1 var(--f-display); letter-spacing: -.03em; color: var(--text); vertical-align: -3px; }
-  .cases { display: grid; gap: 22px; margin-top: clamp(40px, 6vw, 80px); }
+  .cases { display: grid; gap: 22px; margin-top: clamp(28px, 4vw, 46px); }
   /* one card = one project, each with its own two-colour identity */
   .case {
     --c1: #7ef0b0; --c2: #38bdf8; --ct: var(--c1);
@@ -675,7 +675,7 @@
   /* scenes:end */
 
   /* ---------- path ---------- */
-  .route { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(20px, 3vw, 44px); margin-top: clamp(48px, 7vw, 96px); padding-top: 50px; }
+  .route { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 clamp(20px, 3vw, 44px); margin-top: clamp(36px, 5vw, 58px); padding-top: 50px; }
   .route::before {
     content: ""; position: absolute; left: 0; right: 0; top: 8px; height: 2px; border-radius: 2px;
     background: var(--line-2);
@@ -693,7 +693,7 @@
   .deg { margin: 10px 0 4px; font: 600 1.02rem/1.35 var(--f-display); letter-spacing: -.01em; }
   .inst { margin: 0; color: var(--dim); }
   .when { margin: 10px 0 0; font: 500 11.5px/1.3 var(--f-sans); letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
-  .tickets { list-style: none; margin: clamp(44px, 6vw, 80px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .tickets { list-style: none; margin: clamp(30px, 4vw, 46px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
   .ticket { padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
   .ticket b { display: block; font-weight: 600; font-size: .98rem; line-height: 1.4; }
   .ticket span { display: block; margin-top: 6px; font-size: .86rem; color: var(--faint); }
@@ -705,8 +705,8 @@
   }
 
   /* ---------- toolbox ---------- */
-  .kit { margin-top: clamp(40px, 6vw, 80px); border-bottom: 1px solid var(--line); }
-  .kit-row { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 2fr); gap: 12px 32px; align-items: start; padding: clamp(18px, 2.2vw, 28px) 0; border-top: 1px solid var(--line); }
+  .kit { margin-top: clamp(28px, 4vw, 46px); border-bottom: 1px solid var(--line); }
+  .kit-row { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 2fr); gap: 12px 32px; align-items: start; padding: clamp(14px, 1.6vw, 19px) 0; border-top: 1px solid var(--line); }
   .kit-row h3 { margin: 4px 0 0; font: 600 1rem/1.4 var(--f-display); letter-spacing: -.01em; }
   .pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
   .pills li {
@@ -722,7 +722,7 @@
   /* ---------- contact ---------- */
   .contact { padding-bottom: 0; }
   .cta-panel {
-    position: relative; overflow: hidden; padding: clamp(28px, 6vw, 88px);
+    position: relative; overflow: hidden; padding: clamp(24px, 5vw, 60px);
     border: 1px solid var(--line); border-radius: var(--r-block);
     background:
       radial-gradient(90% 110% at 50% 130%, color-mix(in srgb, var(--a1) 20%, transparent), transparent 62%),
@@ -730,7 +730,7 @@
     box-shadow: inset 0 1px 0 var(--hi);
   }
   .cta-panel .title { font-size: clamp(1.9rem, 3.8vw, 3rem); }
-  .mail-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: clamp(26px, 4vw, 48px); }
+  .mail-row { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: clamp(20px, 3vw, 30px); }
   .mail {
     font: 600 clamp(1.08rem, 2vw, 1.55rem)/1.25 var(--f-display); letter-spacing: -.02em; text-decoration: none;
     background: linear-gradient(90deg, var(--a1), var(--a2)) 0 100% / 100% 2px no-repeat;
@@ -738,7 +738,7 @@
     overflow-wrap: anywhere;
   }
   .mail:hover { background-size: 0% 2px; background-position: 100% 100%; }
-  .contact-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(26px, 4vw, 44px); }
+  .contact-links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: clamp(18px, 2.6vw, 26px); }
   footer { padding: 30px 0 40px; font: 500 12px/1.5 var(--f-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
   .foot-row { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; align-items: center; }
   .foot-row a { text-decoration: none; transition: color .2s; }
