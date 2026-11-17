@@ -515,7 +515,7 @@
   .replay:hover { text-decoration: underline; text-underline-offset: 3px; }
   @media (max-width: 900px) {
     .board { grid-template-columns: minmax(0, 1fr); grid-template-areas: "tabs" "device" "info"; }
-    .tabs { grid-template-columns: 1fr 1fr; }
+    .tabs { grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
     .tab { grid-template-columns: minmax(0, 1fr); padding: 12px 14px; border-radius: 16px; min-height: 76px; align-content: center; }
     .tab::before { left: 22%; right: 22%; top: -1px; bottom: auto; width: auto; height: 3px; background: linear-gradient(90deg, var(--a1), var(--a2)); transform: scaleX(0); }
     .tab[aria-selected="true"]::before { transform: scaleX(1); }
@@ -966,7 +966,7 @@
           <div class="phone" id="phone" data-demo="voice" data-mode="call" aria-hidden="true">
             <div class="ph-bar">
               <span class="ph-av"><svg viewBox="0 0 16 16"><path id="ph-icon" d="M5.2 2.2 3.4 2.6c-.6.1-1 .7-.9 1.3.6 5 4.6 9 9.6 9.6.6.1 1.2-.3 1.3-.9l.4-1.8-2.9-1.4-1.2 1.2c-1.6-.7-2.9-2-3.6-3.6l1.2-1.2z"/></svg></span>
-              <span class="ph-id"><b id="ph-title">Susee Hyundai</b><small id="ph-sub">AI front desk · live call</small></span>
+              <span class="ph-id"><b id="ph-title">Susee Hyundai</b><small id="ph-sub">AI front desk</small></span>
               <span class="ph-time" id="ph-time">00:00</span>
             </div>
             <div class="ph-wave" id="ph-wave"></div>
@@ -1548,7 +1548,7 @@
   };
   var DEMOS = {
     voice: {
-      title: 'Susee Hyundai', sub: 'AI front desk · live call', mode: 'call', icon: 'call',
+      title: 'Susee Hyundai', sub: 'AI front desk', mode: 'call', icon: 'call',
       foot: 'Handled end to end by the agent',
       steps: [
         { k: 'from', tag: 'Caller · English', text: "Hi, I'd like to book a service for my car." },
@@ -1561,7 +1561,7 @@
       ]
     },
     booking: {
-      title: 'Goimomi Holidays', sub: 'Booking assistant · chat', mode: 'chat', icon: 'chat',
+      title: 'Goimomi Holidays', sub: 'Booking assistant', mode: 'chat', icon: 'chat',
       foot: 'Enquiry to paid booking, one chat',
       steps: [
         { k: 'from', text: 'Need a hotel for 2 nights and a cab from the airport.' },
@@ -1573,7 +1573,7 @@
       ]
     },
     hotel: {
-      title: 'Thangam Stay Inn', sub: 'Website · booking engine', mode: 'steps', icon: 'site',
+      title: 'Thangam Stay Inn', sub: 'Booking engine', mode: 'steps', icon: 'site',
       foot: 'From the website to the front desk',
       steps: [
         { k: 'step', title: 'Room and dates picked', text: 'Straight from the hotel website' },
