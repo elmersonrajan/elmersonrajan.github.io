@@ -766,6 +766,9 @@
     .hero-cta { display: grid; grid-template-columns: 1fr 1fr; }
     .hero-cta .btn.icon { width: auto; padding: 0 20px; }
     .hero-cta .btn.icon .btn-text { display: inline; }
+    /* the three figures on the recipe card stay on one row */
+    .case-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 14px; }
+    .case-stats span { font-size: 10px; letter-spacing: .06em; }
   }
   @media (max-width: 560px) {
     .foot-row { display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; }
