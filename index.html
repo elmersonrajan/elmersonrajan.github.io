@@ -608,10 +608,12 @@
 
   /* on a large screen the cards pin under the nav and pile up as you scroll; the
      script switches this on only when every card fits the window */
-  .cases.stack { display: block; --stick: 96px; --case-h: min(560px, calc(100vh - 96px - 84px - 30px)); }
-  .cases.stack .case { position: sticky; top: calc(var(--stick) + var(--n) * 14px); height: var(--case-h); margin-bottom: 30px; will-change: transform; }
-  .cases.stack .case:last-child { margin-bottom: 0; }
-  .cases.stack .case-visual { min-height: 0; }
+  @media (min-width: 1000px) and (min-height: 700px) {
+    .cases.stack { display: block; --stick: 96px; --case-h: min(560px, calc(100vh - 96px - 84px - 30px)); }
+    .cases.stack .case { position: sticky; top: calc(var(--stick) + var(--n) * 14px); height: var(--case-h); margin-bottom: 30px; will-change: transform; }
+    .cases.stack .case:last-child { margin-bottom: 0; }
+    .cases.stack .case-visual { min-height: 0; }
+  }
 
   @media (max-width: 899.98px) {
     .case { grid-template-columns: minmax(0, 1fr); }
@@ -1551,6 +1553,7 @@
         }
       }
     }
+    if (stackOn && !stackMQ.matches) setupStack();     /* the window shrank and no event told us */
     if (stackOn) updateStack(vh);
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
