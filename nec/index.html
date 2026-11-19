@@ -131,7 +131,9 @@
     font: 600 .76rem/1.2 var(--f-sans); letter-spacing: .16em; text-transform: uppercase; color: var(--faint);
   }
   .label::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line-2), transparent); }
-  h1 { margin: .5em 0 0; font: 600 clamp(2rem, 4.6vw, 3.3rem)/1.08 var(--f-display); letter-spacing: -.035em; }
+  h1 { display: flex; align-items: center; gap: .34em; margin: .5em 0 0; font: 600 clamp(2rem, 4.6vw, 3.3rem)/1.08 var(--f-display); letter-spacing: -.035em; }
+  /* the college emblem, on a white disc so it reads the same in both themes */
+  .nec-logo { flex: none; width: 1.42em; height: 1.42em; padding: .07em; border-radius: 50%; background: #fff; box-shadow: 0 0 0 1px var(--line-2), 0 10px 24px -14px var(--shadow); }
   h1 em { font-style: normal; color: var(--accent); }
   .sub { margin: 14px 0 0; max-width: 56ch; color: var(--dim); font-size: 1.02rem; text-wrap: balance; }
 
@@ -247,7 +249,7 @@
 <main id="main">
   <div class="wrap">
     <p class="label rise" style="--i:0">National Engineering College</p>
-    <h1 class="rise" style="--i:1">NEC <em>Projects</em></h1>
+    <h1 class="rise" style="--i:1"><img class="nec-logo" src="nec-logo.png" width="512" height="512" alt="National Engineering College logo"><span>NEC <em>Projects</em></span></h1>
     <p class="sub rise" style="--i:2">Course projects from my M.E. in Computer Science. Choose one to open it.</p>
 
     <div class="tiles">
