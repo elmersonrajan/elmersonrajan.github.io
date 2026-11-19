@@ -33,7 +33,7 @@ Things to keep when editing:
 
 ## The projects page
 
-`projects/index.html` is its own small page with one large tile per course project.
+`nec/index.html` is its own small page with one large tile per course project.
 
 - A project with a link is an `<a class="tile">`; set its `href` to where it should open.
 - A project without a link yet is a `<div class="tile soon">`, so it does not look or act like a button.
@@ -46,7 +46,9 @@ Things to keep when editing:
 | File | What it is |
 |---|---|
 | `index.html` | The whole site — markup, styles and motion in one file |
-| `projects/index.html` | The NEC Projects page, served at https://elmerson.me/projects |
+| `nec/index.html` | The NEC Projects page, served at https://elmerson.me/nec |
+| `nec/nec-logo.png` | National Engineering College emblem shown beside the page title |
+| `projects/index.html` | Only forwards the old address /projects to /nec |
 | `analytics.js` | Anonymous, cookie-free visit counting |
 | `stats.html` | Private dashboard for those counts |
 | `elmerson-r-resume.pdf` | Résumé, linked from the hero and contact buttons |
