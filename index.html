@@ -1560,6 +1560,8 @@
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(function () { setupStack(); frame(); }, 150);
   });
+  /* also when the window crosses the size the pile needs, in case no resize event arrives */
+  stackMQ.addEventListener('change', function () { setupStack(); frame(); });
   setupStack(); frame();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { setupStack(); frame(); });
 
