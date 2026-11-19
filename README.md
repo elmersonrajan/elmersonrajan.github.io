@@ -48,7 +48,6 @@ Things to keep when editing:
 | `index.html` | The whole site — markup, styles and motion in one file |
 | `nec/index.html` | The NEC Projects page, served at https://elmerson.me/nec |
 | `nec/nec-logo.png` | National Engineering College emblem shown beside the page title |
-| `projects/index.html` | Only forwards the old address /projects to /nec |
 | `analytics.js` | Anonymous, cookie-free visit counting |
 | `stats.html` | Private dashboard for those counts |
 | `elmerson-r-resume.pdf` | Résumé, linked from the hero and contact buttons |
