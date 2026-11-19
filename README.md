@@ -16,7 +16,7 @@ Top to bottom, each block is one `<section>` in `index.html`:
 | Hero | The name set page-wide behind the photo, with an outline copy drawn over it |
 | About (`#about`) | An intro line that fills in word by word on scroll, then five claims |
 | Experience (`#experience`) | The four Doxa builds; pressing one plays a short walkthrough on a phone |
-| Work (`#work`) | Six project cards that pin and pile up on large screens |
+| Work (`#work`) | Seven project cards that pin and pile up on large screens |
 | Education (`#education`) | Degrees on a timeline, certificates underneath |
 | Skills (`#skills`) | Skills grouped by area |
 | Contact (`#contact`) | Email, LinkedIn, GitHub and the résumé |
@@ -25,8 +25,8 @@ Things to keep when editing:
 
 - The phone walkthroughs are illustrations written for this page, not recordings.
   Their text lives in the `DEMOS` object near the end of `index.html`.
-- The LYN MEET and Mathan Jewellers cards do not link out on purpose. They show a
-  "Live in production" label instead of a button.
+- The LYN MEET, DAN BONIM and Mathan Jewellers cards do not link out on purpose. Each shows
+  a short status label instead of a button.
 - The visit counter relies on the `data-track` attributes and on the sections
   keeping the ids `work` and `contact`.
 - Colours and fonts are set once, in the `:root` block at the top of the `<style>`.
