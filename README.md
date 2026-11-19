@@ -50,7 +50,7 @@ Things to keep when editing:
 | `nec/nec-logo.png` | National Engineering College emblem shown beside the page title |
 | `analytics.js` | Anonymous, cookie-free visit counting |
 | `stats.html` | Private dashboard for those counts |
-| `elmerson-r-resume.pdf` | Résumé, linked from the hero and contact buttons |
+| `resume.pdf` | Résumé, served at https://elmerson.me/resume.pdf and linked from the hero, menu and contact buttons |
 | `me4.webp` / `me4.png` | Current hero cutout (WebP, with PNG fallback) |
 | `portrait4.jpg` | Square crop used for the favicon and link previews |
 | `me*.*`, `portrait*.jpg` | Earlier cutouts, kept on purpose |
