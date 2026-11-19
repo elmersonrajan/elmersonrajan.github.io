@@ -31,11 +31,22 @@ Things to keep when editing:
   keeping the ids `work` and `contact`.
 - Colours and fonts are set once, in the `:root` block at the top of the `<style>`.
 
+## The projects page
+
+`projects/index.html` is its own small page with one large tile per course project.
+
+- A project with a link is an `<a class="tile">`; set its `href` to where it should open.
+- A project without a link yet is a `<div class="tile soon">`, so it does not look or act like a button.
+  To switch it on, change the `div` to an `a`, add the `href`, remove `soon`, and update the
+  small label and the text at the bottom of the tile.
+- To add a project, copy a tile and change its number, title, text and the two colours (`--c1`, `--c2`).
+
 ## Files
 
 | File | What it is |
 |---|---|
 | `index.html` | The whole site — markup, styles and motion in one file |
+| `projects/index.html` | The NEC Projects page, served at https://elmerson.me/projects |
 | `analytics.js` | Anonymous, cookie-free visit counting |
 | `stats.html` | Private dashboard for those counts |
 | `elmerson-r-resume.pdf` | Résumé, linked from the hero and contact buttons |
