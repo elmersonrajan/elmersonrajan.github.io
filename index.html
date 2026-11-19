@@ -528,45 +528,136 @@
   .work-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px; }
   .work-count { margin: 0 0 6px; font: 500 12px/1.5 var(--f-sans); letter-spacing: .14em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
   .work-count b { margin-right: 8px; font: 700 1.8rem/1 var(--f-display); letter-spacing: -.03em; color: var(--text); vertical-align: -3px; }
-  .cases { display: grid; gap: 22px; margin-top: clamp(28px, 4vw, 46px); }
-  /* one card = one project, each with its own two-colour identity */
-  .case {
-    --c1: #7ef0b0; --c2: #38bdf8; --ct: var(--c1);
-    position: relative; isolation: isolate;
-    display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr); gap: clamp(18px, 2.6vw, 40px);
-    padding: clamp(16px, 2.2vw, 30px);
-    border-radius: clamp(22px, 2.4vw, 32px);
-    background:
-      radial-gradient(520px circle at var(--x, 22%) var(--y, 0%), color-mix(in srgb, var(--c1) 12%, transparent), transparent 62%),
-      linear-gradient(160deg, color-mix(in srgb, var(--c1) 8%, var(--panel)), var(--panel) 46%);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 -22px 50px -34px rgba(0,0,0,.9);
-    transform-origin: 50% 0;
+  /* a group of projects: a small heading, then its cards */
+  .group { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: clamp(26px, 3.6vw, 40px) 0 12px; }
+  .group h3 { margin: 0; font: 600 1.02rem/1.3 var(--f-display); letter-spacing: -.01em; }
+  .group > span { font-size: 12.5px; color: var(--faint); white-space: nowrap; }
+  .group .swipe { display: none; }
+  .grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+
+  /* One card is one project at a glance: a picture, a name and one line. The full story
+     is one tap away in the sheet, so the section stays short and easy to scan. */
+  .card, .case { --c1: #7ef0b0; --c2: #38bdf8; --ct: var(--c1); }
+  .card.dan, .case.dan       { --c1: #fbbf24; --c2: #f97316; }
+  .card.mlcc, .case.mlcc     { --c1: #c4a5ff; --c2: #f472b6; }
+  .card.bikes, .case.bikes   { --c1: #fdba74; --c2: #fb7185; }
+  .card.mathan, .case.mathan { --c1: #fde68a; --c2: #f59e0b; }
+  .card.learn, .case.learn   { --c1: #7dd3fc; --c2: #818cf8; }
+  .card.recipe, .case.recipe { --c1: #bef264; --c2: #34d399; }
+  .card {
+    position: relative; isolation: isolate; overflow: hidden;
+    grid-column: span 2; display: flex; flex-direction: column; min-width: 0;
+    border-radius: 22px;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--c1) 8%, var(--panel)), var(--panel) 50%);
+    box-shadow: inset 0 1px 0 var(--hi), 0 30px 50px -40px var(--shadow);
+    transition: transform .35s var(--ease), box-shadow .35s;
   }
-  .case.dan    { --c1: #fbbf24; --c2: #f97316; }
-  .case.mlcc   { --c1: #c4a5ff; --c2: #f472b6; }
-  .case.bikes  { --c1: #fdba74; --c2: #fb7185; }
-  .case.mathan { --c1: #fde68a; --c2: #f59e0b; }
-  .case.learn  { --c1: #7dd3fc; --c2: #818cf8; }
-  .case.recipe { --c1: #bef264; --c2: #34d399; }
-  .case::before {                        /* gradient ring, drawn only on the border */
-    content: ""; position: absolute; inset: 0; z-index: 3; border-radius: inherit; padding: 1.2px; pointer-events: none;
-    background: linear-gradient(120deg, var(--c1), var(--c2) 30%, rgba(255,255,255,.1) 58%, var(--c1));
+  .card::before {                        /* gradient ring, drawn only on the border */
+    content: ""; position: absolute; inset: 0; z-index: 2; border-radius: inherit; padding: 1.2px; pointer-events: none;
+    background: linear-gradient(130deg, var(--c1), var(--c2) 34%, rgba(255,255,255,.08) 62%, var(--c1));
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor; mask-composite: exclude;
-    opacity: .4;
+    opacity: .32; transition: opacity .35s;
   }
-  .case::after { content: ""; position: absolute; inset: 0; z-index: 4; border-radius: inherit; background: #000; opacity: var(--shade, 0); pointer-events: none; }
-  .case-body { position: relative; display: flex; flex-direction: column; gap: clamp(10px, 1.3vw, 16px); min-width: 0; padding: clamp(4px, .8vw, 12px); }
-  .case-top { display: flex; align-items: center; gap: 10px; margin: 0; padding-right: 58px; font-size: 11px; font-weight: 700; line-height: 1.3; letter-spacing: .16em; text-transform: uppercase; color: var(--ct); }
-  .case-top::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--c1); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c1) 22%, transparent), 0 0 14px var(--c1); }
-  .case-num {
-    position: absolute; top: clamp(0px, .4vw, 8px); right: clamp(4px, .8vw, 12px); pointer-events: none; user-select: none;
-    font: 700 clamp(1.8rem, 2.4vw, 2.2rem)/1 var(--f-display); letter-spacing: -.03em;
-    color: transparent; -webkit-text-stroke: 1px color-mix(in srgb, var(--c1) 52%, transparent); opacity: .8;
+  .card-visual, .case-visual {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(120% 90% at 18% 0%, color-mix(in srgb, var(--c1) 34%, transparent), transparent 62%),
+      radial-gradient(110% 100% at 100% 100%, color-mix(in srgb, var(--c2) 30%, transparent), transparent 60%),
+      #0a0d12;
   }
-  .case h3 { margin: 2px 0 0; font: 700 clamp(1.5rem, 2.4vw, 2.05rem)/1.12 var(--f-display); letter-spacing: -.03em; text-wrap: balance; }
-  .case.long h3 { font-size: clamp(1.3rem, 1.9vw, 1.65rem); line-height: 1.18; }
-  .case-desc { margin: 0; max-width: 52ch; font-size: 1rem; line-height: 1.55; color: var(--text); }
+  .card-visual::before, .case-visual::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,.14) 1px, transparent 1.4px); background-size: 18px 18px;
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 28%, transparent 76%); mask-image: radial-gradient(ellipse at center, #000 28%, transparent 76%);
+  }
+  .card-visual { flex: none; aspect-ratio: 16 / 9; border-bottom: 1px solid var(--line); }
+  .card-body { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; padding: 15px 18px 15px; }
+  .card-kind { margin: 0; font-size: 10.5px; font-weight: 700; line-height: 1.3; letter-spacing: .14em; text-transform: uppercase; color: var(--ct); }
+  .card h3 { margin: 0; font: 600 1.2rem/1.2 var(--f-display); letter-spacing: -.025em; }
+  .card-open { margin: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-align: left; cursor: pointer; touch-action: manipulation; }
+  .card-open::after { content: ""; position: absolute; inset: 0; z-index: 3; }      /* the whole card is the button */
+  .card-open:focus-visible { outline: none; }
+  .card:has(.card-open:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .card-line { margin: 0; color: var(--dim); font-size: .93rem; line-height: 1.5; }
+  .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 10px; }
+  .card .chips { flex-wrap: nowrap; overflow: hidden; }
+  .card .chips span { font-size: 11.5px; padding: 2px 9px; }
+  .card-more { display: inline-flex; align-items: center; gap: 6px; flex: none; font-size: 12.5px; font-weight: 600; color: var(--ct); white-space: nowrap; }
+  .card-more svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .35s var(--ease); }
+  @media (hover: hover) {
+    .card:hover { transform: translateY(-4px); box-shadow: inset 0 1px 0 var(--hi), 0 40px 60px -40px var(--shadow); }
+    .card:hover::before { opacity: .95; }
+    .card:hover .card-more svg { transform: translateX(3px); }
+  }
+  .card:active { transform: scale(.99); transition-duration: .1s; }
+  /* the first project is the widest: picture beside the text */
+  .card.feature { grid-column: span 4; flex-direction: row; }
+  .card.feature .card-visual { flex: 0 0 57%; aspect-ratio: auto; min-height: 250px; border-bottom: 0; border-right: 1px solid var(--line); }
+  .card.feature .card-body { padding: 22px 22px 18px; gap: 8px; }
+  .card.feature h3 { font-size: clamp(1.4rem, 2vw, 1.7rem); }
+  .card.feature .card-line { font-size: 1rem; }
+  /* only the widest card has room for three short points */
+  .card-points { list-style: none; margin: 6px 0 0; padding: 0; display: grid; gap: 7px; font-size: .92rem; line-height: 1.4; color: var(--dim); }
+  .card-points li { position: relative; padding-left: 18px; }
+  .card-points li::before { content: ""; position: absolute; left: 2px; top: .52em; width: 6px; height: 6px; border-radius: 2px; transform: rotate(45deg); background: linear-gradient(135deg, var(--c1), var(--c2)); }
+  /* research: two wide, short cards */
+  .grid.pair .card { grid-column: span 3; flex-direction: row; }
+  .grid.pair .card-visual { flex: 0 0 42%; aspect-ratio: auto; min-height: 168px; border-bottom: 0; border-right: 1px solid var(--line); }
+  :root[data-theme="light"] .card, :root[data-theme="light"] .case { --ct: color-mix(in srgb, var(--c1) 40%, #10131a); }
+  :root[data-theme="light"] .card { box-shadow: inset 0 1px 0 #fff, 0 24px 40px -34px rgba(20,22,26,.4); }
+
+  @media (max-width: 999.98px) {
+    .card { grid-column: span 3; }
+    .card.feature { grid-column: span 6; }
+    .grid.pair .card { flex-direction: column; }
+    .grid.pair .card-visual { flex: none; aspect-ratio: 16 / 9; min-height: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+  }
+  /* phones: each group is one row that slides sideways, so the section is a single screen tall */
+  @media (max-width: 699.98px) {
+    .grid, .grid.pair {
+      display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory; scrollbar-width: none;
+      margin-inline: calc(var(--gut) * -1); padding: 4px var(--gut) 14px;
+    }
+    .grid::-webkit-scrollbar { display: none; }
+    .card, .card.feature, .grid.pair .card { flex: 0 0 min(80%, 300px); flex-direction: column; scroll-snap-align: center; }
+    .card.feature .card-visual, .grid.pair .card-visual { flex: none; aspect-ratio: 16 / 9; min-height: 0; border-right: 0; border-bottom: 1px solid var(--line); }
+    .card.feature .card-body { padding: 15px 18px; gap: 6px; }
+    .card.feature h3 { font-size: 1.2rem; }
+    .card.feature .card-line { font-size: .93rem; }
+    .card-points { display: none; }
+    .group .count { display: none; }
+    .group .swipe { display: inline; }
+  }
+
+  /* ---------- the sheet: one project in full ---------- */
+  .psheet {
+    width: min(1040px, calc(100% - 28px)); max-width: none; max-height: min(86vh, 720px);
+    padding: 0; border: 1px solid var(--line-2); border-radius: 26px;
+    background: var(--panel); color: var(--text);
+    box-shadow: 0 60px 120px -50px rgba(0,0,0,.9); overflow: hidden;
+  }
+  .psheet[open] { display: flex; flex-direction: column; animation: sheetIn .35s var(--ease); }
+  .psheet::backdrop { background: rgba(4,6,8,.74); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+  @keyframes sheetIn { from { opacity: 0; transform: translateY(18px) scale(.985); } }
+  .sheet-bar { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px 10px 22px; border-bottom: 1px solid var(--line); }
+  .sheet-pos { font-size: 12px; font-weight: 600; letter-spacing: .14em; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .sheet-nav { display: flex; gap: 6px; }
+  .sheet-nav .round svg { fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .sheet-nav .round:hover { transform: none; }
+  .case {
+    display: grid; grid-template-columns: minmax(0, .96fr) minmax(0, 1.04fr); gap: clamp(18px, 2.4vw, 34px);
+    padding: clamp(16px, 2vw, 26px); overflow-y: auto; overscroll-behavior: contain;
+    background: linear-gradient(160deg, color-mix(in srgb, var(--c1) 8%, transparent), transparent 46%);
+  }
+  .case-visual { min-height: 320px; border: 1px solid rgba(255,255,255,.1); border-radius: 18px; }
+  .case-body, .case-detail { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .case-detail { flex: 1; }
+  .case-top { display: flex; align-items: center; gap: 10px; margin: 4px 0 0; font-size: 11px; font-weight: 700; line-height: 1.3; letter-spacing: .16em; text-transform: uppercase; color: var(--ct); }
+  .case-top::before { content: ""; flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--c1); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c1) 22%, transparent); }
+  .case h3 { margin: 0; font: 700 clamp(1.5rem, 2.4vw, 2rem)/1.12 var(--f-display); letter-spacing: -.03em; text-wrap: balance; }
+  .case-desc { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--text); }
   .case-facts { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: .93rem; line-height: 1.45; color: var(--dim); }
   .case-facts li { position: relative; padding-left: 20px; }
   .case-facts li::before { content: ""; position: absolute; left: 2px; top: .5em; width: 7px; height: 7px; border-radius: 2px; transform: rotate(45deg); background: linear-gradient(135deg, var(--c1), var(--c2)); }
@@ -575,49 +666,20 @@
   .case-stats li { display: grid; }
   .case-stats b { font: 700 clamp(1.5rem, 2.1vw, 1.85rem)/1.1 var(--f-display); letter-spacing: -.03em; background: linear-gradient(120deg, var(--c1), var(--c2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .case-stats span { margin-top: 6px; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
-  .case-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-top: auto; padding-top: 6px; }
-  .case:hover .chips span { color: var(--text); border-color: color-mix(in srgb, var(--c1) 40%, transparent); background: color-mix(in srgb, var(--c1) 9%, transparent); }
-  .case .btn.solid { min-height: 40px; padding: 0 16px; border-radius: 999px; background: linear-gradient(135deg, var(--c1), var(--c2)); color: #06110c; font-size: 13.5px; font-weight: 700; box-shadow: 0 12px 26px -14px var(--c1); }
+  .case-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-top: auto; padding-top: 8px; }
+  .case .btn.solid { min-height: 40px; padding: 0 16px; border-radius: 999px; background: linear-gradient(135deg, var(--c1), var(--c2)); color: #06110c; font-size: 13.5px; font-weight: 700; }
   .case .btn.solid svg { width: 13px; height: 13px; transition: transform .35s var(--ease); }
   .case .btn.solid:hover svg { transform: translate(2px, -2px); }
   /* a state, not a link */
   .state { display: inline-flex; align-items: center; gap: 9px; padding: 9px 15px 9px 13px; border: 1px solid color-mix(in srgb, var(--c1) 38%, var(--line)); border-radius: 999px; background: color-mix(in srgb, var(--c1) 8%, transparent); color: var(--ct); font-size: 13px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
-  .state i { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--c1); flex: none; }
-  .case-visual {
-    position: relative; overflow: hidden; min-height: 300px;
-    border: 1px solid rgba(255,255,255,.1); border-radius: clamp(16px, 1.8vw, 24px);
-    background:
-      radial-gradient(120% 90% at 18% 0%, color-mix(in srgb, var(--c1) 34%, transparent), transparent 62%),
-      radial-gradient(110% 100% at 100% 100%, color-mix(in srgb, var(--c2) 30%, transparent), transparent 60%),
-      #0a0d12;
-  }
-  .case.lyn .case-visual { min-height: 400px; }
-  .case-visual::before {
-    content: ""; position: absolute; inset: 0;
-    background-image: radial-gradient(rgba(255,255,255,.14) 1px, transparent 1.4px); background-size: 18px 18px;
-    -webkit-mask-image: radial-gradient(ellipse at center, #000 28%, transparent 76%); mask-image: radial-gradient(ellipse at center, #000 28%, transparent 76%);
-  }
-  .case.flipx .case-visual { order: -1; }
-  :root[data-theme="light"] .case {
-    --ct: color-mix(in srgb, var(--c1) 40%, #10131a);
-    box-shadow: inset 0 1px 0 #fff, 0 -18px 40px -32px rgba(20,22,26,.5);
-  }
-  :root[data-theme="light"] .case-num { -webkit-text-stroke-color: color-mix(in srgb, var(--c1) 62%, #10131a); }
+  .state i { width: 7px; height: 7px; border-radius: 50%; background: var(--c1); flex: none; }
   :root[data-theme="light"] .case-stats b { background: linear-gradient(120deg, color-mix(in srgb, var(--c1) 55%, #10131a), color-mix(in srgb, var(--c2) 60%, #10131a)); -webkit-background-clip: text; background-clip: text; }
-  :root[data-theme="light"] .case::after { background: #14161a; }
-
-  /* on a large screen the cards pin under the nav and pile up as you scroll; the
-     script switches this on only when every card fits the window */
-  @media (min-width: 1000px) and (min-height: 700px) {
-    .cases.stack { display: block; --stick: 96px; --case-h: min(560px, calc(100vh - 96px - 84px - 30px)); }
-    .cases.stack .case { position: sticky; top: calc(var(--stick) + var(--n) * 14px); height: var(--case-h); margin-bottom: 30px; will-change: transform; }
-    .cases.stack .case:last-child { margin-bottom: 0; }
-    .cases.stack .case-visual { min-height: 0; }
-  }
-
-  @media (max-width: 899.98px) {
+  :root[data-theme="light"] .psheet { box-shadow: 0 50px 100px -50px rgba(20,22,26,.6); }
+  :root[data-theme="light"] .psheet::backdrop { background: rgba(20,22,26,.5); }
+  @media (max-width: 760px) {
+    .psheet { width: 100%; height: 100%; max-height: none; border: 0; border-radius: 0; }
     .case { grid-template-columns: minmax(0, 1fr); }
-    .case .case-visual, .case.lyn .case-visual { order: -1; min-height: 0; aspect-ratio: 3 / 2; }
+    .case-visual { min-height: 0; aspect-ratio: 3 / 2; }
     .case.lyn .case-visual { aspect-ratio: 21 / 20; }
   }
 
@@ -655,8 +717,9 @@
   /* rests mid-timeline, so it is not stranded at x=0 when animation is switched off */
   .scene .a-play { transform: translateX(206px); animation: scPlay 6s linear infinite; }
   .scene .a-row { animation: scRow 7s ease-out infinite backwards; animation-delay: calc(var(--d, 0) * .32s); }
-  /* illustrations only run while their card is on screen */
-  .case:not(.live) .scene * { animation-play-state: paused; }
+  /* in the grid a picture stays still until its card is pointed at, so seven of them never
+     move at once; in the sheet it always runs */
+  .card:not(:hover) .scene * { animation: none !important; }
   @keyframes scBlink { 50% { opacity: .2 } }
   @keyframes scPulse { 0%, 100% { opacity: .15 } 50% { opacity: 1 } }
   @keyframes scDraw {
@@ -996,25 +1059,15 @@
         <p class="work-count rv"><b>07</b>projects</p>
       </div>
 
-      <div class="cases" id="cases">
+      <div class="group rv">
+        <h3>Client products</h3>
+        <span><span class="count">5 projects</span><span class="swipe">Swipe for more</span></span>
+      </div>
+      <div class="grid rv" id="grid-client">
 
-        <article class="case lyn" style="--n:0">
-          <div class="case-body">
-            <p class="case-top"><span class="case-num">01</span>Live classroom platform</p>
-            <h3>LYN MEET</h3>
-            <p class="case-desc">A self-hosted virtual classroom that replaced third-party conferencing for teachers and students, in production.</p>
-            <ul class="case-facts">
-              <li><b>mediasoup SFU</b> — multi-party camera, mic and screen share that stays up through a teacher's network drop</li>
-              <li><b>Live whiteboard</b> — multiple board tabs, PDF import and late-join sync</li>
-              <li><b>Server-side recording</b> — one FFmpeg clock, one MP4 per session</li>
-              <li><b>No client-trusted roles</b> — permissions, SSO tickets and attendance enforced on the server</li>
-            </ul>
-            <div class="case-foot">
-              <div class="chips"><span>Node.js</span><span>mediasoup</span><span>Socket.IO</span><span>React</span><span>MySQL</span><span>FFmpeg</span><span>Flutter</span><span>coturn</span></div>
-              <span class="state"><i></i>Live in production</span>
-            </div>
-          </div>
-          <div class="case-visual"><svg class="scene" viewBox="0 0 420 400" aria-hidden="true" focusable="false">
+        <article class="card lyn feature" data-case="lyn">
+          <div class="card-visual">
+            <svg class="scene" viewBox="0 0 420 400" aria-hidden="true" focusable="false">
                 <defs><linearGradient id="g-lyn" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient></defs>
                 <rect class="win" x="12" y="16" width="396" height="248" rx="16"/>
                 <circle class="low" cx="32" cy="35" r="4"/><circle class="low" cx="45" cy="35" r="4"/><circle class="low" cx="58" cy="35" r="4"/>
@@ -1044,26 +1097,39 @@
                 <path class="s1" stroke-width="2" d="M342 339h8m-3.5-3.5l3.5 3.5-3.5 3.5"/>
                 <rect x="356" y="308" width="40" height="62" rx="10" fill="url(#g-lyn)"/>
                 <text class="t-ink" x="376" y="337" font-size="9" text-anchor="middle" style="letter-spacing:.04em">MP4</text><text class="t-ink" x="376" y="349" font-size="6" text-anchor="middle" style="letter-spacing:.02em;opacity:.7">1 / session</text>
-              </svg></div>
-        </article>
-
-        <article class="case dan flipx" style="--n:1">
-          <div class="case-body">
-            <p class="case-top"><span class="case-num">02</span>Construction ERP</p>
-            <h3>DAN BONIM</h3>
-            <p class="case-desc">A construction company's sites, crews, stock and payroll in one installable app, built for the phones the site team actually uses.</p>
-            <ul class="case-facts">
-              <li><b>The whole operation</b> — sites, workers, attendance, payroll, materials and stock, equipment and vendors</li>
-              <li><b>Five roles, enforced on the server</b> — worker pay sits in admin-only records, and nobody can promote themselves</li>
-              <li><b>One-tap check-in</b> — engineers check in and out at a site, and hours and overtime are worked out for them</li>
-              <li><b>Phone first</b> — installs from the browser and keeps working when the signal drops</li>
+              </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-kind">Live classroom platform</p>
+            <h3><button class="card-open" type="button" aria-haspopup="dialog" aria-controls="sheet">LYN MEET</button></h3>
+            <p class="card-line">A self-hosted virtual classroom that replaced third-party conferencing.</p>
+            <ul class="card-points">
+              <li>Stays up through a teacher's network drop</li>
+              <li>Live whiteboard with late-join sync</li>
+              <li>One recording per session, made on the server</li>
             </ul>
-            <div class="case-foot">
-              <div class="chips"><span>JavaScript</span><span>Firestore</span><span>Firebase Auth</span><span>Service Worker</span><span>PWA</span></div>
-              <span class="state"><i></i>Live and installable</span>
+            <div class="card-foot">
+              <div class="chips"><span>WebRTC</span><span>Node.js</span><span>React</span></div>
+              <span class="card-more" aria-hidden="true">Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </div>
           </div>
-          <div class="case-visual">
+          <template>
+            <p class="case-desc">A self-hosted virtual classroom that replaced third-party conferencing for teachers and students, in production.</p>
+            <ul class="case-facts">
+                <li><b>mediasoup SFU</b> — multi-party camera, mic and screen share that stays up through a teacher's network drop</li>
+                <li><b>Live whiteboard</b> — multiple board tabs, PDF import and late-join sync</li>
+                <li><b>Server-side recording</b> — one FFmpeg clock, one MP4 per session</li>
+                <li><b>No client-trusted roles</b> — permissions, SSO tickets and attendance enforced on the server</li>
+              </ul>
+            <div class="case-foot">
+              <div class="chips"><span>Node.js</span><span>mediasoup</span><span>Socket.IO</span><span>React</span><span>MySQL</span><span>FFmpeg</span><span>Flutter</span><span>coturn</span></div>
+              <span class="state"><i></i>Live in production</span>
+            </div>
+          </template>
+        </article>
+
+        <article class="card dan" data-case="dan">
+          <div class="card-visual">
             <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
                 <defs><linearGradient id="g-db" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient></defs>
                 <rect class="win" x="172" y="36" width="226" height="212" rx="16"/>
@@ -1102,24 +1168,33 @@
                 </g>
               </svg>
           </div>
-        </article>
-
-        <article class="case mlcc" style="--n:2">
-          <div class="case-body">
-            <p class="case-top"><span class="case-num">03</span>Community app</p>
-            <h3>MLCC Youth</h3>
-            <p class="case-desc">Events, announcements and member content for a youth organisation — designed, launched and kept up to date on the Play Store.</p>
-            <ul class="case-facts">
-              <li><b>Push reminders</b> for events, through OneSignal</li>
-              <li><b>Realtime content</b> and sign-in on Firebase</li>
-              <li><b>The full release cycle</b> — listing, store compliance, versioned rollouts</li>
-            </ul>
-            <div class="case-foot">
-              <div class="chips"><span>Flutter</span><span>Firebase</span><span>OneSignal</span><span>Play Console</span></div>
-              <a class="btn solid" href="https://play.google.com/store/apps/details?id=com.mlccapp.mlccapp" target="_blank" rel="noopener" data-track="mlcc">Open on Google Play <svg class="stroke" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></a>
+          <div class="card-body">
+            <p class="card-kind">Construction ERP</p>
+            <h3><button class="card-open" type="button" aria-haspopup="dialog" aria-controls="sheet">DAN BONIM</button></h3>
+            <p class="card-line">A construction company's sites, crews, stock and payroll, run from a phone.</p>
+            <div class="card-foot">
+              <div class="chips"><span>JavaScript</span><span>Firestore</span><span>PWA</span></div>
+              <span class="card-more" aria-hidden="true">Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </div>
           </div>
-          <div class="case-visual"><svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+          <template>
+            <p class="case-desc">A construction company's sites, crews, stock and payroll in one installable app, built for the phones the site team actually uses.</p>
+            <ul class="case-facts">
+                <li><b>The whole operation</b> — sites, workers, attendance, payroll, materials and stock, equipment and vendors</li>
+                <li><b>Five roles, enforced on the server</b> — worker pay sits in admin-only records, and nobody can promote themselves</li>
+                <li><b>One-tap check-in</b> — engineers check in and out at a site, and hours and overtime are worked out for them</li>
+                <li><b>Phone first</b> — installs from the browser and keeps working when the signal drops</li>
+              </ul>
+            <div class="case-foot">
+              <div class="chips"><span>JavaScript</span><span>Firestore</span><span>Firebase Auth</span><span>Service Worker</span><span>PWA</span></div>
+              <span class="state"><i></i>Live and installable</span>
+            </div>
+          </template>
+        </article>
+
+        <article class="card mlcc" data-case="mlcc">
+          <div class="card-visual">
+            <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
                 <defs><linearGradient id="g-mlcc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient></defs>
                 <circle class="sl" cx="210" cy="152" r="122"/><circle class="sl" cx="210" cy="152" r="88"/>
                 <g class="a-float"><g transform="rotate(-6 210 150)">
@@ -1148,23 +1223,34 @@
                 <rect class="tile" x="24" y="198" width="120" height="40" rx="12"/>
                 <path d="M40 209.5v17l15-8.5z" fill="url(#g-mlcc)"/>
                 <text x="62" y="214" font-size="7">LIVE ON</text><text class="t-hi" x="62" y="228" font-size="11">Google Play</text>
-              </svg></div>
-        </article>
-
-        <article class="case bikes flipx" style="--n:3">
-          <div class="case-body">
-            <p class="case-top"><span class="case-num">04</span>Workshop app</p>
-            <h3>David Bikes</h3>
-            <p class="case-desc">A bike workshop's paper billing, replaced by one searchable customer and vehicle database.</p>
-            <ul class="case-facts">
-              <li><b>Service history</b> for every bike, tied to its owner</li>
-              <li><b>Live invoices</b> and one-tap PDF bills, shared from the app</li>
-            </ul>
-            <div class="case-foot">
-              <div class="chips"><span>Flutter</span><span>Firebase</span><span>PDF generation</span></div>
+              </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-kind">Community app</p>
+            <h3><button class="card-open" type="button" aria-haspopup="dialog" aria-controls="sheet">MLCC Youth</button></h3>
+            <p class="card-line">Events, announcements and member content for a youth organisation.</p>
+            <div class="card-foot">
+              <div class="chips"><span>Flutter</span><span>Firebase</span><span>OneSignal</span></div>
+              <span class="card-more" aria-hidden="true">Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </div>
           </div>
-          <div class="case-visual"><svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+          <template>
+            <p class="case-desc">Events, announcements and member content for a youth organisation — designed, launched and kept up to date on the Play Store.</p>
+            <ul class="case-facts">
+                <li><b>Push reminders</b> for events, through OneSignal</li>
+                <li><b>Realtime content</b> and sign-in on Firebase</li>
+                <li><b>The full release cycle</b> — listing, store compliance, versioned rollouts</li>
+              </ul>
+            <div class="case-foot">
+              <div class="chips"><span>Flutter</span><span>Firebase</span><span>OneSignal</span><span>Play Console</span></div>
+              <a class="btn solid" href="https://play.google.com/store/apps/details?id=com.mlccapp.mlccapp" target="_blank" rel="noopener" data-track="mlcc">Open on Google Play <svg class="stroke" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></a>
+            </div>
+          </template>
+        </article>
+
+        <article class="card bikes" data-case="bikes">
+          <div class="card-visual">
+            <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
                 <defs><linearGradient id="g-bike" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient></defs>
                 <g transform="translate(30 126)">
                   <circle cx="38" cy="80" r="30" fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="3"/>
@@ -1193,25 +1279,32 @@
                   <circle cx="150" cy="59" r="8" fill="url(#g-bike)"/><path class="si" stroke-width="1.7" d="M146.4 59.2l2.5 2.5 4.6-4.9"/>
                   <text x="164" y="62" font-size="7.5">BILL SENT</text>
                 </g>
-              </svg></div>
-        </article>
-
-        <article class="case mathan" style="--n:4">
-          <div class="case-body">
-            <p class="case-top"><span class="case-num">05</span>Chit-fund register</p>
-            <h3>Mathan Jewellers</h3>
-            <p class="case-desc">A bilingual English / Tamil register that retired a jeweller's paper ledger, live across every device.</p>
-            <ul class="case-facts">
-              <li><b>Instant ranked search</b> by name, chit number or phone</li>
-              <li><b>Branded PDF statements</b>, shared straight to WhatsApp</li>
-              <li><b>Locked down in Firestore rules</b>, and it works offline</li>
-            </ul>
-            <div class="case-foot">
-              <div class="chips"><span>React</span><span>TypeScript</span><span>Vite</span><span>Firestore</span><span>Tailwind</span><span>jsPDF</span></div>
-              <span class="state"><i></i>Live in production</span>
+              </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-kind">Workshop app</p>
+            <h3><button class="card-open" type="button" aria-haspopup="dialog" aria-controls="sheet">David Bikes</button></h3>
+            <p class="card-line">A bike workshop's paper billing, replaced by one searchable database.</p>
+            <div class="card-foot">
+              <div class="chips"><span>Flutter</span><span>Firebase</span><span>PDF</span></div>
+              <span class="card-more" aria-hidden="true">Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </div>
           </div>
-          <div class="case-visual"><svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+          <template>
+            <p class="case-desc">A bike workshop's paper billing, replaced by one searchable customer and vehicle database.</p>
+            <ul class="case-facts">
+                <li><b>Service history</b> for every bike, tied to its owner</li>
+                <li><b>Live invoices</b> and one-tap PDF bills, shared from the app</li>
+              </ul>
+            <div class="case-foot">
+              <div class="chips"><span>Flutter</span><span>Firebase</span><span>PDF generation</span></div>
+            </div>
+          </template>
+        </article>
+
+        <article class="card mathan" data-case="mathan">
+          <div class="card-visual">
+            <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
                 <defs><linearGradient id="g-mj" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient></defs>
                 <rect class="win" x="28" y="20" width="364" height="240" rx="16"/>
                 <rect class="pane" x="44" y="36" width="232" height="32" rx="16"/>
@@ -1231,26 +1324,42 @@
                 <text x="46" y="239" font-size="7.5">RUNNING TOTAL</text>
                 <rect x="298" y="225" width="78" height="22" rx="11" fill="url(#g-mj)"/>
                 <text class="t-ink" x="308" y="240" font-size="10" style="letter-spacing:0">₹</text><rect class="ink" x="320" y="232.5" width="46" height="7" rx="3.5" opacity=".7"/>
-              </svg></div>
-        </article>
-
-        <article class="case learn long flipx" style="--n:5">
-          <div class="case-body">
-            <p class="case-top"><span class="case-num">06</span>Machine-learning research</p>
-            <h3>AI Personalized Learning System</h3>
-            <p class="case-desc">Profiles how a student learns, then recommends what to study next.</p>
-            <ul class="case-facts">
-              <li><b>Random Forest</b> learner profiling</li>
-              <li><b>Dashboards</b> for students and teachers, with progress analytics</li>
-              <li><b>A Gemini tutor</b> built in, for questions in plain language</li>
-              <li><b>Privacy-safe by design</b> — trained only on synthetic data</li>
-            </ul>
-            <div class="case-foot">
-              <div class="chips"><span>Python</span><span>Scikit-learn</span><span>Streamlit</span><span>Gemini</span></div>
-              <a class="btn solid" href="https://github.com/elmersonrajan/ai-personalized-learning" target="_blank" rel="noopener" data-track="learning">View the code <svg class="stroke" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></a>
+              </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-kind">Chit-fund register</p>
+            <h3><button class="card-open" type="button" aria-haspopup="dialog" aria-controls="sheet">Mathan Jewellers</button></h3>
+            <p class="card-line">A bilingual chit-fund register that retired a jeweller's paper ledger.</p>
+            <div class="card-foot">
+              <div class="chips"><span>React</span><span>TypeScript</span><span>Firestore</span></div>
+              <span class="card-more" aria-hidden="true">Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </div>
           </div>
-          <div class="case-visual"><svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+          <template>
+            <p class="case-desc">A bilingual English / Tamil register that retired a jeweller's paper ledger, live across every device.</p>
+            <ul class="case-facts">
+                <li><b>Instant ranked search</b> by name, chit number or phone</li>
+                <li><b>Branded PDF statements</b>, shared straight to WhatsApp</li>
+                <li><b>Locked down in Firestore rules</b>, and it works offline</li>
+              </ul>
+            <div class="case-foot">
+              <div class="chips"><span>React</span><span>TypeScript</span><span>Vite</span><span>Firestore</span><span>Tailwind</span><span>jsPDF</span></div>
+              <span class="state"><i></i>Live in production</span>
+            </div>
+          </template>
+        </article>
+
+      </div>
+
+      <div class="group rv">
+        <h3>Research</h3>
+        <span><span class="count">2 projects</span><span class="swipe">Swipe for more</span></span>
+      </div>
+      <div class="grid pair rv" id="grid-research">
+
+        <article class="card learn" data-case="learn">
+          <div class="card-visual">
+            <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
                 <defs>
                   <linearGradient id="g-ai" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient>
                   <linearGradient id="g-ai-a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--c1);stop-opacity:.42"/><stop offset="1" style="stop-color:var(--c1);stop-opacity:0"/></linearGradient>
@@ -1274,24 +1383,35 @@
                 <rect class="pane" x="206" y="178" width="178" height="70" rx="12"/>
                 <rect class="pane2" x="216" y="187" width="96" height="20" rx="10"/><rect class="mid" x="227" y="195" width="62" height="4" rx="2"/>
                 <g class="a-row" style="--d:3"><rect x="266" y="216" width="108" height="22" rx="11" fill="url(#g-ai)"/><rect class="ink" x="278" y="225" width="72" height="4" rx="2" opacity=".55"/></g>
-              </svg></div>
-        </article>
-
-        <article class="case recipe long" style="--n:6">
-          <div class="case-body">
-            <p class="case-top"><span class="case-num">07</span>Computer-vision research</p>
-            <h3>AI-Driven Recipe Generator</h3>
-            <p class="case-desc">Show it a food photo and it writes the ingredient list: one model recognises the dish, a second generates what goes into it.</p>
-            <ul class="case-stats">
-              <li><b>63</b><span>food classes</span></li>
-              <li><b>8,000</b><span>training images</span></li>
-              <li><b>2</b><span>models, one pipeline</span></li>
-            </ul>
-            <div class="case-foot">
-              <div class="chips"><span>Python</span><span>Deep Learning</span><span>Computer Vision</span></div>
+              </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-kind">Machine-learning research</p>
+            <h3><button class="card-open" type="button" aria-haspopup="dialog" aria-controls="sheet">AI Personalized Learning System</button></h3>
+            <p class="card-line">Profiles how a student learns, then recommends what to study next.</p>
+            <div class="card-foot">
+              <div class="chips"><span>Python</span><span>Scikit-learn</span><span>Gemini</span></div>
+              <span class="card-more" aria-hidden="true">Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
             </div>
           </div>
-          <div class="case-visual"><svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
+          <template>
+            <p class="case-desc">Profiles how a student learns, then recommends what to study next.</p>
+            <ul class="case-facts">
+                <li><b>Random Forest</b> learner profiling</li>
+                <li><b>Dashboards</b> for students and teachers, with progress analytics</li>
+                <li><b>A Gemini tutor</b> built in, for questions in plain language</li>
+                <li><b>Privacy-safe by design</b> — trained only on synthetic data</li>
+              </ul>
+            <div class="case-foot">
+              <div class="chips"><span>Python</span><span>Scikit-learn</span><span>Streamlit</span><span>Gemini</span></div>
+              <a class="btn solid" href="https://github.com/elmersonrajan/ai-personalized-learning" target="_blank" rel="noopener" data-track="learning">View the code <svg class="stroke" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 11.5l7-7M6 4.5h5.5V10"/></svg></a>
+            </div>
+          </template>
+        </article>
+
+        <article class="card recipe" data-case="recipe">
+          <div class="card-visual">
+            <svg class="scene" viewBox="0 0 420 280" aria-hidden="true" focusable="false">
                 <defs>
                   <linearGradient id="g-rc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--c1)"/><stop offset="1" style="stop-color:var(--c2)"/></linearGradient>
                   <linearGradient id="g-rc-s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--c1);stop-opacity:0"/><stop offset="1" style="stop-color:var(--c1);stop-opacity:.5"/></linearGradient>
@@ -1316,7 +1436,28 @@
                 <g class="a-row" style="--d:3"><rect class="pane" x="274" y="154" width="106" height="22" rx="11"/><circle class="c1" cx="287" cy="165" r="4"/><rect class="hi" x="297" y="162.5" width="60" height="5" rx="2.5"/></g>
                 <g class="a-row" style="--d:4"><rect class="pane" x="274" y="182" width="106" height="22" rx="11"/><circle class="c1" cx="287" cy="193" r="4"/><rect class="hi" x="297" y="190.5" width="48" height="5" rx="2.5"/></g>
                 <g class="a-row" style="--d:5"><rect class="pane" x="274" y="210" width="106" height="22" rx="11"/><circle class="c1" cx="287" cy="221" r="4"/><rect class="hi" x="297" y="218.5" width="66" height="5" rx="2.5"/></g>
-              </svg></div>
+              </svg>
+          </div>
+          <div class="card-body">
+            <p class="card-kind">Computer-vision research</p>
+            <h3><button class="card-open" type="button" aria-haspopup="dialog" aria-controls="sheet">AI-Driven Recipe Generator</button></h3>
+            <p class="card-line">Show it a food photo and it writes the ingredient list.</p>
+            <div class="card-foot">
+              <div class="chips"><span>Python</span><span>Deep Learning</span><span>Vision</span></div>
+              <span class="card-more" aria-hidden="true">Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+            </div>
+          </div>
+          <template>
+            <p class="case-desc">Show it a food photo and it writes the ingredient list: one model recognises the dish, a second generates what goes into it.</p>
+            <ul class="case-stats">
+                <li><b>63</b><span>food classes</span></li>
+                <li><b>8,000</b><span>training images</span></li>
+                <li><b>2</b><span>models, one pipeline</span></li>
+              </ul>
+            <div class="case-foot">
+              <div class="chips"><span>Python</span><span>Deep Learning</span><span>Computer Vision</span></div>
+            </div>
+          </template>
         </article>
 
       </div>
@@ -1428,6 +1569,25 @@
 
 </main>
 
+<dialog class="psheet" id="sheet" aria-labelledby="sheet-title">
+  <div class="sheet-bar">
+    <span class="sheet-pos" id="sheet-pos">1 / 7</span>
+    <div class="sheet-nav">
+      <button class="round" id="sheet-prev" type="button" aria-label="Previous project"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 8H3M7 4 3 8l4 4"/></svg></button>
+      <button class="round" id="sheet-next" type="button" aria-label="Next project"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4"/></svg></button>
+      <button class="round" id="sheet-close" type="button" aria-label="Close"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg></button>
+    </div>
+  </div>
+  <div class="case" id="sheet-case">
+    <div class="case-visual" id="sheet-visual"></div>
+    <div class="case-body">
+      <p class="case-top" id="sheet-kind"></p>
+      <h3 id="sheet-title"></h3>
+      <div class="case-detail" id="sheet-detail"></div>
+    </div>
+  </div>
+</dialog>
+
 <script>
 (function () {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1447,7 +1607,7 @@
   var liveIO = new IntersectionObserver(function (entries) {
     entries.forEach(function (e) { e.target.classList.toggle('live', e.isIntersecting); });
   }, { rootMargin: '80px 0px' });
-  all('.hero, .ribbon, .case, .route').forEach(function (el) { liveIO.observe(el); });
+  all('.hero, .ribbon, .route').forEach(function (el) { liveIO.observe(el); });
 
   /* ---------- reveal on scroll ---------- */
   var io = new IntersectionObserver(function (entries) {
@@ -1508,34 +1668,46 @@
   })(scrub);
   var wordsOn = -1;
 
-  /* ---------- project cards pile up under the nav on large screens ---------- */
-  var casesEl = $('cases'), cases = all('.case', casesEl);
-  var stackMQ = window.matchMedia('(min-width: 1000px) and (min-height: 700px)');
-  var stackOn = false, STICK = 96, STEP = 14;
-  function setupStack() {
-    cases.forEach(function (c) { c.style.transform = ''; c.style.removeProperty('--shade'); });
-    casesEl.classList.remove('stack');
-    stackOn = false;
-    if (reduce || !stackMQ.matches) return;
-    casesEl.classList.add('stack');
-    /* only keep it if no card's content is taller than the card */
-    stackOn = cases.every(function (c) { return c.scrollHeight <= c.clientHeight + 4; });
-    if (!stackOn) casesEl.classList.remove('stack');
+  /* ---------- work: tap a card to open that project in the sheet ---------- */
+  var cards = all('.card'), sheet = $('sheet'), sheetCase = $('sheet-case'), shown = 0;
+  function showCase(i) {
+    var card = cards[i], detail = $('sheet-detail'), visual = $('sheet-visual');
+    shown = i;
+    sheetCase.className = 'case ' + card.getAttribute('data-case');
+    $('sheet-kind').textContent = card.querySelector('.card-kind').textContent;
+    $('sheet-title').textContent = card.querySelector('.card-open').textContent;
+    visual.textContent = '';
+    visual.appendChild(card.querySelector('.scene').cloneNode(true));
+    detail.textContent = '';
+    detail.appendChild(card.querySelector('template').content.cloneNode(true));
+    $('sheet-pos').textContent = (i + 1) + ' / ' + cards.length;
+    sheetCase.scrollTop = 0;
   }
-  function updateStack(vh) {
-    var n = cases.length, depth = 0, i, r, stick, p;
-    for (i = n - 1; i >= 0; i--) {
-      /* depth = how many later cards have slid over this one (fractional while one arrives) */
-      cases[i].style.transform = depth > 0.001 ? 'scale(' + (1 - 0.035 * Math.min(depth, 3)).toFixed(4) + ')' : '';
-      cases[i].style.setProperty('--shade', (0.22 * Math.min(depth, 2)).toFixed(3));
-      r = cases[i].getBoundingClientRect();
-      stick = STICK + i * STEP;
-      p = clamp(1 - (r.top - stick) / Math.max(1, vh - stick), 0, 1);
-      depth += p;
-    }
-  }
+  function step(by) { showCase((shown + by + cards.length) % cards.length); }
+  cards.forEach(function (card, i) {
+    card.querySelector('.card-open').addEventListener('click', function () {
+      showCase(i);
+      if (sheet.open) return;
+      if (sheet.showModal) sheet.showModal(); else sheet.setAttribute('open', '');
+      /* one history entry, so the phone's Back button closes the sheet instead of leaving */
+      try { history.pushState({ sheet: 1 }, ''); } catch (e) {}
+    });
+  });
+  function closeSheet() { if (sheet.close) sheet.close(); else sheet.removeAttribute('open'); }
+  $('sheet-prev').addEventListener('click', function () { step(-1); });
+  $('sheet-next').addEventListener('click', function () { step(1); });
+  $('sheet-close').addEventListener('click', closeSheet);
+  sheet.addEventListener('click', function (e) { if (e.target === sheet) closeSheet(); });      /* a click outside */
+  sheet.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') step(1); else if (e.key === 'ArrowLeft') step(-1);
+  });
+  sheet.addEventListener('close', function () {
+    $('sheet-visual').textContent = '';
+    if (history.state && history.state.sheet) history.back();
+  });
+  window.addEventListener('popstate', function () { if (sheet.open) closeSheet(); });
 
-  /* ---------- one scroll handler: progress bar, About words, card pile ---------- */
+  /* ---------- one scroll handler: progress bar and the About words ---------- */
   var bar = $('progress'), ticking = false;
   function frame() {
     ticking = false;
@@ -1553,22 +1725,14 @@
         }
       }
     }
-    if (stackOn && !stackMQ.matches) setupStack();     /* the window shrank and no event told us */
-    if (stackOn) updateStack(vh);
   }
   function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(frame); } }
   window.addEventListener('scroll', onScroll, { passive: true });
-  var resizeTimer = 0;
-  window.addEventListener('resize', function () {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(function () { setupStack(); frame(); }, 150);
-  });
-  /* also when the window crosses the size the pile needs, in case no resize event arrives */
-  stackMQ.addEventListener('change', function () { setupStack(); frame(); });
-  setupStack(); frame();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { setupStack(); frame(); });
+  window.addEventListener('resize', onScroll, { passive: true });
+  frame();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(frame);
 
-  /* ---------- pointer parallax: hero layers and card illustrations ---------- */
+  /* ---------- pointer parallax on the hero layers ---------- */
   if (!reduce && fine) {
     var hero = $('top'), raf = 0, hx = 0, hy = 0;
     hero.addEventListener('pointermove', function (ev) {
@@ -1580,25 +1744,6 @@
         raf = 0;
         hero.style.setProperty('--px', hx.toFixed(3));
         hero.style.setProperty('--py', hy.toFixed(3));
-      });
-    });
-    cases.forEach(function (el) {
-      var f = 0;
-      el.addEventListener('pointermove', function (ev) {
-        var r = el.getBoundingClientRect();
-        var px = (ev.clientX - r.left) / r.width - 0.5, py = (ev.clientY - r.top) / r.height - 0.5;
-        if (f) cancelAnimationFrame(f);
-        f = requestAnimationFrame(function () {
-          f = 0;
-          el.style.setProperty('--mx', px.toFixed(3));
-          el.style.setProperty('--my', py.toFixed(3));
-          el.style.setProperty('--x', ((px + 0.5) * 100).toFixed(1) + '%');     /* the glow follows the cursor */
-          el.style.setProperty('--y', ((py + 0.5) * 100).toFixed(1) + '%');
-        });
-      });
-      el.addEventListener('pointerleave', function () {
-        if (f) { cancelAnimationFrame(f); f = 0; }
-        ['--mx', '--my', '--x', '--y'].forEach(function (p) { el.style.removeProperty(p); });
       });
     });
   }
