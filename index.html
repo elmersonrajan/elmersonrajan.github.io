@@ -581,7 +581,8 @@
   .card:has(.card-open:focus-visible) { outline: 2px solid var(--accent); outline-offset: 3px; }
   .card-line { margin: 0; color: var(--dim); font-size: .93rem; line-height: 1.5; }
   .card-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 10px; }
-  .card .chips { flex-wrap: nowrap; overflow: hidden; }
+  /* tags stay on one line; one that does not fit fades out instead of being cut */
+  .card .chips { flex-wrap: nowrap; overflow: hidden; min-width: 0; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 22px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 22px), transparent); }
   .card .chips span { font-size: 11.5px; padding: 2px 9px; }
   .card-more { display: inline-flex; align-items: center; gap: 6px; flex: none; font-size: 12.5px; font-weight: 600; color: var(--ct); white-space: nowrap; }
   .card-more svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform .35s var(--ease); }
